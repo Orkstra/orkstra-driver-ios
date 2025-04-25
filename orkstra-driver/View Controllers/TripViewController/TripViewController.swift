@@ -159,7 +159,7 @@ extension TripViewController{
         tripDetailView.delegate = self
         tripDetailView.tableView?.isScrollEnabled = false
         self.view.addSubview(tripDetailView)
-        myLocationBottom?.constant = 155
+        myLocationBottom?.constant = 215
         
         //Setup Map View
         mapContainerView?.trip = trip
@@ -251,7 +251,7 @@ extension TripViewController{
         if tripDetailsShowing == true{
             tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             UIView.animate(withDuration: 0.5, animations: {
-                self.tripDetailView.frame.origin.y = self.view.frame.height - 175
+                self.tripDetailView.frame.origin.y = self.view.frame.height - 235
             }, completion: { (finished: Bool) in
                 self.tripDetailsShowing = false
             })

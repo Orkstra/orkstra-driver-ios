@@ -22,6 +22,7 @@ class StopCell: UITableViewCell {
     @IBOutlet weak var bottomLine: UIView?
     @IBOutlet weak var orderView: UIView?
     @IBOutlet weak var separator: UIView?
+    @IBOutlet weak var btnTakeMeThere: UIButton?
     
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
@@ -65,6 +66,7 @@ class StopCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        btnTakeMeThere?.tintColor = AppColors.orange
         //Gesture to dismiss
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeUp))
         swipeUp.direction = .up

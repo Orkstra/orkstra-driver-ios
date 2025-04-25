@@ -54,7 +54,7 @@ class TripViewHelper: NSObject {
         let nib = UINib(nibName: "TripDetailView", bundle: nil)
         if let cell = nib.instantiate(withOwner: nil, options: nil).first as? TripDetailView {
             tripDetailView = cell
-            tripDetailView.frame = CGRect(x: 10, y: viewController.view.frame.height - 175, width: viewController.view.frame.width - 20, height: viewController.view.frame.height - 50)
+            tripDetailView.frame = CGRect(x: 10, y: viewController.view.frame.height - 235, width: viewController.view.frame.width - 20, height: viewController.view.frame.height - 50)
         }
         
         // Add shadow
