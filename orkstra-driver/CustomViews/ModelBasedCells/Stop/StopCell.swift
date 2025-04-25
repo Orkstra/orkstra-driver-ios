@@ -23,17 +23,29 @@ class StopCell: UITableViewCell {
     @IBOutlet weak var orderView: UIView?
     @IBOutlet weak var separator: UIView?
     @IBOutlet weak var btnTakeMeThere: UIButton?
-    @IBOutlet weak var btnDeliver: UIButton?
+    @IBOutlet weak var btnDeliver: CustomUiButton?
+    
+    @IBOutlet weak var txtOutDeliveries: UILabel?
+    @IBOutlet weak var txtInDeliveries: UILabel?
     
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
     
     @IBOutlet weak var viewHeight: NSLayoutConstraint?
     
+    @IBOutlet weak var storageView: UIView?
+    @IBOutlet weak var storageDry: UIView?
+    @IBOutlet weak var storageChilled: UIView?
+    @IBOutlet weak var storageFreeze: UIView?
+    @IBOutlet weak var storageViewWidth: NSLayoutConstraint?
+    
     var delegate: StopCellDelegate?
     
     var stop: Stop? {
         didSet {
+            //Storage Views
+            doStorage()
+            
             if (stop?.deliveries.map { $0.label }.unique().count ?? 0) > 1{
                 txtLocation?.text = stop?.label ?? "NA"
                 viewTime?.isHidden = true
@@ -54,16 +66,20 @@ class StopCell: UITableViewCell {
                 viewTime?.borderWidth = 0
                 viewTime?.backgroundColor = .white
             }
+            
+            let manager = StopManager()
+            txtOutDeliveries?.text = "\(manager.getOutDeleveries(stop: stop ?? Stop()).count) Deliveries"
+            txtInDeliveries?.text = "\(manager.getInDeleveries(stop: stop ?? Stop()).count) Returns"
         }
     }
     
     var isLastDrop: Bool = false{
         didSet{
             if isLastDrop == true{
-                btnDeliver?.setTitle("Complete Trip", for: .normal)
+                btnDeliver?.setBoldTitle(string: "Complete Trip", color: .white)
                 bottomLine?.isHidden = true
             }else{
-                btnDeliver?.setTitle("Deliver", for: .normal)
+                btnDeliver?.setBoldTitle(string: "Deliver", color: .white)
                 bottomLine?.isHidden = false
             }
         }
@@ -81,7 +97,12 @@ class StopCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        btnTakeMeThere?.tintColor = AppColors.orange
+        btnDeliver?.backgroundColor = AppColors.accent
+        btnDeliver?.setTitleColor(.white, for: .normal)
+        btnDeliver?.layer.cornerRadius = 7
+        
+        btnTakeMeThere?.tintColor = .white
+        
         //Gesture to dismiss
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(didSwipeUp))
         swipeUp.direction = .up
@@ -90,6 +111,42 @@ class StopCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+    }
+    
+    func doStorage(){
+        //Storages
+        let storages: [String] = stop?.deliveries
+            .flatMap { $0.line_items } // Flatten line items from all deliveries
+            .map { $0.storage?.name ?? "NA" } ?? []
+        
+        var x: Double = 0
+        
+        if storages.contains("Freez"){
+            storageFreeze?.isHidden = false
+            storageFreeze?.frame.origin.x = 0
+            x += 25
+        }else{
+            storageFreeze?.isHidden = true
+        }
+        
+        if storages.contains("Chilled"){
+            storageChilled?.isHidden = false
+            storageChilled?.frame.origin.x = CGFloat(x)
+            x += 25
+        }else{
+            storageChilled?.isHidden = true
+            
+        }
+        
+        if storages.contains("Dry"){
+            storageDry?.isHidden = false
+            storageDry?.frame.origin.x = CGFloat(x)
+            x += 22
+        }else{
+            storageDry?.isHidden = true
+        }
+        
+        storageViewWidth?.constant = x
     }
     
     @objc func didSwipeUp(){

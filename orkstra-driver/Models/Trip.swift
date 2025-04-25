@@ -97,9 +97,9 @@ class TripManager {
     }
     
     func getNextStop(trip: Trip) -> Stop? {
-        var stop = trip.stops.where { $0.shipment_status != "delivered" && $0.warehouse == nil}.first
+        var stop = trip.stops.where { $0.shipment_status == "pending" && $0.warehouse == nil}.first
         if stop == nil {
-            stop = trip.stops.where { $0.shipment_status != "delivered"}.last
+            stop = trip.stops.where { $0.shipment_status == "pending"}.last
         }
         return stop
     }
@@ -116,15 +116,21 @@ class TripManager {
         let line_items = [
             LineItem(
                 id: "1",
-                storage: Storage(id:"1", name: "Freez")
+                storage: Storage(id:"1", name: "Freez"),
+                shipping_weight: 100.0,
+                shipping_weight_unit: "kg"
             ),
             LineItem(
                 id: "2",
-                storage: Storage(id:"2", name: "Chilled")
+                storage: Storage(id:"2", name: "Chilled"),
+                shipping_weight: 50.5,
+                shipping_weight_unit: "kg"
             ),
             LineItem(
                 id: "3",
-                storage: Storage(id:"3", name: "Dry")
+                storage: Storage(id:"3", name: "Dry"),
+                shipping_weight: 70.2,
+                shipping_weight_unit: "kg"
             )
         ]
         
@@ -136,6 +142,7 @@ class TripManager {
                 contact_person: "John Doe",
                 contact_phone_number: "+1 407-555-1234",
                 shipment_status: "pending",
+                direction: "out",
                 line_items: [line_items[0], line_items[2]]
             ),
             Delivery(
@@ -145,6 +152,7 @@ class TripManager {
                 contact_person: "Alice Johnson",
                 contact_phone_number: "+1 407-555-7890",
                 shipment_status: "pending",
+                direction: "out",
                 line_items: [line_items[2]]
             ),
             Delivery(
@@ -154,6 +162,7 @@ class TripManager {
                 contact_person: "Bob Brown",
                 contact_phone_number: "+1 407-555-3456",
                 shipment_status: "pending",
+                direction: "out",
                 line_items: [line_items[0], line_items[1]]
             ),
             Delivery(
@@ -163,6 +172,7 @@ class TripManager {
                 contact_person: "Charlie Green",
                 contact_phone_number: "+1 407-555-0001",
                 shipment_status: "pending",
+                direction: "out",
                 line_items: [line_items[0], line_items[1], line_items[2]]
             ),
             Delivery(
@@ -172,6 +182,7 @@ class TripManager {
                 contact_person: "Dana Blue",
                 contact_phone_number: "+1 407-555-0002",
                 shipment_status: "pending",
+                direction: "out",
                 line_items: [line_items[0], line_items[2]]
             ),
             Delivery(
@@ -181,7 +192,18 @@ class TripManager {
                 contact_person: "Dana Blue",
                 contact_phone_number: "+1 407-555-0002",
                 shipment_status: "pending",
+                direction: "out",
                 line_items: [line_items[0], line_items[2]]
+            ),
+            Delivery(
+                id: "7",
+                label: "Walt Disney",
+                time_slot: nil,
+                contact_person: "Alice Johnson",
+                contact_phone_number: "+1 407-555-7890",
+                shipment_status: "pending",
+                direction: "in",
+                line_items: [line_items[2]]
             )
         ]
         
@@ -207,7 +229,7 @@ class TripManager {
                 address_line_1: "6000 Universal Blvd, Orlando, FL 32819",
                 shipment_status: "pending",
                 warehouse: nil,
-                deliveries: [deliveries[0], deliveries[1], deliveries[1]]
+                deliveries: [deliveries[0], deliveries[1], deliveries[6]]
             ),
             Stop(
                 id: "3",

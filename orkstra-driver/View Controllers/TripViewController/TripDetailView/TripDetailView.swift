@@ -186,6 +186,7 @@ extension TripDetailView{
             separator = cell.separator
             summaryViewHeight = cell.viewHeight
             cell.addGesture(target: self, action: #selector(headerTapped(_:)))
+    
             return cell
         }
     }

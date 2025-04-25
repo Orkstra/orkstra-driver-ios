@@ -18,8 +18,10 @@ class DeliveryCell: UITableViewCell {
     @IBOutlet weak var storageChilled: UIView?
     @IBOutlet weak var storageFreeze: UIView?
     
+    @IBOutlet weak var viewReturn: UIView?
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
+    @IBOutlet weak var txtWeight: UILabel?
     
     var delivery: Delivery? {
         didSet {
@@ -36,33 +38,15 @@ class DeliveryCell: UITableViewCell {
             }
             //txtTime?.text = delivery?.time_slot
             
-            //Storages
-            let storages = delivery?.line_items.map({$0.storage?.name ?? "NA"}) ?? []
-            var x = 0
-            
-            if storages.contains("Freez"){
-                storageFreeze?.isHidden = false
-                storageFreeze?.frame.origin.x = 0
-                x += 25
+            //Return
+            if delivery?.direction == "in"{
+                viewReturn?.isHidden = false
             }else{
-                storageFreeze?.isHidden = true
+                viewReturn?.isHidden = true
             }
             
-            if storages.contains("Chilled"){
-                storageChilled?.isHidden = false
-                storageChilled?.frame.origin.x = CGFloat(x)
-                x += 25
-            }else{
-                storageChilled?.isHidden = true
-                
-            }
-            
-            if storages.contains("Dry"){
-                storageDry?.isHidden = false
-                storageDry?.frame.origin.x = CGFloat(x)
-            }else{
-                storageDry?.isHidden = true
-            }
+            //Storage views and weight
+            doStorage()
         }
     }
     
@@ -75,6 +59,40 @@ class DeliveryCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func doStorage(){
+        //Storages
+        let storages = delivery?.line_items.map({$0.storage?.name ?? "NA"}) ?? []
+        let weight: Double = (delivery?.line_items.map { $0.shipping_weight ?? 0 } ?? []).reduce(0, +)
+        txtWeight?.text = String(format: "%.1f", weight) + " \(delivery?.line_items.first?.shipping_weight_unit ?? "kg")"
+        
+        
+        var x = 0
+        
+        if storages.contains("Freez"){
+            storageFreeze?.isHidden = false
+            storageFreeze?.frame.origin.x = 0
+            x += 25
+        }else{
+            storageFreeze?.isHidden = true
+        }
+        
+        if storages.contains("Chilled"){
+            storageChilled?.isHidden = false
+            storageChilled?.frame.origin.x = CGFloat(x)
+            x += 25
+        }else{
+            storageChilled?.isHidden = true
+            
+        }
+        
+        if storages.contains("Dry"){
+            storageDry?.isHidden = false
+            storageDry?.frame.origin.x = CGFloat(x)
+        }else{
+            storageDry?.isHidden = true
+        }
     }
     
     @IBAction func didTapCallContact(sender: UIButton){

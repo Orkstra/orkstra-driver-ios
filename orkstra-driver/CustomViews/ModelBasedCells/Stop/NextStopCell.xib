@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="224"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kazoku - New Cairo" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JLT-Xi-pXX">
-                                <rect key="frame" x="60" y="81.666666666666671" width="159" height="30"/>
+                                <rect key="frame" x="60" y="76.666666666666671" width="159" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="VRF-Qv-v8f"/>
                                 </constraints>
@@ -32,7 +32,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="twR-N9-FtV" customClass="CustomUiView" customModule="orkstra_driver" customModuleProvider="target">
-                                <rect key="frame" x="18" y="84.333333333333329" width="24" height="25"/>
+                                <rect key="frame" x="18" y="79.333333333333329" width="24" height="25"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3M5-zr-rCU">
                                         <rect key="frame" x="8" y="4" width="8" height="17"/>
@@ -55,14 +55,14 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45v-pv-rtS">
-                                <rect key="frame" x="29.666666666666668" y="109.33333333333331" width="1" height="114.66666666666669"/>
+                                <rect key="frame" x="29.666666666666668" y="104.33333333333331" width="1" height="119.66666666666669"/>
                                 <color key="backgroundColor" name="TripColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" id="YU4-5o-kYd"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hPg-j4-goF" customClass="CustomUiView" customModule="orkstra_driver" customModuleProvider="target">
-                                <rect key="frame" x="290.66666666666669" y="86.666666666666671" width="87.333333333333314" height="20.333333333333329"/>
+                                <rect key="frame" x="287.66666666666669" y="81.666666666666671" width="87.333333333333314" height="20.333333333333329"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="ETA: 10:00AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lS9-Tf-HgS">
                                         <rect key="frame" x="4" y="3.0000000000000009" width="79.333333333333329" height="14.333333333333336"/>
@@ -94,20 +94,21 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lake Buena Vista, Orlando, FL 32830 Lake Buena Vista, Orlando, FL 32830" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pwm-qk-tbW">
-                                <rect key="frame" x="60" y="114.66666666666667" width="248" height="31.333333333333329"/>
+                                <rect key="frame" x="60" y="109.66666666666667" width="263" height="31.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rU6-rG-B6Y" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                                <rect key="frame" x="333" y="154" width="45" height="45"/>
+                                <rect key="frame" x="330" y="144" width="45" height="45"/>
+                                <color key="backgroundColor" name="OrangeColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="45" id="3Pp-oF-gE3"/>
                                     <constraint firstAttribute="height" constant="45" id="anD-4t-EPz"/>
                                 </constraints>
-                                <color key="tintColor" systemColor="labelColor"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" image="location.fill" catalog="system" cornerStyle="large">
+                                <buttonConfiguration key="configuration" style="plain" image="location.fill" catalog="system" cornerStyle="large">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="medium"/>
                                 </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
@@ -115,7 +116,7 @@
                                         <size key="value" width="1" height="2"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="5"/>
+                                        <real key="value" value="7"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                         <real key="value" value="0.0"/>
@@ -173,49 +174,60 @@
                                     <constraint firstAttribute="height" constant="1" id="ChM-0N-zew"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baw-WG-EkP">
-                                <rect key="frame" x="30" y="20" width="333" height="45"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baw-WG-EkP" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
+                                <rect key="frame" x="18" y="20" width="357" height="45"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="pE8-LE-NTo"/>
                                 </constraints>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Deliver"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Deliver"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="JLT-Xi-pXX" firstAttribute="centerY" secondItem="twR-N9-FtV" secondAttribute="centerY" id="4aB-18-eim"/>
-                            <constraint firstItem="baw-WG-EkP" firstAttribute="leading" secondItem="VsK-So-xJv" secondAttribute="leading" constant="30" id="4c3-o6-VWm"/>
+                            <constraint firstItem="baw-WG-EkP" firstAttribute="leading" secondItem="VsK-So-xJv" secondAttribute="leading" constant="18" id="4c3-o6-VWm"/>
                             <constraint firstItem="o2m-tl-2Pw" firstAttribute="centerY" secondItem="jAY-eY-QCG" secondAttribute="centerY" id="6sQ-yG-aS1"/>
                             <constraint firstItem="aGa-1O-Sc3" firstAttribute="leading" secondItem="o2m-tl-2Pw" secondAttribute="trailing" constant="8" symbolic="YES" id="CGP-8f-ScK"/>
-                            <constraint firstItem="oHH-x7-7Id" firstAttribute="top" secondItem="pwm-qk-tbW" secondAttribute="bottom" constant="10" id="I8S-rX-xsn"/>
+                            <constraint firstItem="oHH-x7-7Id" firstAttribute="top" secondItem="pwm-qk-tbW" secondAttribute="bottom" constant="15" id="I8S-rX-xsn"/>
                             <constraint firstItem="g9F-9Q-tgj" firstAttribute="leading" secondItem="VsK-So-xJv" secondAttribute="leading" id="ILC-uk-gFR"/>
                             <constraint firstAttribute="trailing" secondItem="oHH-x7-7Id" secondAttribute="trailing" constant="92" id="JZw-Aq-6i9"/>
                             <constraint firstAttribute="bottom" secondItem="45v-pv-rtS" secondAttribute="bottom" id="JjH-dh-ekF"/>
                             <constraint firstItem="jAY-eY-QCG" firstAttribute="centerY" secondItem="cpA-Iy-Ice" secondAttribute="centerY" id="Jvi-KW-hPA"/>
-                            <constraint firstAttribute="trailing" secondItem="baw-WG-EkP" secondAttribute="trailing" constant="30" id="KAl-gp-Nhh"/>
+                            <constraint firstAttribute="trailing" secondItem="baw-WG-EkP" secondAttribute="trailing" constant="18" id="KAl-gp-Nhh"/>
                             <constraint firstItem="pwm-qk-tbW" firstAttribute="leading" secondItem="JLT-Xi-pXX" secondAttribute="leading" id="KTx-Xd-goK"/>
                             <constraint firstAttribute="trailing" secondItem="g9F-9Q-tgj" secondAttribute="trailing" id="L7y-Pi-rVT"/>
+                            <constraint firstItem="rU6-rG-B6Y" firstAttribute="bottom" secondItem="o2m-tl-2Pw" secondAttribute="bottom" id="LhV-Zt-Rnr"/>
                             <constraint firstItem="cpA-Iy-Ice" firstAttribute="top" secondItem="oHH-x7-7Id" secondAttribute="bottom" constant="12" id="Nwz-PZ-7Xf"/>
                             <constraint firstItem="hPg-j4-goF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="JLT-Xi-pXX" secondAttribute="trailing" constant="15" id="QKY-EW-hpw"/>
-                            <constraint firstAttribute="trailing" secondItem="hPg-j4-goF" secondAttribute="trailing" constant="15" id="Qyq-jU-ec7"/>
+                            <constraint firstAttribute="trailing" secondItem="hPg-j4-goF" secondAttribute="trailing" constant="18" id="Qyq-jU-ec7"/>
                             <constraint firstAttribute="height" constant="224" id="TRt-YN-ChX"/>
                             <constraint firstItem="hPg-j4-goF" firstAttribute="centerY" secondItem="JLT-Xi-pXX" secondAttribute="centerY" id="VNS-20-NO1"/>
                             <constraint firstItem="cpA-Iy-Ice" firstAttribute="leading" secondItem="oHH-x7-7Id" secondAttribute="leading" id="X9N-T8-Fzm"/>
                             <constraint firstItem="45v-pv-rtS" firstAttribute="top" secondItem="twR-N9-FtV" secondAttribute="bottom" id="Yve-tG-WlY"/>
                             <constraint firstItem="pwm-qk-tbW" firstAttribute="top" secondItem="JLT-Xi-pXX" secondAttribute="bottom" constant="3" id="aHa-w8-Ijq"/>
-                            <constraint firstAttribute="bottom" secondItem="rU6-rG-B6Y" secondAttribute="bottom" constant="25" id="bMT-ad-Wxj"/>
                             <constraint firstItem="aGa-1O-Sc3" firstAttribute="centerY" secondItem="o2m-tl-2Pw" secondAttribute="centerY" id="e4y-I6-UwG"/>
                             <constraint firstAttribute="bottom" secondItem="cpA-Iy-Ice" secondAttribute="bottom" constant="35" id="fIy-6p-2RM"/>
                             <constraint firstItem="oHH-x7-7Id" firstAttribute="leading" secondItem="pwm-qk-tbW" secondAttribute="leading" id="gnG-MY-HYN"/>
-                            <constraint firstAttribute="trailing" secondItem="rU6-rG-B6Y" secondAttribute="trailing" constant="15" id="i2Y-db-fP2"/>
+                            <constraint firstAttribute="trailing" secondItem="rU6-rG-B6Y" secondAttribute="trailing" constant="18" id="i2Y-db-fP2"/>
                             <constraint firstAttribute="bottom" secondItem="g9F-9Q-tgj" secondAttribute="bottom" id="iJ5-8h-4uz"/>
                             <constraint firstItem="o2m-tl-2Pw" firstAttribute="leading" secondItem="jAY-eY-QCG" secondAttribute="trailing" constant="23" id="icF-OT-X8f"/>
                             <constraint firstItem="JLT-Xi-pXX" firstAttribute="leading" secondItem="twR-N9-FtV" secondAttribute="trailing" constant="18" id="jrO-iq-bJw"/>
                             <constraint firstItem="45v-pv-rtS" firstAttribute="centerX" secondItem="twR-N9-FtV" secondAttribute="centerX" id="lFn-x1-O3s"/>
-                            <constraint firstAttribute="trailing" secondItem="pwm-qk-tbW" secondAttribute="trailing" constant="85" id="ltQ-gq-yWU"/>
+                            <constraint firstAttribute="trailing" secondItem="pwm-qk-tbW" secondAttribute="trailing" constant="70" id="ltQ-gq-yWU"/>
                             <constraint firstItem="twR-N9-FtV" firstAttribute="leading" secondItem="VsK-So-xJv" secondAttribute="leading" constant="18" id="lyg-lW-qcO"/>
                             <constraint firstItem="baw-WG-EkP" firstAttribute="top" secondItem="VsK-So-xJv" secondAttribute="top" constant="20" id="nEN-je-rAV"/>
                             <constraint firstItem="jAY-eY-QCG" firstAttribute="leading" secondItem="cpA-Iy-Ice" secondAttribute="trailing" constant="8" symbolic="YES" id="o3L-wg-OmI"/>
@@ -239,11 +251,14 @@
             <connections>
                 <outlet property="bottomLine" destination="45v-pv-rtS" id="h8I-zz-Rk5"/>
                 <outlet property="btnDeliver" destination="baw-WG-EkP" id="Rqi-hc-be2"/>
-                <outlet property="btnTakeMeThere" destination="rU6-rG-B6Y" id="W2o-Uo-Hql"/>
+                <outlet property="btnTakeMeThere" destination="rU6-rG-B6Y" id="8VU-al-fFL"/>
                 <outlet property="orderView" destination="twR-N9-FtV" id="6FE-g9-ocl"/>
                 <outlet property="separator" destination="g9F-9Q-tgj" id="YUZ-al-XEs"/>
+                <outlet property="txtAddressLine1" destination="pwm-qk-tbW" id="ahh-tI-KVW"/>
+                <outlet property="txtInDeliveries" destination="aGa-1O-Sc3" id="wnv-KQ-ogx"/>
                 <outlet property="txtLocation" destination="JLT-Xi-pXX" id="sgq-nr-pnl"/>
                 <outlet property="txtOrder" destination="3M5-zr-rCU" id="Gqf-MB-ADd"/>
+                <outlet property="txtOutDeliveries" destination="jAY-eY-QCG" id="mPR-VQ-Yl3"/>
                 <outlet property="txtTime" destination="lS9-Tf-HgS" id="J08-ez-pjY"/>
                 <outlet property="viewHeight" destination="TRt-YN-ChX" id="m9x-oP-joJ"/>
                 <outlet property="viewTime" destination="hPg-j4-goF" id="Kdt-to-Np3"/>
@@ -258,15 +273,15 @@
         <namedColor name="AccentColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="OrangeColor">
+            <color red="1" green="0.40784313725490196" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="SalmonColor">
             <color red="0.92549019607843142" green="0.80000000000000004" blue="0.74901960784313726" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TripColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

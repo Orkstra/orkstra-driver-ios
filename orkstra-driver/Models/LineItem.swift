@@ -36,9 +36,11 @@ class LineItem: DirtyRealmObject, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, storage: Storage) {
+    convenience init(id: String, storage: Storage, shipping_weight: Double, shipping_weight_unit: String) {
         self.init()
         self.id = id
+        self.shipping_weight = shipping_weight
+        self.shipping_weight_unit = shipping_weight_unit
         self.storage = storage
     }
 }

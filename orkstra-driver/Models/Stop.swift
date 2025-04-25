@@ -68,5 +68,12 @@ class StopManager {
         }
     }
 
+    func getOutDeleveries(stop: Stop) -> [Delivery]{
+        return stop.deliveries.filter { $0.direction == "out" }
+    }
+    
+    func getInDeleveries(stop: Stop) -> [Delivery]{
+        return stop.deliveries.filter { $0.direction == "in" }
+    }
 
 }

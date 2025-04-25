@@ -140,7 +140,7 @@ extension TripViewController{
     func setupViews(){
         
         if trip.status != "ready"{
-            selectedStop = trip.stops.where { $0.shipment_status != "delivered" && $0.warehouse == nil}.first
+            selectedStop = trip.stops.where { $0.shipment_status == "pending" && $0.warehouse == nil}.first
         }
         
         //Setup Map View First

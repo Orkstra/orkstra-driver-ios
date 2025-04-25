@@ -49,6 +49,16 @@ class CustomUiButton: UIButton {
             self.updateView()
         }
     }
+    
+    func setBoldTitle(string: String, color: UIColor){
+        let boldFont = UIFont.boldSystemFont(ofSize: 17)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: boldFont,
+            .foregroundColor: color
+        ]
+        let attributedTitle = NSAttributedString(string: string, attributes: attributes)
+        self.setAttributedTitle(attributedTitle, for: .normal)
+    }
 
     //Apply params
     func updateView() {
