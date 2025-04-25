@@ -8,8 +8,6 @@
 import UIKit
 import GoogleMaps
 
-var GMSServicesApiKey = "AIzaSyDXEmOHedWVLHwi1YtdKzEDeXWLTpAxv0M"
-
 protocol CustomMapViewDelegate: AnyObject {
     func didTapMarker(stop: Stop?)
     func didTapOutsideMarker()
