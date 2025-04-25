@@ -1,0 +1,817 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1DAE826ECFFE81791212D7E2 /* Pods_orkstra_driver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0D654DCE329DBA15ECEB4C /* Pods_orkstra_driver.framework */; };
+		280DE87B2DB933F700B866E8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 280DE87A2DB933E900B866E8 /* .gitignore */; };
+		BCF521BBAB3B5F020F7D44BE /* Pods_orkstra_driverTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B13240E6C93175B65E4072F3 /* Pods_orkstra_driverTests.framework */; };
+		D88E20D10B6C7C112D4605DA /* Pods_orkstra_driver_orkstra_driverUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97D96A106CBC7171DD2064DA /* Pods_orkstra_driver_orkstra_driverUITests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		289369952D9C8E8F009DF7BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 289369762D9C8E8D009DF7BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2893697D2D9C8E8D009DF7BD;
+			remoteInfo = "orkstra-driver";
+		};
+		2893699F2D9C8E8F009DF7BD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 289369762D9C8E8D009DF7BD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2893697D2D9C8E8D009DF7BD;
+			remoteInfo = "orkstra-driver";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		286557B72D9CAD3D000CFA99 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		280DE87A2DB933E900B866E8 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		2893697E2D9C8E8D009DF7BD /* orkstra-driver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "orkstra-driver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		289369942D9C8E8F009DF7BD /* orkstra-driverTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "orkstra-driverTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2893699E2D9C8E8F009DF7BD /* orkstra-driverUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "orkstra-driverUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2EEC76332112663B0A49D4EC /* Pods-orkstra-driver-orkstra-driverUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-orkstra-driver-orkstra-driverUITests.debug.xcconfig"; path = "Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4180EB1E5686B5266DACE67C /* Pods-orkstra-driver.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-orkstra-driver.debug.xcconfig"; path = "Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver.debug.xcconfig"; sourceTree = "<group>"; };
+		5274D0A3172B285282166D36 /* Pods-orkstra-driver-orkstra-driverUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-orkstra-driver-orkstra-driverUITests.release.xcconfig"; path = "Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests.release.xcconfig"; sourceTree = "<group>"; };
+		942CB20E1FC574BDBE394B0B /* Pods-orkstra-driverTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-orkstra-driverTests.release.xcconfig"; path = "Target Support Files/Pods-orkstra-driverTests/Pods-orkstra-driverTests.release.xcconfig"; sourceTree = "<group>"; };
+		97D96A106CBC7171DD2064DA /* Pods_orkstra_driver_orkstra_driverUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_orkstra_driver_orkstra_driverUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49BEE21A085C381DC98E2EC /* Pods-orkstra-driver.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-orkstra-driver.release.xcconfig"; path = "Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver.release.xcconfig"; sourceTree = "<group>"; };
+		AD0D654DCE329DBA15ECEB4C /* Pods_orkstra_driver.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_orkstra_driver.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B13240E6C93175B65E4072F3 /* Pods_orkstra_driverTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_orkstra_driverTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF80BAF24099373730795D38 /* Pods-orkstra-driverTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-orkstra-driverTests.debug.xcconfig"; path = "Target Support Files/Pods-orkstra-driverTests/Pods-orkstra-driverTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		289369A62D9C8E8F009DF7BD /* Exceptions for "orkstra-driver" folder in "orkstra-driver" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2893697D2D9C8E8D009DF7BD /* orkstra-driver */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		289369802D9C8E8D009DF7BD /* orkstra-driver */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				289369A62D9C8E8F009DF7BD /* Exceptions for "orkstra-driver" folder in "orkstra-driver" target */,
+			);
+			path = "orkstra-driver";
+			sourceTree = "<group>";
+		};
+		289369972D9C8E8F009DF7BD /* orkstra-driverTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "orkstra-driverTests";
+			sourceTree = "<group>";
+		};
+		289369A12D9C8E8F009DF7BD /* orkstra-driverUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "orkstra-driverUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2893697B2D9C8E8D009DF7BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DAE826ECFFE81791212D7E2 /* Pods_orkstra_driver.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		289369912D9C8E8F009DF7BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCF521BBAB3B5F020F7D44BE /* Pods_orkstra_driverTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2893699B2D9C8E8F009DF7BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D88E20D10B6C7C112D4605DA /* Pods_orkstra_driver_orkstra_driverUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0D5A9891C7FB33E9E486CA99 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AD0D654DCE329DBA15ECEB4C /* Pods_orkstra_driver.framework */,
+				97D96A106CBC7171DD2064DA /* Pods_orkstra_driver_orkstra_driverUITests.framework */,
+				B13240E6C93175B65E4072F3 /* Pods_orkstra_driverTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		11593FE0DB55997390538C1D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4180EB1E5686B5266DACE67C /* Pods-orkstra-driver.debug.xcconfig */,
+				A49BEE21A085C381DC98E2EC /* Pods-orkstra-driver.release.xcconfig */,
+				2EEC76332112663B0A49D4EC /* Pods-orkstra-driver-orkstra-driverUITests.debug.xcconfig */,
+				5274D0A3172B285282166D36 /* Pods-orkstra-driver-orkstra-driverUITests.release.xcconfig */,
+				CF80BAF24099373730795D38 /* Pods-orkstra-driverTests.debug.xcconfig */,
+				942CB20E1FC574BDBE394B0B /* Pods-orkstra-driverTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		289369752D9C8E8D009DF7BD = {
+			isa = PBXGroup;
+			children = (
+				280DE87A2DB933E900B866E8 /* .gitignore */,
+				289369802D9C8E8D009DF7BD /* orkstra-driver */,
+				289369972D9C8E8F009DF7BD /* orkstra-driverTests */,
+				289369A12D9C8E8F009DF7BD /* orkstra-driverUITests */,
+				2893697F2D9C8E8D009DF7BD /* Products */,
+				11593FE0DB55997390538C1D /* Pods */,
+				0D5A9891C7FB33E9E486CA99 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2893697F2D9C8E8D009DF7BD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2893697E2D9C8E8D009DF7BD /* orkstra-driver.app */,
+				289369942D9C8E8F009DF7BD /* orkstra-driverTests.xctest */,
+				2893699E2D9C8E8F009DF7BD /* orkstra-driverUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2893697D2D9C8E8D009DF7BD /* orkstra-driver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 289369A72D9C8E8F009DF7BD /* Build configuration list for PBXNativeTarget "orkstra-driver" */;
+			buildPhases = (
+				3C640CDB8B029C5EDEDE5734 /* [CP] Check Pods Manifest.lock */,
+				2893697A2D9C8E8D009DF7BD /* Sources */,
+				2893697B2D9C8E8D009DF7BD /* Frameworks */,
+				2893697C2D9C8E8D009DF7BD /* Resources */,
+				286557B72D9CAD3D000CFA99 /* Embed Frameworks */,
+				E5762E4E16B75A16AC83F136 /* [CP] Embed Pods Frameworks */,
+				037AFB80B5E28B98A6BC0F20 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				289369802D9C8E8D009DF7BD /* orkstra-driver */,
+			);
+			name = "orkstra-driver";
+			productName = "orkstra-driver";
+			productReference = 2893697E2D9C8E8D009DF7BD /* orkstra-driver.app */;
+			productType = "com.apple.product-type.application";
+		};
+		289369932D9C8E8F009DF7BD /* orkstra-driverTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 289369AC2D9C8E8F009DF7BD /* Build configuration list for PBXNativeTarget "orkstra-driverTests" */;
+			buildPhases = (
+				6A7EE85CB8EC1067A8213640 /* [CP] Check Pods Manifest.lock */,
+				289369902D9C8E8F009DF7BD /* Sources */,
+				289369912D9C8E8F009DF7BD /* Frameworks */,
+				289369922D9C8E8F009DF7BD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				289369962D9C8E8F009DF7BD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				289369972D9C8E8F009DF7BD /* orkstra-driverTests */,
+			);
+			name = "orkstra-driverTests";
+			productName = "orkstra-driverTests";
+			productReference = 289369942D9C8E8F009DF7BD /* orkstra-driverTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2893699D2D9C8E8F009DF7BD /* orkstra-driverUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 289369AF2D9C8E8F009DF7BD /* Build configuration list for PBXNativeTarget "orkstra-driverUITests" */;
+			buildPhases = (
+				7374275815D96FC89B329583 /* [CP] Check Pods Manifest.lock */,
+				2893699A2D9C8E8F009DF7BD /* Sources */,
+				2893699B2D9C8E8F009DF7BD /* Frameworks */,
+				2893699C2D9C8E8F009DF7BD /* Resources */,
+				C9027FF46BFB4D8FA238AF9D /* [CP] Embed Pods Frameworks */,
+				4F88CADEEC87821AFCC6C981 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				289369A02D9C8E8F009DF7BD /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				289369A12D9C8E8F009DF7BD /* orkstra-driverUITests */,
+			);
+			name = "orkstra-driverUITests";
+			productName = "orkstra-driverUITests";
+			productReference = 2893699E2D9C8E8F009DF7BD /* orkstra-driverUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		289369762D9C8E8D009DF7BD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					2893697D2D9C8E8D009DF7BD = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					289369932D9C8E8F009DF7BD = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 2893697D2D9C8E8D009DF7BD;
+					};
+					2893699D2D9C8E8F009DF7BD = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 2893697D2D9C8E8D009DF7BD;
+					};
+				};
+			};
+			buildConfigurationList = 289369792D9C8E8D009DF7BD /* Build configuration list for PBXProject "orkstra-driver" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 289369752D9C8E8D009DF7BD;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2893697F2D9C8E8D009DF7BD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2893697D2D9C8E8D009DF7BD /* orkstra-driver */,
+				289369932D9C8E8F009DF7BD /* orkstra-driverTests */,
+				2893699D2D9C8E8F009DF7BD /* orkstra-driverUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2893697C2D9C8E8D009DF7BD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				280DE87B2DB933F700B866E8 /* .gitignore in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		289369922D9C8E8F009DF7BD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2893699C2D9C8E8F009DF7BD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		037AFB80B5E28B98A6BC0F20 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3C640CDB8B029C5EDEDE5734 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-orkstra-driver-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4F88CADEEC87821AFCC6C981 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6A7EE85CB8EC1067A8213640 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-orkstra-driverTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7374275815D96FC89B329583 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-orkstra-driver-orkstra-driverUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C9027FF46BFB4D8FA238AF9D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver-orkstra-driverUITests/Pods-orkstra-driver-orkstra-driverUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E5762E4E16B75A16AC83F136 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-orkstra-driver/Pods-orkstra-driver-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2893697A2D9C8E8D009DF7BD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		289369902D9C8E8F009DF7BD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2893699A2D9C8E8F009DF7BD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		289369962D9C8E8F009DF7BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2893697D2D9C8E8D009DF7BD /* orkstra-driver */;
+			targetProxy = 289369952D9C8E8F009DF7BD /* PBXContainerItemProxy */;
+		};
+		289369A02D9C8E8F009DF7BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2893697D2D9C8E8D009DF7BD /* orkstra-driver */;
+			targetProxy = 2893699F2D9C8E8F009DF7BD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		289369A82D9C8E8F009DF7BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4180EB1E5686B5266DACE67C /* Pods-orkstra-driver.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "orkstra-driver/orkstra-driver.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "orkstra-driver/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = orkstra.ai;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to show the route on the map.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show the route on the map.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.applab.orkstra-driver";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		289369A92D9C8E8F009DF7BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A49BEE21A085C381DC98E2EC /* Pods-orkstra-driver.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = "orkstra-driver/orkstra-driver.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 8;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "orkstra-driver/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = orkstra.ai;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need your location to show the route on the map.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to show the route on the map.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.applab.orkstra-driver";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		289369AA2D9C8E8F009DF7BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		289369AB2D9C8E8F009DF7BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		289369AD2D9C8E8F009DF7BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF80BAF24099373730795D38 /* Pods-orkstra-driverTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.applab.orkstra-driverTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/orkstra-driver.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/orkstra-driver";
+			};
+			name = Debug;
+		};
+		289369AE2D9C8E8F009DF7BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 942CB20E1FC574BDBE394B0B /* Pods-orkstra-driverTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.applab.orkstra-driverTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/orkstra-driver.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/orkstra-driver";
+			};
+			name = Release;
+		};
+		289369B02D9C8E8F009DF7BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EEC76332112663B0A49D4EC /* Pods-orkstra-driver-orkstra-driverUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.applab.orkstra-driverUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "orkstra-driver";
+			};
+			name = Debug;
+		};
+		289369B12D9C8E8F009DF7BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5274D0A3172B285282166D36 /* Pods-orkstra-driver-orkstra-driverUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52WWBYGB3A;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.applab.orkstra-driverUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "orkstra-driver";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		289369792D9C8E8D009DF7BD /* Build configuration list for PBXProject "orkstra-driver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				289369AA2D9C8E8F009DF7BD /* Debug */,
+				289369AB2D9C8E8F009DF7BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		289369A72D9C8E8F009DF7BD /* Build configuration list for PBXNativeTarget "orkstra-driver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				289369A82D9C8E8F009DF7BD /* Debug */,
+				289369A92D9C8E8F009DF7BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		289369AC2D9C8E8F009DF7BD /* Build configuration list for PBXNativeTarget "orkstra-driverTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				289369AD2D9C8E8F009DF7BD /* Debug */,
+				289369AE2D9C8E8F009DF7BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		289369AF2D9C8E8F009DF7BD /* Build configuration list for PBXNativeTarget "orkstra-driverUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				289369B02D9C8E8F009DF7BD /* Debug */,
+				289369B12D9C8E8F009DF7BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 289369762D9C8E8D009DF7BD /* Project object */;
+}

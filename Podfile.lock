@@ -1,0 +1,66 @@
+PODS:
+  - Alamofire (5.10.2)
+  - Google-Maps-iOS-Utils (6.1.0):
+    - GoogleMaps (~> 9.0)
+  - GoogleMaps (9.4.0):
+    - GoogleMaps/Maps (= 9.4.0)
+  - GoogleMaps/Maps (9.4.0)
+  - Japx/Alamofire (4.0.0):
+    - Alamofire
+    - Japx/Core
+  - Japx/Core (4.0.0)
+  - LanguageManager-iOS (1.3.0)
+  - PKHUD (5.3.0)
+  - Realm (20.0.1):
+    - Realm/Headers (= 20.0.1)
+  - Realm/Headers (20.0.1)
+  - RealmSwift (20.0.1):
+    - Realm (= 20.0.1)
+  - Runtime (2.2.7)
+  - SwiftyJSON (5.0.2)
+  - Unrealm (1.9.5):
+    - Realm
+    - RealmSwift
+    - Runtime
+
+DEPENDENCIES:
+  - Alamofire
+  - Google-Maps-iOS-Utils
+  - GoogleMaps
+  - Japx/Alamofire
+  - LanguageManager-iOS
+  - PKHUD
+  - RealmSwift
+  - SwiftyJSON
+  - Unrealm
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Google-Maps-iOS-Utils
+    - GoogleMaps
+    - Japx
+    - LanguageManager-iOS
+    - PKHUD
+    - Realm
+    - RealmSwift
+    - Runtime
+    - SwiftyJSON
+    - Unrealm
+
+SPEC CHECKSUMS:
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
+  Google-Maps-iOS-Utils: 0a484b05ed21d88c9f9ebbacb007956edd508a96
+  GoogleMaps: 0608099d4870cac8754bdba9b6953db543432438
+  Japx: 4bb2d79d023af5e7ea44c0a2875c4b070080e111
+  LanguageManager-iOS: 2dba6f51c0477c0fa16ee4c446794cc8778a98be
+  PKHUD: 98f3e4bc904b9c916f1c5bb6d765365b5357291b
+  Realm: 9572204903ef28caeb3c03bb30c1147f354ee3e7
+  RealmSwift: d230b44017a55a1ba97de6a944da1fe3bedb92b5
+  Runtime: b31390b08874d04349c05719e264f9837cc66b7b
+  SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
+  Unrealm: 78b89e8d57eee8a36ee91dbde14534ff274e8cfa
+
+PODFILE CHECKSUM: 09a643b8202dc5644a5773d62f94e987269a76e6
+
+COCOAPODS: 1.16.2
