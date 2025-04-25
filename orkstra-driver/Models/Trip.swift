@@ -85,6 +85,24 @@ class TripManager {
             return nil
         }
     }
+    
+    func getUndeliveredStops(trip: Trip) -> [Stop] {
+        let realm = try! Realm()
+        
+        if let t = realm.object(ofType: Trip.self, forPrimaryKey: trip.id){
+            return Array(t.stops.filter("shipment_status = %@", "pending"))
+        }else{
+            return [Stop]()
+        }
+    }
+    
+    func getNextStop(trip: Trip) -> Stop? {
+        var stop = trip.stops.where { $0.shipment_status != "delivered" && $0.warehouse == nil}.first
+        if stop == nil {
+            stop = trip.stops.where { $0.shipment_status != "delivered"}.last
+        }
+        return stop
+    }
 
     //Seed data{
     func seedData(){

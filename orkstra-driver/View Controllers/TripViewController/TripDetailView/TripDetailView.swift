@@ -24,14 +24,32 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
     var delegate: TripDetailViewViewDelegate?
     var separator: UIView?
     
-    var trip: Trip?
+    var trip: Trip?{
+        didSet{
+            //Stops
+            if trip?.status == "ready"{
+                if let t = trip{
+                    stops = Array(t.stops)
+                }
+            }else{
+                let manager = TripManager()
+                stops = manager.getUndeliveredStops(trip: trip ?? Trip())
+            }
+            
+            tableView?.reloadData()
+        }
+    }
+    
+    var stops = [Stop]()
     
     var selectedStop: Stop?
     
     //Start trip button click
     func startTrip(){
         //setup stops count
-        selectedStop = trip?.stops.where { $0.shipment_status != "delivered" && $0.warehouse == nil}.first
+        let manager = TripManager()
+        selectedStop = manager.getNextStop(trip: trip ?? Trip())
+    
         tableView?.reloadData()
         delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
     }
@@ -45,15 +63,15 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
     
     // Delegate method implementation
     func didDeliver(_ controller: StopActionViewController, stop: Stop?) {
-        selectedStop = trip?.stops.where { $0.shipment_status != "delivered" && $0.warehouse == nil}.first
-        if (selectedStop == nil) {selectedStop = trip?.stops.where { $0.shipment_status != "delivered"}.last}
+        let manager = TripManager()
+        selectedStop = manager.getNextStop(trip: trip ?? Trip())
         
         tableView?.reloadData()
         //Notify delegate
         delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
         
         //scroll to next stop
-        if let index = trip?.stops.firstIndex(of: stop ?? Stop()) {
+        if let index = stops.firstIndex(of: stop ?? Stop()) {
             let indexPath = IndexPath(row: index, section: 0)
             
             // Scroll to position
@@ -67,6 +85,8 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
 extension TripDetailView{
     
     func setup(){
+        
+        //Table View Setup
         tableView?.showsVerticalScrollIndicator = false
         tableView?.sectionHeaderTopPadding = 0
         //Gesture to dismiss
@@ -134,7 +154,7 @@ extension TripDetailView{
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "nextStop") as! StopCell
-            cell.stop = trip?.stops[1]
+            cell.stop = stops[1]
             cell.topLine?.isHidden = true
             cell.setSelected = true
             cell.viewTime?.isHidden = false
@@ -147,7 +167,6 @@ extension TripDetailView{
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if separator != nil{
-            print(scrollView.contentOffset.y)
             let isSticky = scrollView.contentOffset.y > 0
             separator?.isHidden = !isSticky
         }
@@ -163,22 +182,27 @@ extension TripDetailView{
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Check for the specific row
-        if indexPath.section == 0 && indexPath.row == 0 { return 0 }
+        if indexPath.section == 0 && indexPath.row == 0 && trip?.status != "ready" { return 0 }
         
         // Use automatic height for all other rows
         return UITableView.automaticDimension
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return (trip?.stops.count ?? 0) - 1
+        return stops.count - 1
+        //return (trip?.stops.count ?? 0) - 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (trip?.stops[section + 1].deliveries.count ?? 0) + 1
+        if stops.count > 0{
+            return (stops[section + 1].deliveries.count) + 1
+        }else{
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let stop = trip?.stops[indexPath.section + 1]
+        let stop = stops[indexPath.section + 1]
         if indexPath.row == 0 && (trip?.status != "on_route" || indexPath.section != 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "stop") as! StopCell
             
@@ -190,13 +214,13 @@ extension TripDetailView{
                 cell.topLine?.isHidden = false
             }
             
-            if indexPath.section == (trip?.stops.count ?? 0) - 2{
+            if indexPath.section == (stops.count) - 2{
                 cell.bottomLine?.isHidden = true
             }else{
                 cell.bottomLine?.isHidden = false
             }
             
-            cell.setSelected = stop?.id == selectedStop?.id
+            cell.setSelected = stop.id == selectedStop?.id
             
             return cell
         }else if indexPath.row == 0 && indexPath.section == 0{
@@ -208,10 +232,10 @@ extension TripDetailView{
             return cell
         }else{
             var cell = tableView.dequeueReusableCell(withIdentifier: "delivery") as! DeliveryCell
-            let delivery = stop?.deliveries[indexPath.row - 1] ?? Delivery()
+            let delivery = stop.deliveries[indexPath.row - 1]
             
             // Check if this is the first occurrence of the label
-            if (indexPath.row - 1) == stop?.deliveries.firstIndex(where: { $0.label == delivery.label }) && (stop?.deliveries.map { $0.label }.unique().count ?? 0) > 1{
+            if (indexPath.row - 1) == stop.deliveries.firstIndex(where: { $0.label == delivery.label }) && (stop.deliveries.map { $0.label }.unique().count) > 1{
                 cell = tableView.dequeueReusableCell(withIdentifier: "deliveryWithTitle") as! DeliveryCell
             }
             
@@ -222,9 +246,8 @@ extension TripDetailView{
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let stops = trip?.stops
         
-        if trip?.status != "ready" && selectedStop?.id == stops?[indexPath.section].id && indexPath.row > 0{
+        if trip?.status != "ready" && selectedStop?.id == stops[indexPath.section].id && indexPath.row > 0{
             let vc = StopActionViewController()
             vc.delegate = self
             vc.stop = selectedStop
@@ -238,7 +261,7 @@ extension TripDetailView{
                 view.present(vc, animated: true, completion: nil)
             }
         }else{
-            selectedStop = stops?[indexPath.section]
+            selectedStop = stops[indexPath.section]
         }
         tableView.reloadData()
         
