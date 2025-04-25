@@ -23,20 +23,11 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
     var tripViewController: TripViewController?
     var delegate: TripDetailViewViewDelegate?
     var separator: UIView?
+    var summaryViewHeight: NSLayoutConstraint?
     
     var trip: Trip?{
         didSet{
-            //Stops
-            if trip?.status == "ready"{
-                if let t = trip{
-                    stops = Array(t.stops)
-                }
-            }else{
-                let manager = TripManager()
-                stops = manager.getUndeliveredStops(trip: trip ?? Trip())
-            }
-            
-            tableView?.reloadData()
+            setStops()
         }
     }
     
@@ -44,26 +35,36 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
     
     var selectedStop: Stop?
     
+    func setStops(){
+        //Stops
+        if trip?.status == "ready"{
+            if let t = trip{
+                selectedStop = nil
+                stops = Array(t.stops)
+            }
+        }else{
+            let manager = TripManager()
+            selectedStop = manager.getNextStop(trip: trip ?? Trip())
+            stops = manager.getUndeliveredStops(trip: trip ?? Trip())
+        }
+        
+        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        tableView?.reloadData()
+    }
+    
     //Start trip button click
     func startTrip(){
-        //setup stops count
-        let manager = TripManager()
-        selectedStop = manager.getNextStop(trip: trip ?? Trip())
-    
-        tableView?.reloadData()
-        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        setStops()
     }
     
     func endTrip(){
-        //Notify delegate
-        selectedStop = nil
-        tableView?.reloadData()
-        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        setStops()
     }
     
     // Delegate method implementation
     func didDeliver(_ controller: StopActionViewController, stop: Stop?) {
         let manager = TripManager()
+        stops = manager.getUndeliveredStops(trip: trip ?? Trip())
         selectedStop = manager.getNextStop(trip: trip ?? Trip())
         
         tableView?.reloadData()
@@ -139,6 +140,21 @@ extension TripDetailView{
         headerTapped(nil)
     }
     
+    @objc func didTapDeliverBtn(_ sender: UIButton){
+        let vc = StopActionViewController()
+        vc.delegate = self
+        vc.stop = selectedStop
+        
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            vc.modalPresentationStyle = .popover
+        } else {
+            vc.modalPresentationStyle = .fullScreen
+        }
+        if let view = delegate as? UIViewController{
+            view.present(vc, animated: true, completion: nil)
+        }
+    }
+    
 }
 
 //Table View Functions
@@ -150,15 +166,25 @@ extension TripDetailView{
             cell.trip = trip
             cell.tripViewController = tripViewController
             separator = cell.separator
+            summaryViewHeight = cell.viewHeight
             cell.addGesture(target: self, action: #selector( headerTapped(_:)))
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "nextStop") as! StopCell
+            
+            if stops.count == 2 && selectedStop?.warehouse != nil{
+                cell.isLastDrop = true
+            }else{
+                cell.isLastDrop = false
+            }
+            
             cell.stop = stops[1]
             cell.topLine?.isHidden = true
             cell.setSelected = true
             cell.viewTime?.isHidden = false
+            cell.btnDeliver?.addTarget(self, action: #selector( didTapDeliverBtn(_:)), for: .touchUpInside)
             separator = cell.separator
+            summaryViewHeight = cell.viewHeight
             cell.addGesture(target: self, action: #selector(headerTapped(_:)))
             return cell
         }
@@ -246,25 +272,25 @@ extension TripDetailView{
 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if trip?.status != "ready" && selectedStop?.id == stops[indexPath.section].id && indexPath.row > 0{
-            let vc = StopActionViewController()
-            vc.delegate = self
-            vc.stop = selectedStop
-            
-            if UIDevice.current.userInterfaceIdiom == .phone {
-                vc.modalPresentationStyle = .popover
-            } else {
-                vc.modalPresentationStyle = .fullScreen
-            }
-            if let view = delegate as? UIViewController{
-                view.present(vc, animated: true, completion: nil)
-            }
-        }else{
-            selectedStop = stops[indexPath.section]
-        }
-        tableView.reloadData()
-        
-        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        return
+//        if trip?.status != "ready" && selectedStop?.id == stops[indexPath.section].id && indexPath.row > 0{
+//            let vc = StopActionViewController()
+//            vc.delegate = self
+//            vc.stop = selectedStop
+//            
+//            if UIDevice.current.userInterfaceIdiom == .phone {
+//                vc.modalPresentationStyle = .popover
+//            } else {
+//                vc.modalPresentationStyle = .fullScreen
+//            }
+//            if let view = delegate as? UIViewController{
+//                view.present(vc, animated: true, completion: nil)
+//            }
+//        }else{
+//            selectedStop = stops[indexPath.section]
+//        }
+//        tableView.reloadData()
+//        
+//        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
     }
 }

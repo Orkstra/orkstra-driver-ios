@@ -12,6 +12,7 @@ class TripCell: UITableViewCell {
     
     @IBOutlet weak var btnStartTrip: UIButton?
     @IBOutlet weak var separator: UIView?
+    @IBOutlet weak var viewHeight: NSLayoutConstraint?
     
     var tripViewController: TripViewController?
     

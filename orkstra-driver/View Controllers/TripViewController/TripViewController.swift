@@ -65,9 +65,10 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
     
     func didTapOutsideMarker() {
         selectedStop = nil
-        hideStopDetails()
-        tripDetailView.trip? = trip
-        tripDetailView.tableView?.reloadData()
+        hideStopDetails{
+            self.tripDetailView.trip? = self.trip
+            self.tripDetailView.tableView?.reloadData()
+        }
     }
     
     //Stop View methods
@@ -142,6 +143,13 @@ extension TripViewController{
             selectedStop = trip.stops.where { $0.shipment_status != "delivered" && $0.warehouse == nil}.first
         }
         
+        //Setup Map View First
+        mapContainerView?.delegate = self // Set self as the delegate
+        mapContainerView?.trip = trip
+        mapContainerView?.selectedStop = selectedStop
+        mapContainerView?.setupGoogleMap()
+        mapContainerView?.drawRoute()
+        
         let helper = TripViewHelper()
         stopView = helper.setupStopView(viewController: self)
         stopView.delegate = self
@@ -153,20 +161,13 @@ extension TripViewController{
         self.view.addSubview(tripTrackingView)
         
         tripDetailView = helper.setupTripDetailsView(viewController: self)
+        tripDetailView.delegate = self
         tripDetailView.selectedStop = selectedStop
         tripDetailView.trip = trip
         tripDetailView.tripViewController = self
-        tripDetailView.delegate = self
         tripDetailView.tableView?.isScrollEnabled = false
         self.view.addSubview(tripDetailView)
         myLocationBottom?.constant = 215
-        
-        //Setup Map View
-        mapContainerView?.trip = trip
-        mapContainerView?.selectedStop = selectedStop
-        mapContainerView?.delegate = self // Set self as the delegate
-        mapContainerView?.setupGoogleMap()
-        mapContainerView?.drawRoute()
         
         //Show view if not nil
         if selectedStop != nil{
@@ -239,6 +240,8 @@ extension TripViewController{
         tripDetailView.selectedStop = selectedStop
         tripDetailView.tableView?.reloadData()
         if tripDetailsShowing == false{
+            //tripDetailView.summaryViewHeight?.constant -= 10
+            
             UIView.animate(withDuration: 0.5, animations: {
                 self.tripDetailView.frame.origin.y = 50
             }, completion: { (finished: Bool) in
@@ -249,7 +252,11 @@ extension TripViewController{
     
     func hideTripDetails(){
         if tripDetailsShowing == true{
-            tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            //tripDetailView.summaryViewHeight?.constant += 10
+            if let cell = tripDetailView.tableView?.cellForRow(at: IndexPath(row: 0, section: 0)) as? UITableViewCell{
+                tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            }
+            
             UIView.animate(withDuration: 0.5, animations: {
                 self.tripDetailView.frame.origin.y = self.view.frame.height - 235
             }, completion: { (finished: Bool) in

@@ -33,7 +33,7 @@
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="filled" title="Deliver"/>
                     <connections>
-                        <action selector="stopBtnClick" destination="-2" eventType="touchDragOutside" id="MSt-0D-7QF"/>
+                        <action selector="deliverBtnClick" destination="-2" eventType="touchUpInside" id="hIU-vF-cYI"/>
                     </connections>
                 </button>
             </subviews>

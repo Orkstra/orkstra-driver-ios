@@ -23,7 +23,7 @@ class StopActionViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    @IBAction func stopBtnClick(){
+    @IBAction func deliverBtnClick(){
         //Update stop
         if let stop = self.stop {
             let realm = try! Realm()

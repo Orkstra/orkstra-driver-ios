@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleMaps
+import RealmSwift
 
 protocol CustomMapViewDelegate: AnyObject {
     func didTapMarker(stop: Stop?)
@@ -19,7 +20,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate{
     
     private var mapView: GMSMapView! // The actual Google Maps view
     private var markers: [GMSMarker] = []
-    var trip = Trip()
+    var trip: Trip?
     
     var selectedStop: Stop?
     
@@ -30,7 +31,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate{
     
     // GMSMapViewDelegate method to detect marker taps
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        if trip.status == "ready"{
+        if trip?.status == "ready"{
             //Change Marker Color
             let stopManager = StopManager()
             selectedStop = stopManager.getStop(byId: marker.userData as! String)
@@ -49,7 +50,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate{
     
     // GMSMapViewDelegate method to detect tap outside of marker
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        if trip.status == "ready"{
+        if trip?.status == "ready"{
             //Update markers
             selectedStop = nil
             updateMarkers()
@@ -77,40 +78,41 @@ class GoogleMapsView: UIView, GMSMapViewDelegate{
         markers.removeAll() // Clear the markers array
         
         //Get stops
-        let stops = trip.stops
-                               
-        for (index, stop) in stops.enumerated() {
-            let position = CLLocationCoordinate2D(latitude: stop.latitude ?? 0.0, longitude: stop.longitude ?? 0.0)
+        if let stops = trip?.stops { // Safely unwrap the optional
+            for (index, stop) in stops.enumerated() {
+                let position = CLLocationCoordinate2D(latitude: stop.latitude ?? 0.0, longitude: stop.longitude ?? 0.0)
 
-            // Create the marker
-            let marker = GMSMarker(position: position)
-            marker.title = stop.label // Use the label from the Stop model
-            marker.userData = stop.id
-            marker.snippet = "Order: \(stop.order ?? 0)" // Optional snippet showing the order
-            
-            let markerManager = MarkerManager()
-            // Check if this is the start (first stop) or the last stop
-            if stop.warehouse != nil{
-                var selected = false
-                if selectedStop != nil && selectedStop?.id == stop.id {selected = true}
-                marker.icon = markerManager.createHomeMarker(with: UIImage(named: "warehouse") ?? UIImage(), selected: selected)  // Special marker for the start and last stop
-            } else {
-                var selected = false
-                if selectedStop != nil && selectedStop?.id == stop.id {selected = true}
-                if stop.shipment_status == "delivered"{
-                    marker.icon = markerManager.createDeliveredMarker(with: UIImage(systemName: "checkmark") ?? UIImage(), selected: selected)
+                // Create the marker
+                let marker = GMSMarker(position: position)
+                marker.title = stop.label // Use the label from the Stop model
+                marker.userData = stop.id
+                marker.snippet = "Order: \(stop.order ?? 0)" // Optional snippet showing the order
+                
+                let markerManager = MarkerManager()
+                // Check if this is the start (first stop) or the last stop
+                if stop.warehouse != nil{
+                    var selected = false
+                    if selectedStop != nil && selectedStop?.id == stop.id {selected = true}
+                    marker.icon = markerManager.createHomeMarker(with: UIImage(named: "warehouse") ?? UIImage(), selected: selected)  // Special marker for the start and last stop
                 } else {
-                    marker.icon = markerManager.createStopMarker(stop: stop, selected: selected) // Numbered marker for intermediate stops
+                    var selected = false
+                    if selectedStop != nil && selectedStop?.id == stop.id {selected = true}
+                    if stop.shipment_status == "delivered"{
+                        marker.icon = markerManager.createDeliveredMarker(with: UIImage(systemName: "checkmark") ?? UIImage(), selected: selected)
+                    } else {
+                        marker.icon = markerManager.createStopMarker(stop: stop, selected: selected) // Numbered marker for intermediate stops
+                    }
+                }
+                
+                if index == 0 && stop.label == stops.last?.label{
+                   print("Duplicated Marker")
+                } else {
+                    marker.map = mapView
+                    markers.append(marker)
                 }
             }
-            
-            if index == 0 && stop.label == trip.stops.last?.label{
-               print("Duplicated Marker")
-            } else {
-                marker.map = mapView
-                markers.append(marker)
-            }
         }
+        
     }
 }
 
@@ -170,46 +172,48 @@ extension GoogleMapsView{
     // Draw a route on the map
     func drawRoute() {
         //Get Deleveries
-        let sortedStops = Array(trip.stops)
-        
-        if sortedStops.count == 0 {
-            print("Not enough stops to draw a route.")
-            return
-        }
+        if let stops = trip?.stops {
+            let sortedStops = Array(stops)
+            
+            if sortedStops.count == 0 {
+                print("Not enough stops to draw a route.")
+                return
+            }
 
-        // Use the first stop as the origin
-        let origin = CLLocationCoordinate2D(
-            latitude: sortedStops.first!.latitude ?? 0.0,
-            longitude: sortedStops.first!.longitude ?? 0.0
-        )
+            // Use the first stop as the origin
+            let origin = CLLocationCoordinate2D(
+                latitude: sortedStops.first!.latitude ?? 0.0,
+                longitude: sortedStops.first!.longitude ?? 0.0
+            )
 
-        // Use the last stop as the destination
-        let destination = CLLocationCoordinate2D(
-            latitude: sortedStops.last!.latitude ?? 0.0,
-            longitude: sortedStops.last!.longitude ?? 0.0
-        )
+            // Use the last stop as the destination
+            let destination = CLLocationCoordinate2D(
+                latitude: sortedStops.last!.latitude ?? 0.0,
+                longitude: sortedStops.last!.longitude ?? 0.0
+            )
 
-        // Use the intermediate stops as waypoints
-        let waypoints = (sortedStops.dropFirst().dropLast().map {
-            CLLocationCoordinate2D(latitude: $0.latitude ?? 0.0, longitude: $0.longitude ?? 0.0)
-        })
+            // Use the intermediate stops as waypoints
+            let waypoints = (sortedStops.dropFirst().dropLast().map {
+                CLLocationCoordinate2D(latitude: $0.latitude ?? 0.0, longitude: $0.longitude ?? 0.0)
+            })
 
-        // Fetch the route
-        fetchRoute(from: origin, to: destination, waypoints: waypoints) { [weak self] path in
-            guard let self = self, let path = path else { return }
+            // Fetch the route
+            fetchRoute(from: origin, to: destination, waypoints: waypoints) { [weak self] path in
+                guard let self = self, let path = path else { return }
 
-            DispatchQueue.main.async {
-                // Draw the polyline
-                let polyline = GMSPolyline(path: path)
-                polyline.strokeWidth = 3.0
-                polyline.strokeColor = AppColors.trip
-                polyline.map = self.mapView
+                DispatchQueue.main.async {
+                    // Draw the polyline
+                    let polyline = GMSPolyline(path: path)
+                    polyline.strokeWidth = 3.0
+                    polyline.strokeColor = AppColors.trip
+                    polyline.map = self.mapView
 
-                // Add custom markers for all stops
-                self.updateMarkers()
-                
-                // Adjust the camera to fit the entire route
-                self.updateCameraToFitRoute(path: path)
+                    // Add custom markers for all stops
+                    self.updateMarkers()
+                    
+                    // Adjust the camera to fit the entire route
+                    self.updateCameraToFitRoute(path: path)
+                }
             }
         }
     }

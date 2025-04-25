@@ -75,15 +75,20 @@ class MarkerManager: NSObject{
             shadowColor.setFill()
             context.cgContext.fillEllipse(in: rect) // Shadow is drawn as a blurred ellipse
             
-            // Draw the green circle
-            var circleColor = AppColors.green
-            if selected { circleColor = AppColors.turquoise}
+            // Draw the circle
+            let circleColor = UIColor.white
+            var txtColor = AppColors.trip
+            var borderColor = AppColors.trip
+            
+            if selected {
+                borderColor = AppColors.orange
+                txtColor = AppColors.orange
+            }
             
             circleColor.setFill()
             context.cgContext.fillEllipse(in: rect)
 
             // Draw the white border
-            let borderColor = UIColor.white
             borderColor.setStroke()
             context.cgContext.setLineWidth(2.0)
             context.cgContext.strokeEllipse(in: rect)
@@ -97,7 +102,7 @@ class MarkerManager: NSObject{
                 height: iconSize.height
             )
             let whiteIcon = icon.withRenderingMode(.alwaysTemplate) // Enable tint color rendering
-            UIColor.white.set() // Set the tint color to white
+            txtColor.set() // Set the tint color to white
             whiteIcon.draw(in: iconRect) // Draw the icon respecting tint color
                 
         }
@@ -120,13 +125,18 @@ class MarkerManager: NSObject{
             
             // Draw the circle
             var circleColor = AppColors.green
-            if selected { circleColor = AppColors.orange}
+            var borderColor = UIColor.white
+            var iconColor = UIColor.black
+            if selected {
+                circleColor = .white
+                borderColor = AppColors.orange
+                iconColor = AppColors.orange
+            }
             
             circleColor.setFill()
             context.cgContext.fillEllipse(in: rect)
 
             // Draw the white border
-            let borderColor = UIColor.white
             borderColor.setStroke()
             context.cgContext.setLineWidth(2.0)
             context.cgContext.strokeEllipse(in: rect)
@@ -140,7 +150,7 @@ class MarkerManager: NSObject{
                 height: iconSize.height
             )
             let whiteIcon = icon.withRenderingMode(.alwaysTemplate) // Enable tint color rendering
-            UIColor.black.set() // Set the tint color to white
+            iconColor.set() // Set the tint color to white
             whiteIcon.draw(in: iconRect) // Draw the icon respecting tint color
                 
         }

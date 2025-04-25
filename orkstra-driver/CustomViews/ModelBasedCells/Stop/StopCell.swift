@@ -23,9 +23,12 @@ class StopCell: UITableViewCell {
     @IBOutlet weak var orderView: UIView?
     @IBOutlet weak var separator: UIView?
     @IBOutlet weak var btnTakeMeThere: UIButton?
+    @IBOutlet weak var btnDeliver: UIButton?
     
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
+    
+    @IBOutlet weak var viewHeight: NSLayoutConstraint?
     
     var delegate: StopCellDelegate?
     
@@ -50,6 +53,18 @@ class StopCell: UITableViewCell {
             }else{
                 viewTime?.borderWidth = 0
                 viewTime?.backgroundColor = .white
+            }
+        }
+    }
+    
+    var isLastDrop: Bool = false{
+        didSet{
+            if isLastDrop == true{
+                btnDeliver?.setTitle("Complete Trip", for: .normal)
+                bottomLine?.isHidden = true
+            }else{
+                btnDeliver?.setTitle("Deliver", for: .normal)
+                bottomLine?.isHidden = false
             }
         }
     }
