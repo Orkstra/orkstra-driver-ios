@@ -21,13 +21,15 @@ class Delivery: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var shipment_status: String?
     @Persisted var tracking_number: String?
     
-    @Persisted var serviceTime: Double = 0.0 // In seconds
+    @Persisted var serviceTime: TimeInterval = 900.0 // 15 minutes
     @Persisted var time_slot: String?
     @Persisted var label: String?
     @Persisted var direction: String?
 
     @Persisted var contact_person: String?
     @Persisted var contact_phone_number: String?
+    
+    @Persisted var eta: Date?
     
     //  Defining relationships
     @Persisted var line_items = List<LineItem>()

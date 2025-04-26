@@ -17,6 +17,7 @@ class Trip: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var status: String?
     //  Defining relationships
     @Persisted var stops = List<Stop>()
+    @Persisted var shift: Shift?
     
     // Primary Key
     override static func primaryKey() -> String? {
@@ -41,7 +42,7 @@ class TripManager {
     func addTrip(trip: Trip) {
         let realm = try! Realm()
 
-        // Write stops to Realm
+        // Write trip to Realm
         try! realm.write {
             realm.add(trip, update: .modified)
         }
@@ -71,6 +72,16 @@ class TripManager {
             let allStorages = realm.objects(Storage.self)
             // Delete all storages
             realm.delete(allStorages)
+            
+            // Query all Delivery objects
+            let allDeliveries = realm.objects(Delivery.self)
+            // Delete all deliveries
+            realm.delete(allDeliveries)
+            
+            // Query all Shift objects
+            let allShifts = realm.objects(Shift.self)
+            // Delete all shifts
+            realm.delete(allShifts)
         }
 
     }
@@ -102,6 +113,48 @@ class TripManager {
             stop = trip.stops.where { $0.shipment_status == "pending"}.last
         }
         return stop
+    }
+    
+    func getETA(trip: Trip, legTimes: [TimeInterval]) -> Date? {
+        let realm = try! Realm()
+
+        // Total time for the trip (in seconds)
+        var totalTime: TimeInterval = 0
+
+        // The current time is the starting point for the trip
+        var currentTime = Date()
+
+        // Determine which stops to process based on the trip status
+        let stopsToProcess: [Stop]
+        if trip.status == "ready" {
+            stopsToProcess = Array(trip.stops) // Use all stops
+        } else {
+            stopsToProcess = trip.stops.filter { $0.shipment_status == "pending" } // Filter stops with shipment_status == "pending"
+        }
+
+        try! realm.write {
+            // Iterate through the filtered stops
+            for (index, stop) in stopsToProcess.enumerated() {
+                // Add the service time for all deliveries at this stop
+                for delivery in stop.deliveries {
+                    totalTime += delivery.serviceTime
+                }
+
+                // Calculate and assign the ETA for this stop
+                stop.eta = currentTime.addingTimeInterval(totalTime)
+
+                // Add the travel time to the next stop if there is one
+                if index < legTimes.count {
+                    totalTime += legTimes[index]
+                }
+
+                // Update the current time to reflect the cumulative total time
+                currentTime = stop.eta ?? currentTime
+            }
+        }
+
+        // Return the ETA of the last stop in the filtered list
+        return stopsToProcess.last?.eta
     }
 
     //Seed data{
@@ -286,6 +339,19 @@ class TripManager {
         
         let trip = Trip(id: "1", name: "Orlando East", stops: stops, status: "ready")
         
+        let shift = Shift()
+        shift.id = "1"
+        
+        // Create a DateFormatter
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a" // Format for 12-hour time with AM/PM
+        formatter.locale = Locale(identifier: "en_US") // Set locale for consistent formatting
+        formatter.timeZone = TimeZone.current // Use the current timezone
+        
+        shift.from = formatter.date(from: "10:00 AM")
+        shift.to = formatter.date(from: "02:30 PM")
+        
+        trip.shift = shift
         
         let manager = TripManager()
         manager.deleteAllTrips()

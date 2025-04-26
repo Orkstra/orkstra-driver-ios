@@ -36,6 +36,8 @@ class DeliveryCell: UITableViewCell {
                 viewTime?.borderWidth = 0
                 viewTime?.backgroundColor = .white
             }
+            
+            viewTime?.isHidden = true
             //txtTime?.text = delivery?.time_slot
             
             //Return

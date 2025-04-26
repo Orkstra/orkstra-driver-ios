@@ -29,7 +29,7 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         }
     }
     
-    private var trip = Trip()
+    var trip = Trip()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,11 +56,6 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         if tripDetailsShowing == false{
             showStopDetails()
         }
-        
-        //Show summary view if hidden
-        if tripTrackingView.isHidden == true{
-            showTripSummary()
-        }
     }
     
     func didTapOutsideMarker() {
@@ -76,7 +71,12 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         //let durationText = duration["text"] as? String ?? "\(durationValue / 60) min"
         //print("Leg \(index + 1): \(durationText)")
         
-        print(legTimes)
+        updateETAs(legTimes: legTimes)
+        updateProgress()
+        
+        if tripTrackingView.isHidden == true{
+            showTripTrackingView()
+        }
     }
     
     //Stop View methods
@@ -128,8 +128,7 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
     //Close button Click
     @IBAction func didClickCloseBtn(sender: UIButton){
         selectedStop = nil
-        stopView.removeFromSuperview()
-        tripDetailView.removeFromSuperview()
+        eraseViews()
         
         let tripManager = TripManager()
         tripManager.seedData()
@@ -137,6 +136,7 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         trip = tripManager.getTrip(byId: tripId ?? "0") ?? Trip()
         
         //Setup Views
+        
         setupViews()
         self.view.layoutIfNeeded()
     }
@@ -144,7 +144,14 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
 
 
 extension TripViewController{
-    //Setup function
+    //Setup functions
+    func eraseViews(){
+        mapContainerView?.mapView?.removeFromSuperview()
+        stopView.removeFromSuperview()
+        tripTrackingView.removeFromSuperview()
+        tripDetailView.removeFromSuperview()
+    }
+    
     func setupViews(){
         
         if trip.status != "ready"{
@@ -186,7 +193,7 @@ extension TripViewController{
     
     //Hide and show functions
     
-    func showTripSummary(){
+    func showTripTrackingView(){
         if trip.status != "ready"{
             //Show the data
             if tripTrackingView.isHidden == true{
@@ -261,7 +268,7 @@ extension TripViewController{
     func hideTripDetails(){
         if tripDetailsShowing == true{
             //tripDetailView.summaryViewHeight?.constant += 10
-            if let cell = tripDetailView.tableView?.cellForRow(at: IndexPath(row: 0, section: 0)) as? UITableViewCell{
+            if tripDetailView.tableView?.cellForRow(at: IndexPath(row: 0, section: 0)) is UITableViewCell{
                 tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             }
             
@@ -271,5 +278,50 @@ extension TripViewController{
                 self.tripDetailsShowing = false
             })
         }
+    }
+    
+    func updateETAs(legTimes: [TimeInterval]){
+        let tripManager = TripManager()
+        let shiftManager = ShiftManager()
+        
+        let eta = tripManager.getETA(trip: trip, legTimes: legTimes)
+        
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .short
+        
+        tripTrackingView.txtShift?.text = formatter.string(from: trip.shift?.from ?? Date()) + " - " + formatter.string(from: trip.shift?.to ?? Date())
+        
+        tripTrackingView.txtETA?.text = "ETA: " + formatter.string(from: eta ?? Date())
+        
+        if let eta = eta{
+            if shiftManager.isETAWithinShift(eta: eta, shift: trip.shift ?? Shift()){
+                tripTrackingView.txtstatus?.text = "On time"
+                tripTrackingView.viewStatus?.backgroundColor = AppColors.green
+            }else{
+                tripTrackingView.txtstatus?.text = "Delayed"
+                tripTrackingView.viewStatus?.backgroundColor = AppColors.red
+            }
+        }else{
+            tripTrackingView.txtstatus?.text = "Unknown"
+            tripTrackingView.viewStatus?.backgroundColor = AppColors.red
+        }
+        
+        tripDetailView.tableView?.reloadData()
+    }
+    
+    func updateProgress(){
+        let done = trip.stops.where { $0.shipment_status != "pending" && $0.warehouse == nil }.count
+        let remaining = trip.stops.where { $0.shipment_status == "pending" && $0.warehouse == nil }.count
+
+        // Update the `done` text
+        tripTrackingView.txtDone?.text = "\(done) stop\(done == 1 ? "" : "s") done"
+
+        // Update the `remaining` text
+        tripTrackingView.txtRemaining?.text = "\(remaining) stop\(remaining == 1 ? "" : "s") remaining"
+        
+        let percentage: CGFloat = CGFloat(done) / CGFloat(trip.stops.where { $0.warehouse == nil }.count)
+        let width = tripTrackingView.viewProgress?.superview?.frame.width ?? 0
+        tripTrackingView.viewProgressWidth?.constant = width * percentage
     }
 }

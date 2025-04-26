@@ -21,6 +21,16 @@ class TripCell: UITableViewCell {
     @IBOutlet weak var storageFreeze: UIView?
     @IBOutlet weak var storageViewWidth: NSLayoutConstraint?
     
+    @IBOutlet weak var txtShift: UILabel?
+    @IBOutlet weak var txtETA: UILabel?
+    @IBOutlet weak var txtstatus: UILabel?
+    @IBOutlet weak var viewStatus: UIView?
+    
+    @IBOutlet weak var viewProgress: UIView?
+    @IBOutlet weak var txtDone: UILabel?
+    @IBOutlet weak var txtRemaining: UILabel?
+    @IBOutlet weak var viewProgressWidth: NSLayoutConstraint?
+    
     var tripViewController: TripViewController?
     
     var trip: Trip? {
@@ -106,7 +116,6 @@ class TripCell: UITableViewCell {
         //Show the correct views
         tripViewController?.hideTripDetails()
         tripViewController?.hideStopDetails()
-        tripViewController?.showTripSummary()
     }
     
     @IBAction func didClickEndTrip(sender: UIButton){

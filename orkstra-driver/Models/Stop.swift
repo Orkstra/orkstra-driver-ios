@@ -28,6 +28,8 @@ class Stop: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var address_line_1: String?
     @Persisted var address_line_2: String?
     
+    @Persisted var eta: Date?
+    
     //  Defining relationships
     @Persisted var warehouse: Warehouse?
     @Persisted var deliveries = List<Delivery>()

@@ -48,12 +48,17 @@ class StopCell: UITableViewCell {
             
             if (stop?.deliveries.map { $0.label }.unique().count ?? 0) > 1{
                 txtLocation?.text = stop?.label ?? "NA"
-                viewTime?.isHidden = true
+                viewTime?.isHidden = false
             }else{
                 txtLocation?.text = stop?.deliveries.first?.label
                 viewTime?.isHidden = false
-                //txtTime?.text = stop?.deliveries.first?.time_slot
             }
+            
+            let formatter = DateFormatter()
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+            
+            txtTime?.text = "ETA: " + formatter.string(from: stop?.eta ?? Date())
             
             txtLocation?.text = stop?.label ?? "NA"
             txtOrder?.text = String(stop?.order ?? 0)
