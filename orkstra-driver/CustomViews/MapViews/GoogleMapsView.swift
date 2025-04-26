@@ -12,6 +12,7 @@ import RealmSwift
 protocol CustomMapViewDelegate: AnyObject {
     func didTapMarker(stop: Stop?)
     func didTapOutsideMarker()
+    func recalculatedTravelTime(legTimes: [TimeInterval])
 }
 
 class GoogleMapsView: UIView, GMSMapViewDelegate{
@@ -105,7 +106,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate{
                 }
                 
                 if index == 0 && stop.label == stops.last?.label{
-                   print("Duplicated Marker")
+                   //Do nothing
                 } else {
                     marker.map = mapView
                     markers.append(marker)
@@ -171,11 +172,11 @@ extension GoogleMapsView{
     
     // Draw a route on the map
     func drawRoute() {
-        //Get Deleveries
+        // Get Stops
         if let stops = trip?.stops {
             let sortedStops = Array(stops)
-            
-            if sortedStops.count == 0 {
+
+            if sortedStops.isEmpty {
                 print("Not enough stops to draw a route.")
                 return
             }
@@ -193,12 +194,12 @@ extension GoogleMapsView{
             )
 
             // Use the intermediate stops as waypoints
-            let waypoints = (sortedStops.dropFirst().dropLast().map {
+            let waypoints = sortedStops.dropFirst().dropLast().map {
                 CLLocationCoordinate2D(latitude: $0.latitude ?? 0.0, longitude: $0.longitude ?? 0.0)
-            })
+            }
 
             // Fetch the route
-            fetchRoute(from: origin, to: destination, waypoints: waypoints) { [weak self] path in
+            fetchRoute(from: origin, to: destination, waypoints: waypoints) { [weak self] path, legTimes in
                 guard let self = self, let path = path else { return }
 
                 DispatchQueue.main.async {
@@ -208,9 +209,14 @@ extension GoogleMapsView{
                     polyline.strokeColor = AppColors.trip
                     polyline.map = self.mapView
 
+                    // Print total duration if available
+                    if let legTimes = legTimes {
+                        self.delegate?.recalculatedTravelTime(legTimes: legTimes)
+                    }
+
                     // Add custom markers for all stops
                     self.updateMarkers()
-                    
+
                     // Adjust the camera to fit the entire route
                     self.updateCameraToFitRoute(path: path)
                 }
@@ -218,33 +224,88 @@ extension GoogleMapsView{
         }
     }
 
-    // Fetch the route using Google Directions API
+    // Fetch the route using Google Maps Routes API
     private func fetchRoute(
         from origin: CLLocationCoordinate2D,
         to destination: CLLocationCoordinate2D,
         waypoints: [CLLocationCoordinate2D],
-        completion: @escaping (GMSPath?) -> Void
+        completion: @escaping (GMSPath?, [TimeInterval]?) -> Void
     ) {
-        let directionsURL = "https://maps.googleapis.com/maps/api/directions/json"
-        let originString = "\(origin.latitude),\(origin.longitude)"
-        let destinationString = "\(destination.latitude),\(destination.longitude)"
+        // Routes API endpoint
+        let routesURL = "https://routes.googleapis.com/directions/v2:computeRoutes"
         let key = GMSServicesApiKey
 
-        // Create a waypoints string (coordinates separated by "|")
-        let waypointsString = waypoints.map { "\($0.latitude),\($0.longitude)" }.joined(separator: "|")
+        // Create origin and destination dictionaries
+        let originDict: [String: Any] = [
+            "location": [
+                "latLng": [
+                    "latitude": origin.latitude,
+                    "longitude": origin.longitude
+                ]
+            ]
+        ]
+        let destinationDict: [String: Any] = [
+            "location": [
+                "latLng": [
+                    "latitude": destination.latitude,
+                    "longitude": destination.longitude
+                ]
+            ]
+        ]
 
-        // Build the complete URL
-        let urlString = "\(directionsURL)?origin=\(originString)&destination=\(destinationString)&waypoints=\(waypointsString)&key=\(key)"
-        guard let url = URL(string: urlString) else {
-            completion(nil)
+        // Create waypoints array
+        let waypointDicts: [[String: Any]] = waypoints.map {
+            [
+                "location": [
+                    "latLng": [
+                        "latitude": $0.latitude,
+                        "longitude": $0.longitude
+                    ]
+                ]
+            ]
+        }
+
+        // Define truck-specific parameters
+        let vehicleInfo: [String: Any] = [
+            "emissionsType": "GASOLINE",
+            "vehicleHeightMeters": 4.0,
+            "vehicleWidthMeters": 2.5,
+            "vehicleLengthMeters": 12.0,
+            "vehicleWeightKilograms": 20000,
+            "hasTrailers": false,
+            "hazardousMaterials": false
+        ]
+
+        // Build the request body
+        let requestBody: [String: Any] = [
+            "origin": originDict,
+            "destination": destinationDict,
+            "intermediates": waypointDicts,
+            "travelMode": "TRUCK",
+            "routingPreference": "TRAFFIC_AWARE",
+            //"vehicleInfo": vehicleInfo
+            "computeAlternativeRoutes": false
+        ]
+
+        // Convert the request body to JSON
+        guard let requestData = try? JSONSerialization.data(withJSONObject: requestBody) else {
+            print("Failed to encode request body")
+            completion(nil, nil)
             return
         }
 
+        // Build the request
+        var request = URLRequest(url: URL(string: "\(routesURL)?key=\(key)")!)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("routes.distanceMeters,routes.duration,routes.polyline.encodedPolyline,routes.legs.duration", forHTTPHeaderField: "X-Goog-FieldMask")
+        request.httpBody = requestData
+
         // Perform the API request
-        URLSession.shared.dataTask(with: url) { data, _, error in
+        URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                print("Error fetching directions: \(error?.localizedDescription ?? "Unknown error")")
-                completion(nil)
+                print("Error fetching route: \(error?.localizedDescription ?? "Unknown error")")
+                completion(nil, nil)
                 return
             }
 
@@ -252,52 +313,77 @@ extension GoogleMapsView{
                 // Parse the JSON response
                 if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let routes = json["routes"] as? [[String: Any]],
+                   !routes.isEmpty,
                    let firstRoute = routes.first,
-                   let overviewPolyline = firstRoute["overview_polyline"] as? [String: Any],
-                   let points = overviewPolyline["points"] as? String {
-                    let path = GMSPath(fromEncodedPath: points)
-                    completion(path)
+                   let polyline = firstRoute["polyline"] as? [String: Any],
+                   let encodedPolyline = polyline["encodedPolyline"] as? String,
+                   let legs = firstRoute["legs"] as? [[String: Any]] {
+
+                    // Extract leg durations
+                    var legDurations: [TimeInterval] = []
+                    for leg in legs {
+                        if let durationString = leg["duration"] as? String {
+                            // Parse the duration string (e.g., "987s") into seconds
+                            let durationValue = TimeInterval(durationString.replacingOccurrences(of: "s", with: "")) ?? 0
+                            legDurations.append(durationValue)
+                        } else {
+                            print("Leg duration is missing or invalid.")
+                        }
+                    }
+
+                    // Extract total distance (optional, for debugging)
+                    let distance = firstRoute["distanceMeters"] as? Int ?? 0
+                    print("Route Distance: \(distance) meters")
+                    
+                    // Convert polyline to a GMSPath
+                    let path = GMSPath(fromEncodedPath: encodedPolyline)
+                    completion(path, legDurations)
                 } else {
-                    print("No routes found in response.")
-                    completion(nil)
+                    print("No valid routes found in response.")
+                    completion(nil, nil)
                 }
             } catch {
                 print("Error parsing JSON: \(error)")
-                completion(nil)
+                completion(nil, nil)
             }
         }.resume()
     }
+
+    // Helper to parse duration strings (e.g., "5725s")
+    private func parseDuration(_ durationString: String) -> Int {
+        return Int(durationString.replacingOccurrences(of: "s", with: "")) ?? 0
+    }
     
     func zoomToCurrentLocation() {
-            guard let location = mapView.myLocation else {
-                print("User location unavailable.")
-                return
-            }
+        guard let location = mapView.myLocation else {
+            print("User location unavailable.")
+            return
+        }
 
-            let cameraUpdate = GMSCameraUpdate.setCamera(
-                GMSCameraPosition(
-                    latitude: location.coordinate.latitude,
-                    longitude: location.coordinate.longitude,
-                    zoom: 15  // Adjust zoom as desired
-                )
+        let cameraUpdate = GMSCameraUpdate.setCamera(
+            GMSCameraPosition(
+                latitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude,
+                zoom: 15  // Adjust zoom as desired
             )
-            mapView.animate(with: cameraUpdate)
+        )
+        mapView.animate(with: cameraUpdate)
+    }
+
+    //Zoom to fit all markers on the map
+    func zoomToFitAllMarkers() {
+        guard !markers.isEmpty else {
+            print("No markers available to fit.")
+            return
         }
 
-        //Zoom to fit all markers on the map
-        func zoomToFitAllMarkers() {
-            guard !markers.isEmpty else {
-                print("No markers available to fit.")
-                return
-            }
+        var bounds = GMSCoordinateBounds()
 
-            var bounds = GMSCoordinateBounds()
-
-            for marker in markers {
-                bounds = bounds.includingCoordinate(marker.position)
-            }
-
-            let cameraUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50) // padding to ensure markers are not at the edges
-            mapView.animate(with: cameraUpdate)
+        for marker in markers {
+            bounds = bounds.includingCoordinate(marker.position)
         }
+
+        let cameraUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50) // padding to ensure markers are not at the edges
+        mapView.animate(with: cameraUpdate)
+    }
 }

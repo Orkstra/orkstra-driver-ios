@@ -55,6 +55,8 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
     //Start trip button click
     func startTrip(){
         setStops()
+        //Re draw routes to get updated arrival times
+        tripViewController?.mapContainerView?.drawRoute()
     }
     
     func endTrip(){
@@ -70,6 +72,8 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
         tableView?.reloadData()
         //Notify delegate
         delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        //Re draw routes to get updated arrival times
+        tripViewController?.mapContainerView?.drawRoute()
         
         //scroll to next stop
         if let index = stops.firstIndex(of: stop ?? Stop()) {

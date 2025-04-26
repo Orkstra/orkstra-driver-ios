@@ -71,6 +71,14 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         }
     }
     
+    //This function gets called when trip starts and with every delivery updating the new leg times
+    func recalculatedTravelTime(legTimes: [TimeInterval]){
+        //let durationText = duration["text"] as? String ?? "\(durationValue / 60) min"
+        //print("Leg \(index + 1): \(durationText)")
+        
+        print(legTimes)
+    }
+    
     //Stop View methods
     func StopCellDidSwipeUp() {
         hideStopDetails{

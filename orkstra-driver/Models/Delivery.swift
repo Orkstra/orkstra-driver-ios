@@ -21,12 +21,14 @@ class Delivery: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var shipment_status: String?
     @Persisted var tracking_number: String?
     
+    @Persisted var serviceTime: Double = 0.0 // In seconds
     @Persisted var time_slot: String?
     @Persisted var label: String?
     @Persisted var direction: String?
 
     @Persisted var contact_person: String?
     @Persisted var contact_phone_number: String?
+    
     //  Defining relationships
     @Persisted var line_items = List<LineItem>()
     
@@ -36,10 +38,11 @@ class Delivery: DirtyRealmObject, DirtyTrackable, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, label: String, time_slot: String?, contact_person: String, contact_phone_number: String, shipment_status: String, direction: String, line_items: [LineItem]?) {
+    convenience init(id: String, label: String, time_slot: String?, serviceTime: Double, contact_person: String, contact_phone_number: String, shipment_status: String, direction: String, line_items: [LineItem]?) {
         self.init()
         self.id = id
         self.label = label
+        self.serviceTime = serviceTime
         self.time_slot = time_slot
         self.contact_person = contact_person
         self.contact_phone_number = contact_phone_number
