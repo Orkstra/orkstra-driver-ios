@@ -18,7 +18,7 @@ class Delivery: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var id: String?
     @Persisted var type: String = "deliveries"
     // Attributes
-    @Persisted var shipment_status: String?
+    @Persisted var status: String?
     @Persisted var tracking_number: String?
     
     @Persisted var serviceTime: TimeInterval = 900.0 // 15 minutes
@@ -40,7 +40,7 @@ class Delivery: DirtyRealmObject, DirtyTrackable, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, label: String, time_slot: String?, serviceTime: Double, contact_person: String, contact_phone_number: String, shipment_status: String, direction: String, line_items: [LineItem]?) {
+    convenience init(id: String, label: String, time_slot: String?, serviceTime: Double, contact_person: String, contact_phone_number: String, status: String, direction: String, line_items: [LineItem]?) {
         self.init()
         self.id = id
         self.label = label
@@ -48,7 +48,7 @@ class Delivery: DirtyRealmObject, DirtyTrackable, Codable{
         self.time_slot = time_slot
         self.contact_person = contact_person
         self.contact_phone_number = contact_phone_number
-        self.shipment_status = shipment_status
+        self.status = status
         self.direction = direction
         if line_items != nil{
             self.line_items.append(objectsIn: line_items!)

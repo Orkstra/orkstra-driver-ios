@@ -9,7 +9,15 @@ import UIKit
 
 class TripViewHelper: NSObject {
     
-    func setupStopView(viewController: UIViewController) -> StopCell{
+    func setupMapContainerView(viewController: TripViewController){
+        viewController.mapContainerView?.delegate = viewController // Set self as the delegate
+        viewController.mapContainerView?.trip = viewController.trip
+        viewController.mapContainerView?.selectedStop = viewController.selectedStop
+        viewController.mapContainerView?.setupGoogleMap()
+        viewController.mapContainerView?.drawRoute()
+    }
+    
+    func setupStopView(viewController: TripViewController) -> StopCell{
         var stopView = StopCell()
         //stop
         let nib = UINib(nibName: "StopView", bundle: nil)
@@ -25,11 +33,14 @@ class TripViewHelper: NSObject {
         stopView.layer.shadowRadius = 6                    // Spread of the shadow
         
         stopView.isHidden = true
-        //stopView.delegate = viewController
+        
+        stopView.delegate = viewController
+        viewController.view.addSubview(stopView)
+        
         return stopView
     }
     
-    func setupTripTrackingView(viewController: UIViewController) -> TripCell{
+    func setupTripTrackingView(viewController: TripViewController) -> TripCell{
         var tripCell = TripCell()
         //stop
         let nib = UINib(nibName: "TripTrackingCell", bundle: nil)
@@ -45,10 +56,15 @@ class TripViewHelper: NSObject {
         tripCell.layer.shadowRadius = 6                    // Spread of the shadow
         
         tripCell.isHidden = true
+        
+        tripCell.trip = viewController.trip
+        tripCell.tripViewController = viewController
+        viewController.view.addSubview(tripCell)
+        
         return tripCell
     }
     
-    func setupTripDetailsView(viewController: UIViewController) -> TripDetailView{
+    func setupTripDetailsView(viewController: TripViewController) -> TripDetailView{
         var tripDetailView = TripDetailView()
         //TripDetailsView
         let nib = UINib(nibName: "TripDetailView", bundle: nil)
@@ -63,7 +79,14 @@ class TripViewHelper: NSObject {
         tripDetailView.layer.shadowOffset = CGSize(width: 0, height: 0) // No offset
         tripDetailView.layer.shadowRadius = 6                    // Spread of the shadow
         
-        //tripDetailView.delegate = viewController
+        tripDetailView.delegate = viewController
+        tripDetailView.selectedStop = viewController.selectedStop
+        tripDetailView.trip = viewController.trip
+        tripDetailView.tripViewController = viewController
+        tripDetailView.tableView?.isScrollEnabled = false
+        
+        viewController.view.addSubview(tripDetailView)
+        
         return tripDetailView
         
     }

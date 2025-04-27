@@ -52,7 +52,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="storage-dry" translatesAutoresizingMaskIntoConstraints="NO" id="RM4-cN-18Z">
-                                                <rect key="frame" x="4" y="4" width="14" height="14"/>
+                                                <rect key="frame" x="2" y="2" width="18" height="18"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
@@ -72,12 +72,12 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="storage-cool" translatesAutoresizingMaskIntoConstraints="NO" id="17J-OY-6uj">
-                                                <rect key="frame" x="4" y="4" width="14" height="14"/>
+                                                <rect key="frame" x="3" y="3" width="16" height="16"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.29803922770000002" green="0.6549019814" blue="0.81960785390000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" name="LightBlueColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="4"/>
@@ -92,12 +92,12 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="storage-freez" translatesAutoresizingMaskIntoConstraints="NO" id="jBL-QF-uvE">
-                                                <rect key="frame" x="2" y="2" width="18" height="18"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </imageView>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.1725490093" green="0.01176470611" blue="0.92156863209999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" name="LightPurpleColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="4"/>
@@ -257,6 +257,7 @@
                 <outlet property="storageDry" destination="rYf-db-0Zw" id="8TW-B0-V8f"/>
                 <outlet property="storageFreeze" destination="OMl-8Y-aeW" id="iD3-ck-PUx"/>
                 <outlet property="storageView" destination="FAF-Rf-f05" id="w9n-5g-ZeS"/>
+                <outlet property="storageViewWidth" destination="Rg0-hK-Fry" id="Ruf-q6-YBr"/>
                 <outlet property="txtContactPerson" destination="IeD-ub-R9Y" id="fcV-cs-Qgz"/>
                 <outlet property="txtWeight" destination="ebU-iV-uU8" id="rBh-mU-NJw"/>
                 <outlet property="viewReturn" destination="1Zz-dq-Qwu" id="qrm-M9-wyP"/>
@@ -276,6 +277,12 @@
         </namedColor>
         <namedColor name="GreenColor">
             <color red="0.46274509803921571" green="0.90980392156862744" blue="0.63137254901960782" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="LightBlueColor">
+            <color red="0.90980386729999996" green="0.96078431610000004" blue="0.98039215800000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="LightPurpleColor">
+            <color red="0.91372549530000002" green="0.89803922179999995" blue="0.99215686319999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="TripColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

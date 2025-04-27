@@ -54,12 +54,22 @@ struct AppColors {
         return UIColor(named: "TripColor") ?? .purple
     }
     
+    static func lightBlueColor() -> UIColor {
+        return UIColor(named: "LightBlueColor") ?? .purple
+    }
+    
+    static func lightPurpleColor() -> UIColor {
+        return UIColor(named: "LightPurpleColor") ?? .purple
+    }
+    
 
     static let accent = accentColor()
     static let blue = blueColor()
     static let green = greenColor()
     static let orange = orangeColor()
     static let lightOrange = lightOrangeColor()
+    static let lightBlue = lightBlueColor()
+    static let lightPurple = lightPurpleColor()
     static let purple = purpleColor()
     static let brown = brownColor()
     static let yellow = yellowColor()

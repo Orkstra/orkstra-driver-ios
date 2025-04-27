@@ -50,6 +50,11 @@ class AppHelperClass: NSObject {
         // Insert the gradient layer below the button's text and other content
         button.layer.insertSublayer(gradientLayer, at: 0)
     }
+    
+    func assignNibTo(tableView: UITableView?, nibName: String, identifier: String){
+        let nib = UINib(nibName: nibName, bundle: nil)
+        tableView?.register(nib, forCellReuseIdentifier: identifier)
+    }
 }
 
 extension Array where Element: Hashable {

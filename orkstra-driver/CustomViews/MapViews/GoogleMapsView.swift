@@ -92,7 +92,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
 
                 // Create the marker
                 let marker = GMSMarker(position: position)
-                marker.title = stop.label // Use the label from the Stop model
+                marker.title = stop.name // Use the label from the Stop model
                 marker.userData = stop.id
                 marker.snippet = "Order: \(stop.order ?? 0)" // Optional snippet showing the order
                 
@@ -105,14 +105,14 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
                 } else {
                     var selected = false
                     if selectedStop != nil && selectedStop?.id == stop.id {selected = true}
-                    if stop.shipment_status == "delivered"{
+                    if stop.delivery_status == "delivered"{
                         marker.icon = markerManager.createDeliveredMarker(with: UIImage(systemName: "checkmark") ?? UIImage(), selected: selected)
                     } else {
                         marker.icon = markerManager.createStopMarker(stop: stop, selected: selected) // Numbered marker for intermediate stops
                     }
                 }
                 
-                if index == 0 && stop.label == stops.last?.label{
+                if index == 0 && stop.name == stops.last?.name{
                    //Do nothing
                 } else {
                     marker.map = mapView
@@ -122,9 +122,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         }
         
     }
-}
 
-extension GoogleMapsView{
     // Set up the GMSMapView and replace the placeholder UIView
     func setupGoogleMap() {
         // Set an initial camera position (latitude, longitude, zoom level)
@@ -156,8 +154,9 @@ extension GoogleMapsView{
         locationManager.startUpdatingHeading()
         
         // Add a custom truck marker
-        truckMarker = GMSMarker()
-        truckMarker?.icon = UIImage(systemName: "truck.box.fill")
+        let markerManager = MarkerManager()
+        let image: UIImage = UIImage(systemName: "circle.fill") ?? UIImage()
+        truckMarker = markerManager.createTruckMarker(with: image)
         truckMarker?.map = mapView
     }
     
@@ -421,21 +420,12 @@ extension GoogleMapsView{
         }
         
         // Snap the current location to the nearest road
-        snapToRoads(location: currentLocation) { [weak self] snappedLocation, snappedBearing in
+        snapToRoads(location: currentLocation) { [weak self] snappedLocation in
             guard let self = self, let snappedLocation = snappedLocation else { return }
             
             DispatchQueue.main.async {
                 // Smoothly move the truck marker to the snapped location
                 self.moveMarker(marker: self.truckMarker, to: snappedLocation)
-                
-                // Update marker orientation based on speed or smoothed bearing
-                if currentLocation.speed > 1.0, let snappedBearing = snappedBearing {
-                    // Moving: Update orientation
-                    self.updateBearing(newBearing: snappedBearing)
-                } else {
-                    // Stationary: Keep previous bearing or default to 0°
-                    self.truckMarker?.rotation = self.truckMarker?.rotation ?? 0
-                }
                 
                 // Animate the camera to follow the truck
                 //self.mapView.animate(toLocation: snappedLocation)
@@ -447,19 +437,19 @@ extension GoogleMapsView{
     }
     
     /// Snap the given location to the nearest road using the Google Roads API
-    func snapToRoads(location: CLLocation, completion: @escaping (CLLocationCoordinate2D?, CLLocationDirection?) -> Void) {
+    func snapToRoads(location: CLLocation, completion: @escaping (CLLocationCoordinate2D?) -> Void) {
         let urlString = "https://roads.googleapis.com/v1/snapToRoads?path=\(location.coordinate.latitude),\(location.coordinate.longitude)&key=\(GMSServicesApiKey)&interpolate=true"
         
         guard let url = URL(string: urlString) else {
             print("Invalid Roads API URL")
-            completion(nil, nil)
+            completion(nil)
             return
         }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Snap to Roads API Error: \(error?.localizedDescription ?? "Unknown error")")
-                completion(nil, nil)
+                completion(nil)
                 return
             }
             
@@ -473,33 +463,19 @@ extension GoogleMapsView{
                           let latitude = firstLocation["latitude"] as? CLLocationDegrees,
                           let longitude = firstLocation["longitude"] as? CLLocationDegrees else {
                         print("Failed to extract snapped location")
-                        completion(nil, nil)
+                        completion(nil)
                         return
                     }
                     
-                    // Calculate the bearing using consecutive snapped points
-                    var bearing: CLLocationDirection? = nil
-                    if snappedPoints.count > 1 {
-                        let firstPoint = snappedPoints[0]["location"] as? [String: CLLocationDegrees]
-                        let secondPoint = snappedPoints[1]["location"] as? [String: CLLocationDegrees]
-                        if let firstLat = firstPoint?["latitude"], let firstLng = firstPoint?["longitude"],
-                           let secondLat = secondPoint?["latitude"], let secondLng = secondPoint?["longitude"] {
-                            bearing = self.calculateBearing(
-                                from: CLLocationCoordinate2D(latitude: firstLat, longitude: firstLng),
-                                to: CLLocationCoordinate2D(latitude: secondLat, longitude: secondLng)
-                            )
-                        }
-                    }
-                    
                     // Return the snapped location and bearing
-                    completion(CLLocationCoordinate2D(latitude: latitude, longitude: longitude), bearing)
+                    completion(CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
                 } else {
                     print("Failed to parse Snap to Roads response")
-                    completion(nil, nil)
+                    completion(nil)
                 }
             } catch {
                 print("Error parsing Snap to Roads response: \(error)")
-                completion(nil, nil)
+                completion(nil)
             }
         }.resume()
     }
@@ -533,21 +509,6 @@ extension GoogleMapsView{
         CATransaction.commit()
     }
     
-    /// Calculate the bearing between two coordinates
-    func calculateBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
-        let deltaLongitude = end.longitude - start.longitude
-        let y = sin(deltaLongitude) * cos(end.latitude)
-        let x = cos(start.latitude) * sin(end.latitude) - sin(start.latitude) * cos(end.latitude) * cos(deltaLongitude)
-        let bearing = atan2(y, x)
-        return (bearing * 180 / .pi + 360).truncatingRemainder(dividingBy: 360) // Convert radians to degrees
-    }
-    
-    func updateBearing(newBearing: CLLocationDirection) {
-        // Apply a low-pass filter to smooth the bearing
-        smoothedBearing = (0.8 * smoothedBearing) + (0.2 * newBearing)
-        self.truckMarker?.rotation = smoothedBearing
-    }
-    
     /// Helper function to validate coordinates
     private func isValidCoordinate(_ coordinate: CLLocationCoordinate2D) -> Bool {
         return coordinate.latitude >= -90 && coordinate.latitude <= 90 &&
@@ -557,8 +518,10 @@ extension GoogleMapsView{
     func reinitializeTruckMarker(){
         // Reinitialize the truck marker
         if truckMarker == nil {
-            truckMarker = GMSMarker()
-            truckMarker?.icon = UIImage(systemName: "truck.box.fill")
+            let markerManager = MarkerManager()
+            let image: UIImage = UIImage(systemName: "circle.fill") ?? UIImage()
+            truckMarker = markerManager.createTruckMarker(with: image)
+            truckMarker?.map = mapView
         }
         
         if let lastLocation = locationManager.location {
@@ -568,7 +531,6 @@ extension GoogleMapsView{
             // If no location exists, call it with an empty array
             locationManager(locationManager, didUpdateLocations: [])
         }
-    
-        truckMarker?.map = mapView // Add the marker back to the map view
+
     }
 }

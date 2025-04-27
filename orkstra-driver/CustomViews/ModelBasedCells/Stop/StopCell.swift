@@ -12,7 +12,7 @@ protocol StopCellDelegate: AnyObject {
     func StopCellDidSwipeUp()
 }
 
-class StopCell: UITableViewCell {
+class StopCell: StorageTableViewCell {
     
     @IBOutlet weak var txtLocation: UILabel?
     @IBOutlet weak var txtAddressLine1: UILabel?
@@ -33,21 +33,19 @@ class StopCell: UITableViewCell {
     
     @IBOutlet weak var viewHeight: NSLayoutConstraint?
     
-    @IBOutlet weak var storageView: UIView?
-    @IBOutlet weak var storageDry: UIView?
-    @IBOutlet weak var storageChilled: UIView?
-    @IBOutlet weak var storageFreeze: UIView?
-    @IBOutlet weak var storageViewWidth: NSLayoutConstraint?
-    
     var delegate: StopCellDelegate?
     
     var stop: Stop? {
         didSet {
-            //Storage Views
-            doStorage()
+            //Storages
+            let storages: [String] = stop?.deliveries
+                .flatMap { $0.line_items } // Flatten line items from all deliveries
+                .map { $0.storage_type?.uid ?? "NA" } ?? []
+            
+            setupStorageView(cell: self, storageUIDs: storages)
             
             if (stop?.deliveries.map { $0.label }.unique().count ?? 0) > 1{
-                txtLocation?.text = stop?.label ?? "NA"
+                txtLocation?.text = stop?.name ?? "NA"
                 viewTime?.isHidden = false
             }else{
                 txtLocation?.text = stop?.deliveries.first?.label
@@ -60,7 +58,7 @@ class StopCell: UITableViewCell {
             
             txtTime?.text = "ETA: " + formatter.string(from: stop?.eta ?? Date())
             
-            txtLocation?.text = stop?.label ?? "NA"
+            txtLocation?.text = stop?.name ?? "NA"
             txtOrder?.text = String(stop?.order ?? 0)
             txtAddressLine1?.text = stop?.address_line_1 ?? "NA"
             
@@ -122,7 +120,7 @@ class StopCell: UITableViewCell {
         //Storages
         let storages: [String] = stop?.deliveries
             .flatMap { $0.line_items } // Flatten line items from all deliveries
-            .map { $0.storage?.name ?? "NA" } ?? []
+            .map { $0.storage_type?.uid ?? "NA" } ?? []
         
         var x: Double = 0
         
@@ -161,7 +159,7 @@ class StopCell: UITableViewCell {
     @IBAction func didTapTakeMeThere(sender: UIButton){
         let latitude = stop?.latitude ?? 0.0
         let longitude = stop?.longitude ?? 0.0
-        let locationName = stop?.label ?? "NA"
+        let locationName = stop?.name ?? "NA"
             
         navigateToLocation(latitude: latitude, longitude: longitude, locationName: locationName)
     }

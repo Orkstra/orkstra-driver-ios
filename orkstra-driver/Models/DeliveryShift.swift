@@ -1,5 +1,5 @@
 //
-//  Shift.swift
+//  DeliveryShift.swift
 //  orkstra-driver
 //
 //  Created by Karim Maurice on 25/04/2025.
@@ -9,12 +9,12 @@ import UIKit
 import RealmSwift
 import Unrealm
 
-class Shift: Object, Codable{
+class DeliveryShift: Object, Codable{
     @Persisted var id: String?
-    @Persisted var type: String = "shifts"
+    @Persisted var type: String = "delivery_shifts"
     // Attributes
-    @Persisted var from: Date?
-    @Persisted var to: Date?
+    @Persisted var start_time: Date?
+    @Persisted var end_time: Date?
     
     // Primary Key
     override static func primaryKey() -> String? {
@@ -24,8 +24,8 @@ class Shift: Object, Codable{
 
 class ShiftManager {
     
-    func isETAWithinShift(eta: Date, shift: Shift) -> Bool {
-        guard let shiftTo = shift.to else {
+    func isETAWithinShift(eta: Date, delivery_shift: DeliveryShift) -> Bool {
+        guard let shiftTo = delivery_shift.end_time else {
             print("Shift 'to' time is not set.")
             return false
         }

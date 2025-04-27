@@ -19,10 +19,9 @@ class Stop: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var type: String = "stops"
     // Attributes
     @Persisted var order: Int?
-    @Persisted var shipment_status: String?
-    @Persisted var tracking_number: String?
+    @Persisted var delivery_status: String?
     
-    @Persisted var label: String?
+    @Persisted var name: String?
     @Persisted var latitude: Double?
     @Persisted var longitude: Double?
     @Persisted var address_line_1: String?
@@ -41,15 +40,15 @@ class Stop: DirtyRealmObject, DirtyTrackable, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, latitude: Double, longitude: Double, order: Int, label: String, address_line_1: String, shipment_status: String, warehouse: Warehouse?, deliveries: [Delivery]?) {
+    convenience init(id: String, latitude: Double, longitude: Double, order: Int, name: String, address_line_1: String, delivery_status: String, warehouse: Warehouse?, deliveries: [Delivery]?) {
         self.init()
         self.id = id
         self.latitude = latitude
         self.longitude = longitude
         self.order = order
-        self.label = label
+        self.name = name
         self.address_line_1 = address_line_1
-        self.shipment_status = shipment_status
+        self.delivery_status = delivery_status
         self.warehouse = warehouse
         if deliveries != nil{
             self.deliveries.append(objectsIn: deliveries!)

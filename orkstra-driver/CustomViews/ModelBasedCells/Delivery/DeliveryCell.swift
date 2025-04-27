@@ -7,16 +7,11 @@
 
 import UIKit
 
-class DeliveryCell: UITableViewCell {
+class DeliveryCell: StorageTableViewCell {
     
     @IBOutlet weak var txtLocation: UILabel?
     @IBOutlet weak var txtContactPerson: UILabel?
     @IBOutlet weak var txtContactPhoneNumber: UILabel?
-    
-    @IBOutlet weak var storageView: UIView?
-    @IBOutlet weak var storageDry: UIView?
-    @IBOutlet weak var storageChilled: UIView?
-    @IBOutlet weak var storageFreeze: UIView?
     
     @IBOutlet weak var viewReturn: UIView?
     @IBOutlet weak var viewTime: CustomUiView?
@@ -47,8 +42,13 @@ class DeliveryCell: UITableViewCell {
                 viewReturn?.isHidden = true
             }
             
-            //Storage views and weight
-            doStorage()
+            //weight
+            let weight: Double = (delivery?.line_items.map { $0.shipping_weight ?? 0 } ?? []).reduce(0, +)
+            txtWeight?.text = String(format: "%.1f", weight) + " \(delivery?.line_items.first?.shipping_weight_unit ?? "kg")"
+            
+            //Storages
+            let storages = delivery?.line_items.map({$0.storage_type?.uid ?? "NA"}) ?? []
+            setupStorageView(cell: self, storageUIDs: storages)
         }
     }
     
@@ -61,40 +61,6 @@ class DeliveryCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    
-    func doStorage(){
-        //Storages
-        let storages = delivery?.line_items.map({$0.storage?.name ?? "NA"}) ?? []
-        let weight: Double = (delivery?.line_items.map { $0.shipping_weight ?? 0 } ?? []).reduce(0, +)
-        txtWeight?.text = String(format: "%.1f", weight) + " \(delivery?.line_items.first?.shipping_weight_unit ?? "kg")"
-        
-        
-        var x = 0
-        
-        if storages.contains("Freez"){
-            storageFreeze?.isHidden = false
-            storageFreeze?.frame.origin.x = 0
-            x += 25
-        }else{
-            storageFreeze?.isHidden = true
-        }
-        
-        if storages.contains("Chilled"){
-            storageChilled?.isHidden = false
-            storageChilled?.frame.origin.x = CGFloat(x)
-            x += 25
-        }else{
-            storageChilled?.isHidden = true
-            
-        }
-        
-        if storages.contains("Dry"){
-            storageDry?.isHidden = false
-            storageDry?.frame.origin.x = CGFloat(x)
-        }else{
-            storageDry?.isHidden = true
-        }
     }
     
     @IBAction func didTapCallContact(sender: UIButton){

@@ -78,7 +78,6 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
         //scroll to next stop
         if let index = stops.firstIndex(of: stop ?? Stop()) {
             let indexPath = IndexPath(row: index, section: 0)
-            
             // Scroll to position
             tableView?.scrollToRow(at: indexPath, at: .middle, animated: true)
         } else {
@@ -99,20 +98,13 @@ extension TripDetailView{
         btnToggleView?.addSwipeGesture(target: self, action: #selector( didSwipeDown(_:)), direction: .down)
         
         // Register the .xib file for the custom cell
-        let nib = UINib(nibName: "StopCell", bundle: nil)
-        tableView?.register(nib, forCellReuseIdentifier: "stop")
-        
-        let nib2 = UINib(nibName: "DeliveryCell", bundle: nil)
-        tableView?.register(nib2, forCellReuseIdentifier: "delivery")
-        
-        let nib3 = UINib(nibName: "DeliveryCellWithTitle", bundle: nil)
-        tableView?.register(nib3, forCellReuseIdentifier: "deliveryWithTitle")
-        
-        let nib4 = UINib(nibName: "NextStopCell", bundle: nil)
-        tableView?.register(nib4, forCellReuseIdentifier: "nextStop")
-        
-        let nib5 = UINib(nibName: "TripSummaryCell", bundle: nil)
-        tableView?.register(nib5, forCellReuseIdentifier: "trip")
+        let appHelper = AppHelperClass()
+        appHelper.assignNibTo(tableView: tableView, nibName: "StopCell", identifier: "stop")
+        appHelper.assignNibTo(tableView: tableView, nibName: "DeliveryCell", identifier: "delivery")
+        appHelper.assignNibTo(tableView: tableView, nibName: "DeliveryCellWithTitle", identifier: "deliveryWithTitle")
+        appHelper.assignNibTo(tableView: tableView, nibName: "NextStopCell", identifier: "nextStop")
+        appHelper.assignNibTo(tableView: tableView, nibName: "TripSummaryCell", identifier: "trip")
+ 
     }
     
     override func awakeFromNib() {

@@ -28,7 +28,7 @@ class StopActionViewController: UIViewController {
         if let stop = self.stop {
             let realm = try! Realm()
             try! realm.write {
-                stop.shipment_status = "delivered"
+                stop.delivery_status = "delivered"
                 stop.isDirty = true
             }
         } else {

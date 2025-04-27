@@ -1,5 +1,5 @@
 //
-//  Storage.swift
+//  StorageType.swift
 //  orkstra-driver
 //
 //  Created by Karim Maurice on 18/04/2025.
@@ -9,11 +9,12 @@ import UIKit
 import RealmSwift
 import Unrealm
 
-class Storage: Object, Codable{
+class StorageType: Object, Codable{
     @Persisted var id: String?
-    @Persisted var type: String = "storages"
+    @Persisted var type: String = "storage_types"
     // Attributes
-    @Persisted var name: String?
+    //@Persisted var name: String?
+    @Persisted var uid: String?
     
     // Primary Key
     override static func primaryKey() -> String? {
@@ -21,9 +22,9 @@ class Storage: Object, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, name: String) {
+    convenience init(id: String, uid: String) {
         self.init()
         self.id = id
-        self.name = name
+        self.uid = uid
     }
 }

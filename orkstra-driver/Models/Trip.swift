@@ -17,7 +17,7 @@ class Trip: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var status: String?
     //  Defining relationships
     @Persisted var stops = List<Stop>()
-    @Persisted var shift: Shift?
+    @Persisted var delivery_shift: DeliveryShift?
     
     // Primary Key
     override static func primaryKey() -> String? {
@@ -69,7 +69,7 @@ class TripManager {
             realm.delete(allLineItems)
             
             // Query all Storage objects
-            let allStorages = realm.objects(Storage.self)
+            let allStorages = realm.objects(StorageType.self)
             // Delete all storages
             realm.delete(allStorages)
             
@@ -79,7 +79,7 @@ class TripManager {
             realm.delete(allDeliveries)
             
             // Query all Shift objects
-            let allShifts = realm.objects(Shift.self)
+            let allShifts = realm.objects(DeliveryShift.self)
             // Delete all shifts
             realm.delete(allShifts)
         }
@@ -101,16 +101,16 @@ class TripManager {
         let realm = try! Realm()
         
         if let t = realm.object(ofType: Trip.self, forPrimaryKey: trip.id){
-            return Array(t.stops.filter("shipment_status = %@", "pending"))
+            return Array(t.stops.filter("delivery_status = %@", "pending"))
         }else{
             return [Stop]()
         }
     }
     
     func getNextStop(trip: Trip) -> Stop? {
-        var stop = trip.stops.where { $0.shipment_status == "pending" && $0.warehouse == nil}.first
+        var stop = trip.stops.where { $0.delivery_status == "pending" && $0.warehouse == nil}.first
         if stop == nil {
-            stop = trip.stops.where { $0.shipment_status == "pending"}.last
+            stop = trip.stops.where { $0.delivery_status == "pending"}.last
         }
         return stop
     }
@@ -129,18 +129,22 @@ class TripManager {
         if trip.status == "ready" {
             stopsToProcess = Array(trip.stops) // Use all stops
         } else {
-            stopsToProcess = trip.stops.filter { $0.shipment_status == "pending" } // Filter stops with shipment_status == "pending"
+            stopsToProcess = trip.stops.filter { $0.delivery_status == "pending" } // Filter stops with delivery_status == "pending"
         }
 
         try! realm.write {
             // Iterate through the filtered stops
             for (index, stop) in stopsToProcess.enumerated() {
-                // Add the service time for all deliveries at this stop
+                // Iterate through each delivery at this stop
                 for delivery in stop.deliveries {
+                    // Assign the ETA for the delivery based on the current time and total time
+                    delivery.eta = currentTime.addingTimeInterval(totalTime)
+                    
+                    // Add the delivery's service time to the total time
                     totalTime += delivery.serviceTime
                 }
 
-                // Calculate and assign the ETA for this stop
+                // Calculate and assign the ETA for the stop
                 stop.eta = currentTime.addingTimeInterval(totalTime)
 
                 // Add the travel time to the next stop if there is one
@@ -169,19 +173,19 @@ class TripManager {
         let line_items = [
             LineItem(
                 id: "1",
-                storage: Storage(id:"1", name: "Freez"),
+                storage_type: StorageType(id:"1", uid: "Freez"),
                 shipping_weight: 100.0,
                 shipping_weight_unit: "kg"
             ),
             LineItem(
                 id: "2",
-                storage: Storage(id:"2", name: "Chilled"),
+                storage_type: StorageType(id:"2", uid: "Chilled"),
                 shipping_weight: 50.5,
                 shipping_weight_unit: "kg"
             ),
             LineItem(
                 id: "3",
-                storage: Storage(id:"3", name: "Dry"),
+                storage_type: StorageType(id:"3", uid: "Dry"),
                 shipping_weight: 70.2,
                 shipping_weight_unit: "kg"
             )
@@ -195,7 +199,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "John Doe",
                 contact_phone_number: "+1 407-555-1234",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "out",
                 line_items: [line_items[0], line_items[2]]
             ),
@@ -206,7 +210,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "Alice Johnson",
                 contact_phone_number: "+1 407-555-7890",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "out",
                 line_items: [line_items[2]]
             ),
@@ -217,7 +221,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "Bob Brown",
                 contact_phone_number: "+1 407-555-3456",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "out",
                 line_items: [line_items[0], line_items[1]]
             ),
@@ -228,7 +232,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "Charlie Green",
                 contact_phone_number: "+1 407-555-0001",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "out",
                 line_items: [line_items[0], line_items[1], line_items[2]]
             ),
@@ -239,7 +243,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "Dana Blue",
                 contact_phone_number: "+1 407-555-0002",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "out",
                 line_items: [line_items[0], line_items[2]]
             ),
@@ -250,7 +254,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "Dana Blue",
                 contact_phone_number: "+1 407-555-0002",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "out",
                 line_items: [line_items[0], line_items[2]]
             ),
@@ -261,7 +265,7 @@ class TripManager {
                 serviceTime: 1800,
                 contact_person: "Alice Johnson",
                 contact_phone_number: "+1 407-555-7890",
-                shipment_status: "pending",
+                status: "pending",
                 direction: "in",
                 line_items: [line_items[2]]
             )
@@ -274,9 +278,9 @@ class TripManager {
                 latitude: 28.538336,
                 longitude: -81.379234,
                 order: 0,
-                label: "Orlando Warehouse",
+                name: "Orlando Warehouse",
                 address_line_1: "123 Warehouse St, Orlando, FL 32801",
-                shipment_status: "pending",
+                delivery_status: "pending",
                 warehouse: warehouse,
                 deliveries: nil
             ),
@@ -285,9 +289,9 @@ class TripManager {
                 latitude: 28.474321,
                 longitude: -81.467819,
                 order: 1,
-                label: "Orlando Mall",
+                name: "Orlando Mall",
                 address_line_1: "6000 Universal Blvd, Orlando, FL 32819",
-                shipment_status: "pending",
+                delivery_status: "pending",
                 warehouse: nil,
                 deliveries: [deliveries[0], deliveries[1], deliveries[6]]
             ),
@@ -296,9 +300,9 @@ class TripManager {
                 latitude: 28.385233,
                 longitude: -81.563874,
                 order: 2,
-                label: "Walt Disney World",
+                name: "Walt Disney World",
                 address_line_1: "Lake Buena Vista, Orlando, FL 32830",
-                shipment_status: "pending",
+                delivery_status: "pending",
                 warehouse: nil,
                 deliveries: [deliveries[2]]
             ),
@@ -307,9 +311,9 @@ class TripManager {
                 latitude: 28.437369,
                 longitude: -81.470148,
                 order: 3,
-                label: "ICON Park",
+                name: "ICON Park",
                 address_line_1: "8375 International Dr, Orlando, FL 32819",
-                shipment_status: "pending",
+                delivery_status: "pending",
                 warehouse: nil,
                 deliveries: [deliveries[3]]
             ),
@@ -318,9 +322,9 @@ class TripManager {
                 latitude: 28.500000,
                 longitude: -81.380000,
                 order: 4,
-                label: "Florida Mall",
+                name: "Florida Mall",
                 address_line_1: "8001 S Orange Blossom Trl, Orlando, FL 32809",
-                shipment_status: "pending",
+                delivery_status: "pending",
                 warehouse: nil,
                 deliveries: [deliveries[4], deliveries[5]]
             ),
@@ -329,9 +333,9 @@ class TripManager {
                 latitude: 28.538336,
                 longitude: -81.379234,
                 order: 5,
-                label: "Orlando Warehouse",
+                name: "Orlando Warehouse",
                 address_line_1: "123 Warehouse St, Orlando, FL 32801",
-                shipment_status: "pending",
+                delivery_status: "pending",
                 warehouse: warehouse,
                 deliveries: nil
             )
@@ -339,7 +343,7 @@ class TripManager {
         
         let trip = Trip(id: "1", name: "Orlando East", stops: stops, status: "ready")
         
-        let shift = Shift()
+        let shift = DeliveryShift()
         shift.id = "1"
         
         // Create a DateFormatter
@@ -348,10 +352,10 @@ class TripManager {
         formatter.locale = Locale(identifier: "en_US") // Set locale for consistent formatting
         formatter.timeZone = TimeZone.current // Use the current timezone
         
-        shift.from = formatter.date(from: "10:00 AM")
-        shift.to = formatter.date(from: "02:30 PM")
+        shift.start_time = formatter.date(from: "10:00 AM")
+        shift.end_time = formatter.date(from: "02:30 PM")
         
-        trip.shift = shift
+        trip.delivery_shift = shift
         
         let manager = TripManager()
         manager.deleteAllTrips()

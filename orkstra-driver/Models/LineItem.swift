@@ -13,10 +13,10 @@ class LineItem: DirtyRealmObject, Codable{
     @Persisted var id: String?
     @Persisted var type: String = "line_tems"
     // Attributes
-    @Persisted var shipment_status: String?
+    @Persisted var delivery_status: String?
     @Persisted var product_label: String?
     
-    @Persisted var volume_unit: String?
+    @Persisted var shipping_volume_unit: String?
     @Persisted var shipping_weight_unit: String?
     @Persisted var shipping_weight: Double?
     @Persisted var shipping_volume: Double?
@@ -27,7 +27,7 @@ class LineItem: DirtyRealmObject, Codable{
     
     
     //  Defining relationships
-    @Persisted var storage: Storage?
+    @Persisted var storage_type: StorageType?
     @Persisted var product: Product?
     
     // Primary Key
@@ -36,11 +36,11 @@ class LineItem: DirtyRealmObject, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, storage: Storage, shipping_weight: Double, shipping_weight_unit: String) {
+    convenience init(id: String, storage_type: StorageType, shipping_weight: Double, shipping_weight_unit: String) {
         self.init()
         self.id = id
         self.shipping_weight = shipping_weight
         self.shipping_weight_unit = shipping_weight_unit
-        self.storage = storage
+        self.storage_type = storage_type
     }
 }

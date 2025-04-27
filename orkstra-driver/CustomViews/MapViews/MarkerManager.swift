@@ -102,7 +102,7 @@ class MarkerManager: NSObject{
                 height: iconSize.height
             )
             let whiteIcon = icon.withRenderingMode(.alwaysTemplate) // Enable tint color rendering
-            txtColor.set() // Set the tint color to white
+            txtColor.set()
             whiteIcon.draw(in: iconRect) // Draw the icon respecting tint color
                 
         }
@@ -155,6 +155,32 @@ class MarkerManager: NSObject{
                 
         }
         return image
+    }
+    
+    func createTruckMarker(with icon: UIImage) -> GMSMarker {
+       
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 20, height: 20))
+        let image = renderer.image { context in
+          
+            // Draw the white icon in the center
+            let iconSize = CGSize(width: 20, height: 20)
+            let iconRect = CGRect(
+                x: 0,
+                y: 0,
+                width: iconSize.width,
+                height: iconSize.height
+            )
+            let whiteIcon = icon.withRenderingMode(.alwaysTemplate) // Enable tint color rendering
+            AppColors.purple.set() // Set the tint color to white
+            whiteIcon.draw(in: iconRect) // Draw the icon respecting tint color
+                
+        }
+
+        // Create the truck marker
+        let truckMarker = GMSMarker()
+        truckMarker.icon = image
+
+        return truckMarker
     }
     
 }
