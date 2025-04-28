@@ -27,8 +27,10 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
     private var markers: [GMSMarker] = []
     private var smoothedBearing: CLLocationDirection = 0
     
+    
     var trip: Trip?
     var truckMarker: GMSMarker?
+    var flashlightMarker: GMSMarker?
     var selectedStop: Stop?
     
     override func awakeFromNib() {
@@ -155,9 +157,12 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         
         // Add a custom truck marker
         let markerManager = MarkerManager()
-        let image: UIImage = UIImage(systemName: "circle.fill") ?? UIImage()
+        let image: UIImage = UIImage(systemName: "truck.box.fill") ?? UIImage()
         truckMarker = markerManager.createTruckMarker(with: image)
         truckMarker?.map = mapView
+        
+        flashlightMarker = markerManager.setupFlashlightMarker(at: truckMarker!.position)
+        flashlightMarker?.map = mapView
     }
     
     //Apply Map Style
@@ -412,27 +417,52 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
     // Update the location of the truck marker
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
-        
+
         // Ensure significant movement before updating
         guard hasSignificantMovement(from: previousLocation, to: currentLocation) else {
             print("Stationary: Skipping bearing update")
             return
         }
-        
+
         // Snap the current location to the nearest road
         snapToRoads(location: currentLocation) { [weak self] snappedLocation in
             guard let self = self, let snappedLocation = snappedLocation else { return }
-            
+
             DispatchQueue.main.async {
-                // Smoothly move the truck marker to the snapped location
+                // Move the truck and flashlight markers to the snapped location
                 self.moveMarker(marker: self.truckMarker, to: snappedLocation)
-                
-                // Animate the camera to follow the truck
-                //self.mapView.animate(toLocation: snappedLocation)
+
+                // Update flashlight rotation based on trip status
+                if let trip = self.trip {
+                    if trip.status == "on_route" {
+                        // Calculate the bearing from the truck's current location to the snapped location
+                        let bearing = self.calculateBearing(from: self.previousLocation?.coordinate ?? CLLocationCoordinate2D(latitude: -180.0, longitude: -180.0), to: snappedLocation)
+
+                        // Rotate the flashlight to point down the road
+                        CATransaction.begin()
+                        CATransaction.setAnimationDuration(0.2) // Smooth animation
+                        self.flashlightMarker?.rotation = bearing // Rotate flashlight to road direction
+                        CATransaction.commit()
+                    }
+                }
             }
-            
+
             // Update the previous location for the next calculation
             self.previousLocation = CLLocation(latitude: snappedLocation.latitude, longitude: snappedLocation.longitude)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        guard let trip = trip else { return } // Ensure trip exists
+
+        if trip.status == "ready" {
+            let heading = newHeading.trueHeading
+
+            // Smoothly animate the rotation
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.2) // Set a short animation duration
+            flashlightMarker?.rotation = heading // Rotate based on phone's heading
+            CATransaction.commit()
         }
     }
     
@@ -480,12 +510,6 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         }.resume()
     }
     
-    // Handle heading updates (only used if no movement is occurring)
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        guard previousLocation == nil else { return } // Only use heading if no previous location is available
-        truckMarker?.rotation = newHeading.trueHeading
-    }
-    
     // MARK: - Helper Methods
     
     /// Check if the movement is significant (distance or speed threshold)
@@ -501,11 +525,16 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
     
     /// Move the marker smoothly to the specified position
     func moveMarker(marker: GMSMarker?, to position: CLLocationCoordinate2D) {
-        guard let marker = marker else { return }
+        guard marker != nil else { return }
         
+        // Begin a smooth animation
         CATransaction.begin()
         CATransaction.setAnimationDuration(1.0) // Smooth animation duration
-        marker.position = position
+        
+        // Move the marker to the new position
+        truckMarker?.position = position
+        flashlightMarker?.position = position
+        
         CATransaction.commit()
     }
     
@@ -519,9 +548,12 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         // Reinitialize the truck marker
         if truckMarker == nil {
             let markerManager = MarkerManager()
-            let image: UIImage = UIImage(systemName: "circle.fill") ?? UIImage()
+            let image: UIImage = UIImage(systemName: "truck.box.fill") ?? UIImage()
             truckMarker = markerManager.createTruckMarker(with: image)
             truckMarker?.map = mapView
+            
+            flashlightMarker = markerManager.setupFlashlightMarker(at: truckMarker!.position)
+            flashlightMarker?.map = mapView
         }
         
         if let lastLocation = locationManager.location {
@@ -531,6 +563,19 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
             // If no location exists, call it with an empty array
             locationManager(locationManager, didUpdateLocations: [])
         }
-
     }
+    
+    func calculateBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
+        let deltaLongitude = end.longitude - start.longitude
+        let y = sin(deltaLongitude) * cos(end.latitude)
+        let x = cos(start.latitude) * sin(end.latitude) - sin(start.latitude) * cos(end.latitude) * cos(deltaLongitude)
+        let bearing = atan2(y, x)
+        return (bearing * 180 / .pi + 360).truncatingRemainder(dividingBy: 360) // Convert radians to degrees
+    }
+
+}
+
+extension CLLocationDegrees {
+    var radians: Double { return self * .pi / 180.0 }
+    var degrees: Double { return self * 180.0 / .pi }
 }

@@ -55,6 +55,34 @@ class AppHelperClass: NSObject {
         let nib = UINib(nibName: nibName, bundle: nil)
         tableView?.register(nib, forCellReuseIdentifier: identifier)
     }
+    
+    func applyTintColor(to image: UIImage, with color: UIColor) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+
+        // Flip the image vertically to match UIKit's coordinate system
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.translateBy(x: 0.0, y: -image.size.height)
+
+        // Draw the original image as a mask
+        let rect = CGRect(origin: .zero, size: image.size)
+        context.clip(to: rect, mask: image.cgImage!)
+        color.setFill()
+        context.fill(rect)
+
+        // Capture the tinted image
+        let tintedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return tintedImage
+    }
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+    }
 }
 
 extension Array where Element: Hashable {
