@@ -269,8 +269,6 @@ extension TripViewController{
         formatter.dateStyle = .none
         formatter.timeStyle = .short
         
-        tripTrackingView.txtShift?.text = formatter.string(from: trip.delivery_shift?.start_time ?? Date()) + " - " + formatter.string(from: trip.delivery_shift?.end_time ?? Date())
-        
         tripTrackingView.txtETA?.text = "ETA: " + formatter.string(from: eta ?? Date())
         
         if let eta = eta{

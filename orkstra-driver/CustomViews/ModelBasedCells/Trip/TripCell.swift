@@ -14,6 +14,7 @@ class TripCell: TripDetailsHeaderCell{
     @IBOutlet weak var btnEndTrip: CustomUiButton?
     @IBOutlet weak var separator: UIView?
     
+    @IBOutlet weak var txtRoute: UILabel?
     @IBOutlet weak var txtShift: UILabel?
     @IBOutlet weak var txtETA: UILabel?
     @IBOutlet weak var txtstatus: UILabel?
@@ -28,6 +29,13 @@ class TripCell: TripDetailsHeaderCell{
     
     var trip: Trip? {
         didSet {
+            txtRoute?.text = trip?.route_name
+            
+            let formatter = DateFormatter()
+            formatter.dateStyle = .none
+            formatter.timeStyle = .short
+            txtShift?.text = formatter.string(from: trip?.delivery_shift?.start_time ?? Date()) + " - " + formatter.string(from: trip?.delivery_shift?.end_time ?? Date())
+            
             //Storages
             let storages: [String] = trip?.stops
                 .flatMap { $0.deliveries } // Flatten all deliveries from all stops

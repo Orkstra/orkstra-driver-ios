@@ -227,6 +227,7 @@
                 <outlet property="txtDone" destination="t5Y-3Y-JSg" id="zRx-Yg-fin"/>
                 <outlet property="txtETA" destination="eUf-8d-lsI" id="MRM-4S-Fec"/>
                 <outlet property="txtRemaining" destination="LWI-au-oKC" id="75f-TY-wir"/>
+                <outlet property="txtRoute" destination="LX6-GG-UZ9" id="cq9-O1-Gtu"/>
                 <outlet property="txtShift" destination="JU8-Gc-9AK" id="Epy-qV-R3e"/>
                 <outlet property="txtstatus" destination="mlM-ha-cex" id="Va4-0n-ANv"/>
                 <outlet property="viewProgress" destination="J2D-0X-zdi" id="cVA-59-GiW"/>

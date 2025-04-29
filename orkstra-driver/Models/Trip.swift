@@ -14,6 +14,7 @@ class Trip: DirtyRealmObject, DirtyTrackable, Codable{
     @Persisted var type: String = "trips"
     // Attributes
     @Persisted var name: String?
+    @Persisted var route_name: String?
     @Persisted var status: String?
     //  Defining relationships
     @Persisted var stops = List<Stop>()
@@ -25,10 +26,11 @@ class Trip: DirtyRealmObject, DirtyTrackable, Codable{
     }
     
     // Convenience initializer
-    convenience init(id: String, name: String, stops: [Stop]?, status: String?) {
+    convenience init(id: String, name: String, route_name: String, stops: [Stop]?, status: String?) {
         self.init()
         self.id = id
         self.name = name
+        self.route_name = route_name
         self.status = status
         if stops != nil{
             self.stops.append(objectsIn: stops!)
@@ -341,7 +343,7 @@ class TripManager {
             )
         ]
         
-        let trip = Trip(id: "1", name: "Orlando East", stops: stops, status: "ready")
+        let trip = Trip(id: "1", name: "Trip 2", route_name: "Sharm El Sheikh", stops: stops, status: "ready")
         
         let shift = DeliveryShift()
         shift.id = "1"

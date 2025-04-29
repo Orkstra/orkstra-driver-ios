@@ -64,8 +64,8 @@ class DeliveryCell: StorageTableViewCell {
     }
     
     @IBAction func didTapCallContact(sender: UIButton){
-        //let phoneNumber = stop?.contact_phone_number ?? "NA"
-        let phoneNumber = "+201065305550"
+        let phoneNumber = delivery?.contact_phone_number ?? "NA"
+        //let phoneNumber = "+201065305550"
         callPhoneNumber(phoneNumber: phoneNumber)
     }
     
@@ -74,7 +74,7 @@ class DeliveryCell: StorageTableViewCell {
         let formattedNumber = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "+", with: "")
 
         // Create an action sheet
-        let actionSheet = UIAlertController(title: "Phone Number Options", message: "What would you like to do with this phone number?", preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: phoneNumber, message: "What would you like to do with this phone number?", preferredStyle: .actionSheet)
 
         // Option to call the phone number
         let callAction = UIAlertAction(title: "Call", style: .default) { _ in
