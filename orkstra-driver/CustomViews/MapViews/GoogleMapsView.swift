@@ -165,6 +165,27 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         flashlightMarker?.map = mapView
     }
     
+    func reinitializeTruckMarker(){
+        // Reinitialize the truck marker
+        if truckMarker == nil {
+            let markerManager = MarkerManager()
+            let image: UIImage = UIImage(systemName: "truck.box.fill") ?? UIImage()
+            truckMarker = markerManager.createTruckMarker(with: image)
+            truckMarker?.map = mapView
+            
+            flashlightMarker = markerManager.setupFlashlightMarker(at: truckMarker!.position)
+            flashlightMarker?.map = mapView
+        }
+        
+        if let lastLocation = locationManager.location {
+            // Call the method with the last known location
+            locationManager(locationManager, didUpdateLocations: [lastLocation])
+        } else {
+            // If no location exists, call it with an empty array
+            locationManager(locationManager, didUpdateLocations: [])
+        }
+    }
+    
     //Apply Map Style
     private func applyMapStyle() {
         // Find the path to the mapStyle.json file in your bundle
@@ -179,20 +200,6 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         } else {
             print("Unable to find mapStyle.json")
         }
-    }
-    
-    // Adjust the camera to fit the route
-    func updateCameraToFitRoute(path: GMSPath) {
-        var bounds = GMSCoordinateBounds()
-        
-        // Include each coordinate in the bounds
-        for index in 0..<path.count() {
-            bounds = bounds.includingCoordinate(path.coordinate(at: index))
-        }
-        
-        // Animate the camera to fit the bounds
-        let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0) // Add padding around the edges
-        mapView.animate(with: update)
     }
     
     // Draw a route on the map
@@ -379,6 +386,20 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         return Int(durationString.replacingOccurrences(of: "s", with: "")) ?? 0
     }
     
+    // Adjust the camera to fit the route
+    func updateCameraToFitRoute(path: GMSPath) {
+        var bounds = GMSCoordinateBounds()
+        
+        // Include each coordinate in the bounds
+        for index in 0..<path.count() {
+            bounds = bounds.includingCoordinate(path.coordinate(at: index))
+        }
+        
+        // Animate the camera to fit the bounds
+        let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0) // Add padding around the edges
+        mapView.animate(with: update)
+    }
+    
     func zoomToCurrentLocation() {
         // Validate truck's position
         if let truckPosition = truckMarker?.position, isValidCoordinate(truckPosition) {
@@ -425,30 +446,30 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         }
 
         // Snap the current location to the nearest road
-        snapToRoads(location: currentLocation) { [weak self] snappedLocation in
+        snapToRoads(location: currentLocation) { [weak self] snappedLocation, _ in
             guard let self = self, let snappedLocation = snappedLocation else { return }
 
             DispatchQueue.main.async {
-                // Move the truck and flashlight markers to the snapped location
+                // Move the truck marker to the snapped location
                 self.moveMarker(marker: self.truckMarker, to: snappedLocation)
 
-                // Update flashlight rotation based on trip status
-                if let trip = self.trip {
-                    if trip.status == "on_route" {
-                        // Calculate the bearing from the truck's current location to the snapped location
-                        let bearing = self.calculateBearing(from: self.previousLocation?.coordinate ?? CLLocationCoordinate2D(latitude: -180.0, longitude: -180.0), to: snappedLocation)
-
-                        // Rotate the flashlight to point down the road
-                        CATransaction.begin()
-                        CATransaction.setAnimationDuration(0.2) // Smooth animation
-                        self.flashlightMarker?.rotation = bearing // Rotate flashlight to road direction
-                        CATransaction.commit()
+                if self.trip?.status != "ready" {
+                    // Calculate the bearing between the previous and current snapped point
+                    if let previousLocation = self.previousLocation {
+                        let bearing = self.calculateBearing(
+                            from: previousLocation.coordinate,
+                            to: snappedLocation
+                        )
+                        self.updateFlashlightBearing(newBearing: bearing)
+                    } else {
+                        // If there's no previous location, keep the current flashlight rotation
+                        print("No previous location. Retaining current flashlight rotation.")
                     }
                 }
-            }
 
-            // Update the previous location for the next calculation
-            self.previousLocation = CLLocation(latitude: snappedLocation.latitude, longitude: snappedLocation.longitude)
+                // Update the previous location for the next calculation
+                self.previousLocation = CLLocation(latitude: snappedLocation.latitude, longitude: snappedLocation.longitude)
+            }
         }
     }
     
@@ -465,49 +486,68 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
             CATransaction.commit()
         }
     }
-    
     /// Snap the given location to the nearest road using the Google Roads API
-    func snapToRoads(location: CLLocation, completion: @escaping (CLLocationCoordinate2D?) -> Void) {
+    func snapToRoads(location: CLLocation, completion: @escaping (CLLocationCoordinate2D?, CLLocationDirection?) -> Void) {
         let urlString = "https://roads.googleapis.com/v1/snapToRoads?path=\(location.coordinate.latitude),\(location.coordinate.longitude)&key=\(GMSServicesApiKey)&interpolate=true"
-        
+
         guard let url = URL(string: urlString) else {
             print("Invalid Roads API URL")
-            completion(nil)
+            completion(nil, nil)
             return
         }
-        
+
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, error == nil else {
                 print("Snap to Roads API Error: \(error?.localizedDescription ?? "Unknown error")")
-                completion(nil)
+                completion(nil, nil)
                 return
             }
-            
+
             do {
                 // Parse the JSON response
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let snappedPoints = json["snappedPoints"] as? [[String: Any]] {
-                    
+
                     // Extract the first snapped location
                     guard let firstLocation = snappedPoints.first?["location"] as? [String: Any],
                           let latitude = firstLocation["latitude"] as? CLLocationDegrees,
                           let longitude = firstLocation["longitude"] as? CLLocationDegrees else {
                         print("Failed to extract snapped location")
-                        completion(nil)
+                        completion(nil, nil)
                         return
                     }
-                    
+
+                    // Calculate the bearing using consecutive snapped points
+                    var bearing: CLLocationDirection? = nil
+                    if snappedPoints.count > 1 {
+                        let firstPoint = snappedPoints[0]["location"] as? [String: CLLocationDegrees]
+                        let secondPoint = snappedPoints[1]["location"] as? [String: CLLocationDegrees]
+                        if let firstLat = firstPoint?["latitude"], let firstLng = firstPoint?["longitude"],
+                           let secondLat = secondPoint?["latitude"], let secondLng = secondPoint?["longitude"] {
+                            bearing = self.calculateBearing(
+                                from: CLLocationCoordinate2D(latitude: firstLat, longitude: firstLng),
+                                to: CLLocationCoordinate2D(latitude: secondLat, longitude: secondLng)
+                            )
+                        }
+                    }
+
                     // Return the snapped location and bearing
-                    completion(CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                    completion(CLLocationCoordinate2D(latitude: latitude, longitude: longitude), bearing)
                 } else {
                     print("Failed to parse Snap to Roads response")
-                    completion(nil)
+                    completion(nil, nil)
                 }
             } catch {
                 print("Error parsing Snap to Roads response: \(error)")
-                completion(nil)
+                completion(nil, nil)
             }
         }.resume()
+    }
+    
+    func updateBearing(newBearing: CLLocationDirection) {
+        // Apply a low-pass filter to smooth the bearing
+        smoothedBearing = (0.8 * smoothedBearing) + (0.2 * newBearing)
+        self.truckMarker?.rotation = smoothedBearing
     }
     
     // MARK: - Helper Methods
@@ -544,38 +584,43 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
                coordinate.longitude >= -180 && coordinate.longitude <= 180
     }
     
-    func reinitializeTruckMarker(){
-        // Reinitialize the truck marker
-        if truckMarker == nil {
-            let markerManager = MarkerManager()
-            let image: UIImage = UIImage(systemName: "truck.box.fill") ?? UIImage()
-            truckMarker = markerManager.createTruckMarker(with: image)
-            truckMarker?.map = mapView
-            
-            flashlightMarker = markerManager.setupFlashlightMarker(at: truckMarker!.position)
-            flashlightMarker?.map = mapView
-        }
-        
-        if let lastLocation = locationManager.location {
-            // Call the method with the last known location
-            locationManager(locationManager, didUpdateLocations: [lastLocation])
-        } else {
-            // If no location exists, call it with an empty array
-            locationManager(locationManager, didUpdateLocations: [])
-        }
-    }
-    
     func calculateBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
-        let deltaLongitude = end.longitude - start.longitude
-        let y = sin(deltaLongitude) * cos(end.latitude)
-        let x = cos(start.latitude) * sin(end.latitude) - sin(start.latitude) * cos(end.latitude) * cos(deltaLongitude)
-        let bearing = atan2(y, x)
-        return (bearing * 180 / .pi + 360).truncatingRemainder(dividingBy: 360) // Convert radians to degrees
+        let deltaLongitude = (end.longitude - start.longitude).radians
+        let startLatitude = start.latitude.radians
+        let endLatitude = end.latitude.radians
+
+        let y = sin(deltaLongitude) * cos(endLatitude)
+        let x = cos(startLatitude) * sin(endLatitude) - sin(startLatitude) * cos(endLatitude) * cos(deltaLongitude)
+
+        let bearing = atan2(y, x).degrees // Convert radians to degrees
+        let normalizedBearing = (bearing + 360).truncatingRemainder(dividingBy: 360) // Normalize to 0-360 degrees
+
+        // Debugging: Log the bearing calculation
+        print("Start: (\(start.latitude), \(start.longitude)) | End: (\(end.latitude), \(end.longitude)) | Bearing: \(bearing)° | Normalized: \(normalizedBearing)°")
+        
+        return normalizedBearing
     }
 
+    func updateFlashlightBearing(newBearing: CLLocationDirection) {
+        // Reduce the influence of the previous smoothed bearing for faster response
+        smoothedBearing = (0.9 * newBearing) + (0.1 * smoothedBearing)
+
+        // Apply the smoothed rotation to the flashlight marker
+        flashlightMarker?.rotation = smoothedBearing
+
+        // Debugging: Log the bearing and rotation
+        print("Original Bearing: \(newBearing)° | Smoothed Bearing: \(smoothedBearing)°")
+    }
 }
 
-extension CLLocationDegrees {
-    var radians: Double { return self * .pi / 180.0 }
-    var degrees: Double { return self * 180.0 / .pi }
+extension Double {
+    /// Convert degrees to radians
+    var radians: Double {
+        return self * .pi / 180.0
+    }
+    
+    /// Convert radians to degrees
+    var degrees: Double {
+        return self * 180.0 / .pi
+    }
 }

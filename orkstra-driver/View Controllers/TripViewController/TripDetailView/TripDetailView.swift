@@ -23,11 +23,16 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
     var tripViewController: TripViewController?
     var delegate: TripDetailViewViewDelegate?
     var separator: UIView?
-    var summaryViewHeight: NSLayoutConstraint?
     
     var trip: Trip?{
         didSet{
             setStops()
+        }
+    }
+    
+    var isShowing: Bool?{
+        didSet{
+            
         }
     }
     
@@ -162,8 +167,14 @@ extension TripDetailView{
             cell.trip = trip
             cell.tripViewController = tripViewController
             separator = cell.separator
-            summaryViewHeight = cell.viewHeight
             cell.addGesture(target: self, action: #selector( headerTapped(_:)))
+//            if tripViewController?.tripDetailsShowing == true{
+//                cell.viewHeight?.constant = 214
+//                cell.viewBottom?.constant = 33
+//            }else{
+//                cell.viewHeight?.constant = 224
+//                cell.viewBottom?.constant = 43
+//            }
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "nextStop") as! StopCell
@@ -180,7 +191,6 @@ extension TripDetailView{
             cell.viewTime?.isHidden = false
             cell.btnDeliver?.addTarget(self, action: #selector( didTapDeliverBtn(_:)), for: .touchUpInside)
             separator = cell.separator
-            summaryViewHeight = cell.viewHeight
             cell.addGesture(target: self, action: #selector(headerTapped(_:)))
     
             return cell
@@ -226,7 +236,7 @@ extension TripDetailView{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let stop = stops[indexPath.section + 1]
-        if indexPath.row == 0 && (trip?.status != "on_route" || indexPath.section != 0){
+        if indexPath.row == 0 && (trip?.status == "ready" || indexPath.section != 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "stop") as! StopCell
             
             cell.stop = stop

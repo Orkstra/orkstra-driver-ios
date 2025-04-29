@@ -8,12 +8,11 @@
 import UIKit
 import RealmSwift
 
-class TripCell: StorageTableViewCell{
+class TripCell: TripDetailsHeaderCell{
     
     @IBOutlet weak var btnStartTrip: CustomUiButton?
     @IBOutlet weak var btnEndTrip: CustomUiButton?
     @IBOutlet weak var separator: UIView?
-    @IBOutlet weak var viewHeight: NSLayoutConstraint?
     
     @IBOutlet weak var txtShift: UILabel?
     @IBOutlet weak var txtETA: UILabel?

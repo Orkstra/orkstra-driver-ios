@@ -12,7 +12,7 @@ protocol StopCellDelegate: AnyObject {
     func StopCellDidSwipeUp()
 }
 
-class StopCell: StorageTableViewCell {
+class StopCell: TripDetailsHeaderCell {
     
     @IBOutlet weak var txtLocation: UILabel?
     @IBOutlet weak var txtAddressLine1: UILabel?
@@ -30,8 +30,6 @@ class StopCell: StorageTableViewCell {
     
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
-    
-    @IBOutlet weak var viewHeight: NSLayoutConstraint?
     
     var delegate: StopCellDelegate?
     

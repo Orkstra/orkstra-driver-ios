@@ -260,7 +260,8 @@
                 <outlet property="txtOrder" destination="3M5-zr-rCU" id="Gqf-MB-ADd"/>
                 <outlet property="txtOutDeliveries" destination="jAY-eY-QCG" id="mPR-VQ-Yl3"/>
                 <outlet property="txtTime" destination="lS9-Tf-HgS" id="J08-ez-pjY"/>
-                <outlet property="viewHeight" destination="TRt-YN-ChX" id="m9x-oP-joJ"/>
+                <outlet property="viewBottom" destination="fIy-6p-2RM" id="ume-q5-mpd"/>
+                <outlet property="viewHeight" destination="TRt-YN-ChX" id="DW4-XF-het"/>
                 <outlet property="viewTime" destination="hPg-j4-goF" id="Kdt-to-Np3"/>
             </connections>
             <point key="canvasLocation" x="-87.786259541984734" y="18.661971830985916"/>

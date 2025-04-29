@@ -235,7 +235,6 @@ extension TripViewController{
         tripDetailView.selectedStop = selectedStop
         tripDetailView.tableView?.reloadData()
         if tripDetailsShowing == false{
-            //tripDetailView.summaryViewHeight?.constant -= 10
             
             UIView.animate(withDuration: 0.5, animations: {
                 self.tripDetailView.frame.origin.y = 50
@@ -247,7 +246,7 @@ extension TripViewController{
     
     func hideTripDetails(){
         if tripDetailsShowing == true{
-            //tripDetailView.summaryViewHeight?.constant += 10
+            
             if tripDetailView.tableView?.cellForRow(at: IndexPath(row: 0, section: 0)) is UITableViewCell{
                 tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
             }

@@ -255,7 +255,8 @@
                 <outlet property="storageFreeze" destination="xGu-YO-x4Z" id="9kK-ta-CgA"/>
                 <outlet property="storageView" destination="znX-oa-TgF" id="hDm-8h-myD"/>
                 <outlet property="storageViewWidth" destination="BfP-fX-XqS" id="KnP-yI-0Qr"/>
-                <outlet property="viewHeight" destination="yWJ-5A-u5C" id="erm-BN-hl4"/>
+                <outlet property="viewBottom" destination="GHH-4F-JeK" id="1RR-sp-sxx"/>
+                <outlet property="viewHeight" destination="yWJ-5A-u5C" id="ebs-Il-Zsv"/>
             </connections>
             <point key="canvasLocation" x="86.25954198473282" y="70.774647887323951"/>
         </tableViewCell>
@@ -268,10 +269,10 @@
         <image name="storage-dry" width="18.857000350952148" height="18.857000350952148"/>
         <image name="storage-freez" width="19.200000762939453" height="19.200000762939453"/>
         <namedColor name="LightBlueColor">
-            <color red="0.90980386729999996" green="0.96078431610000004" blue="0.98039215800000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.90588235294117647" green="0.96078431372549022" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="LightPurpleColor">
-            <color red="0.91372549530000002" green="0.89803922179999995" blue="0.99215686319999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.9137254901960784" green="0.89803921568627454" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
