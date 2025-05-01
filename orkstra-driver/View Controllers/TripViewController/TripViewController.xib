@@ -12,7 +12,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TripViewController" customModule="orkstra_driver" customModuleProvider="target">
             <connections>
                 <outlet property="mapContainerView" destination="FAB-tU-Gf8" id="F3B-5a-5ya"/>
-                <outlet property="myLocationBottom" destination="lwY-OV-BgJ" id="ccR-Wl-RL7"/>
+                <outlet property="myLocationBtn" destination="L0e-cr-LN6" id="M6K-Ho-cwy"/>
+                <outlet property="myLocationView" destination="8uk-JN-1Vx" id="SK2-qV-bDE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="Pa2-qb-Lfp"/>
             </connections>
         </placeholder>
@@ -24,6 +25,77 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FAB-tU-Gf8" customClass="GoogleMapsView" customModule="orkstra_driver" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8uk-JN-1Vx">
+                    <rect key="frame" x="314" y="664" width="54" height="120"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0e-cr-LN6" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="66" width="54" height="54"/>
+                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="54" id="6bW-Gj-3U7"/>
+                                <constraint firstAttribute="height" constant="54" id="Ed9-vQ-lLL"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="dot" cornerStyle="large">
+                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
+                            </buttonConfiguration>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                    <size key="value" width="1" height="2"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didClickMyLocationWithSender:" destination="-1" eventType="touchUpInside" id="S8N-1f-ati"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cci-0H-m1s" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="54" height="54"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="54" id="VPQ-3d-hHW"/>
+                                <constraint firstAttribute="width" constant="54" id="pRD-0Y-rcd"/>
+                            </constraints>
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="zoom" cornerStyle="large">
+                                <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
+                            </buttonConfiguration>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                                    <size key="value" width="1" height="2"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="12"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didClickZoomToFitWithSender:" destination="-1" eventType="touchUpInside" id="zBS-8B-Wa2"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="cci-0H-m1s" firstAttribute="centerX" secondItem="L0e-cr-LN6" secondAttribute="centerX" id="Hne-UC-Mcp"/>
+                        <constraint firstItem="L0e-cr-LN6" firstAttribute="top" secondItem="cci-0H-m1s" secondAttribute="bottom" constant="12" id="gtE-xW-tOR"/>
+                    </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9s-cy-7Z0" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
                     <rect key="frame" x="16" y="65" width="44" height="44"/>
@@ -65,64 +137,6 @@
                         <action selector="didClickCloseBtnWithSender:" destination="-1" eventType="touchUpInside" id="Nl8-GE-Xup"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0e-cr-LN6" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                    <rect key="frame" x="314" y="710" width="54" height="54"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="54" id="6bW-Gj-3U7"/>
-                        <constraint firstAttribute="height" constant="54" id="Ed9-vQ-lLL"/>
-                    </constraints>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" image="dot.scope" catalog="system" cornerStyle="large">
-                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
-                    </buttonConfiguration>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
-                            <size key="value" width="1" height="2"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="12"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didClickMyLocationWithSender:" destination="-1" eventType="touchUpInside" id="S8N-1f-ati"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cci-0H-m1s" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                    <rect key="frame" x="314" y="644" width="54" height="54"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="54" id="VPQ-3d-hHW"/>
-                        <constraint firstAttribute="width" constant="54" id="pRD-0Y-rcd"/>
-                    </constraints>
-                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" image="square.arrowtriangle.4.outward" catalog="system" cornerStyle="large"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
-                            <size key="value" width="1" height="2"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="12"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                            <real key="value" value="1"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                            <color key="value" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                    <connections>
-                        <action selector="didClickZoomToFitWithSender:" destination="-1" eventType="touchUpInside" id="zBS-8B-Wa2"/>
-                    </connections>
-                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -130,12 +144,8 @@
                 <constraint firstItem="FAB-tU-Gf8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6g3-s8-uBh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FAB-tU-Gf8" secondAttribute="trailing" id="98C-qf-de9"/>
                 <constraint firstAttribute="bottom" secondItem="FAB-tU-Gf8" secondAttribute="bottom" id="IXi-LW-Ofy"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L0e-cr-LN6" secondAttribute="trailing" constant="25" id="LaE-OG-tow"/>
-                <constraint firstItem="L0e-cr-LN6" firstAttribute="top" secondItem="cci-0H-m1s" secondAttribute="bottom" constant="12" id="WNz-f3-qKB"/>
                 <constraint firstItem="FAB-tU-Gf8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="aVk-lW-Xax"/>
                 <constraint firstItem="E9s-cy-7Z0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cAN-sK-2tK"/>
-                <constraint firstItem="cci-0H-m1s" firstAttribute="centerX" secondItem="L0e-cr-LN6" secondAttribute="centerX" id="cXl-Tr-z6q"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="L0e-cr-LN6" secondAttribute="bottom" constant="20" id="lwY-OV-BgJ"/>
                 <constraint firstItem="E9s-cy-7Z0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="w2P-5s-ahy"/>
             </constraints>
             <point key="canvasLocation" x="-98.473282442748086" y="19.718309859154932"/>
@@ -143,8 +153,8 @@
     </objects>
     <resources>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
-        <image name="dot.scope" catalog="system" width="128" height="124"/>
-        <image name="square.arrowtriangle.4.outward" catalog="system" width="128" height="116"/>
+        <image name="dot" width="31" height="30"/>
+        <image name="zoom" width="27" height="27"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

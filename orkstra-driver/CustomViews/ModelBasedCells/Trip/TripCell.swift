@@ -62,6 +62,10 @@ class TripCell: TripDetailsHeaderCell{
             AppColors.blue.cgColor,         // Second color
             AppColors.turquoise.cgColor     // Third color
         ])
+        
+        //Gesture to dismiss
+        self.addSwipeGesture(target: self, action: #selector( didSwipeUp(_:)), direction: .up)
+        self.addSwipeGesture(target: self, action: #selector( didSwipeDown(_:)), direction: .down)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -84,6 +88,7 @@ class TripCell: TripDetailsHeaderCell{
         tripViewController?.tripDetailView.startTrip()
         
         //Show the correct views
+        tripViewController?.tripDetailsShowingState = 2
         tripViewController?.hideTripDetails()
         tripViewController?.hideStopDetails()
     }
@@ -100,9 +105,16 @@ class TripCell: TripDetailsHeaderCell{
         }
         
         tripViewController?.selectedStop = nil
-        tripViewController?.hideTripSummary()
+        tripViewController?.hideTripTrackingView()
         tripViewController?.didTapOutsideMarker()
         tripViewController?.tripDetailViewDidSSelectRow(stop: nil)
     }
     
+    @objc func didSwipeDown(_ sender: UITapGestureRecognizer){
+        tripViewController?.showTripTrackingView()
+    }
+    
+    @objc func didSwipeUp(_ sender: UITapGestureRecognizer){
+        tripViewController?.hideTripTrackingView()
+    }
 }

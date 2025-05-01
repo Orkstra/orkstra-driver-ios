@@ -160,7 +160,7 @@
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="location.fill" catalog="system" cornerStyle="large">
+                                <buttonConfiguration key="configuration" style="plain" image="arrow" cornerStyle="large">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="medium"/>
                                 </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
@@ -298,7 +298,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="location.fill" catalog="system" width="128" height="119"/>
+        <image name="arrow" width="20" height="20"/>
         <image name="package" width="16" height="16"/>
         <image name="return" width="16" height="16"/>
         <image name="storage-cool" width="18.857000350952148" height="18.857000350952148"/>

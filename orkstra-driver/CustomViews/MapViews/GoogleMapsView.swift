@@ -269,50 +269,6 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         mapView.animate(with: update)
     }
     
-    func moveMarker(marker: GMSMarker?, to position: CLLocationCoordinate2D) {
-        guard marker != nil else { return }
-        
-        // Begin a smooth animation
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(1.5) // Increase animation duration for smoother movement
-        
-        // Move the marker to the new position
-        truckMarker?.position = position
-        flashlightMarker?.position = position
-        
-        CATransaction.commit()
-    }
-    
-    func updateFlashlightBearing(newBearing: CLLocationDirection) {
-        // Calculate the shortest angle difference between smoothedBearing and newBearing
-        var angleDifference = newBearing - smoothedBearing
-
-        // Normalize the angle difference to the range (-180°, 180°)
-        if angleDifference > 180 {
-            angleDifference -= 360
-        } else if angleDifference < -180 {
-            angleDifference += 360
-        }
-
-        // Add a threshold to avoid unnecessary updates
-        let bearingChangeThreshold: CLLocationDirection = 3.0
-        if abs(angleDifference) < bearingChangeThreshold {
-            return
-        }
-
-        // Smooth the bearing adjustment
-        smoothedBearing += 0.1 * angleDifference
-
-        // Keep smoothedBearing in the range [0°, 360°]
-        smoothedBearing = fmod(smoothedBearing + 360, 360)
-
-        // Apply the new smoothed rotation to the flashlight marker
-        flashlightMarker?.rotation = smoothedBearing
-
-        // Debugging: Log the bearing and rotation
-        print("New Bearing: \(newBearing)° | Smoothed Bearing: \(smoothedBearing)° | Angle Difference: \(angleDifference)°")
-    }
-    
     // MARK: Routing functions
     
     // Draw a route on the map
@@ -501,11 +457,10 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
     
     // MARK: - CLLocationManagerDelegate Methods
     
-    // Update the location of the truck marker
+    // Handle location updates with snapping and animation
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
-        // Ensure significant movement before updating
         guard hasSignificantMovement(from: previousLocation, to: currentLocation) else {
             print("Stationary: Skipping bearing update")
             return
@@ -515,30 +470,66 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
             guard let self = self else { return }
 
             DispatchQueue.main.async {
-                self.moveMarker(marker: self.truckMarker, to: snappedCoordinate)
-
-                // Update flashlight only if the trip is active
-                if self.trip?.status != "ready", let bearing = bearing {
-                    self.updateFlashlightBearing(newBearing: bearing)
-                }
+                self.moveMarker(marker: self.truckMarker, to: snappedCoordinate, bearing: bearing)
 
                 self.previousLocation = CLLocation(latitude: snappedCoordinate.latitude, longitude: snappedCoordinate.longitude)
             }
         }
     }
-    
+
+    // Handle heading updates only when trip is in 'ready' state (compass mode)
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        guard let trip = trip else { return } // Ensure trip exists
+        guard trip?.status == "ready" else { return }
 
-        if trip.status == "ready" {
-            let heading = newHeading.trueHeading
+        let heading = newHeading.trueHeading
 
-            // Smoothly animate the rotation
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(0.2) // Set a short animation duration
-            flashlightMarker?.rotation = heading // Rotate based on phone's heading
-            CATransaction.commit()
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(0.2)
+        flashlightMarker?.rotation = heading
+        CATransaction.commit()
+    }
+    
+    // Smoothly move and rotate the truck and flashlight markers
+    func moveMarker(marker: GMSMarker?, to position: CLLocationCoordinate2D, bearing: CLLocationDirection?) {
+        guard marker != nil else { return }
+
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(1.5)
+
+        // Move markers to new position
+        truckMarker?.position = position
+        flashlightMarker?.position = position
+
+        // Update bearing only if provided and trip is active
+        if trip?.status != "ready", let bearing = bearing {
+            updateFlashlightBearing(newBearing: bearing)
         }
+
+        CATransaction.commit()
+    }
+
+    // Smooth bearing rotation logic with smoothing
+    func updateFlashlightBearing(newBearing: CLLocationDirection) {
+        // Calculate shortest angle difference
+        var angleDifference = newBearing - smoothedBearing
+        if angleDifference > 180 {
+            angleDifference -= 360
+        } else if angleDifference < -180 {
+            angleDifference += 360
+        }
+
+        // Threshold to prevent tiny jittery updates
+        let bearingChangeThreshold: CLLocationDirection = 3.0
+        if abs(angleDifference) < bearingChangeThreshold {
+            return
+        }
+
+        // Apply smoothing
+        smoothedBearing += 0.1 * angleDifference
+        smoothedBearing = fmod(smoothedBearing + 360, 360)
+
+        // Update flashlight rotation
+        flashlightMarker?.rotation = smoothedBearing
     }
     
     /// Snap the given location to the nearest road using the Google Roads API

@@ -10,7 +10,8 @@ import RealmSwift
 
 class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDelegate, TripDetailViewViewDelegate {
     
-    @IBOutlet weak var myLocationBottom: NSLayoutConstraint?
+    @IBOutlet weak var myLocationView: UIView?
+    @IBOutlet weak var myLocationBtn: UIButton?
     @IBOutlet weak var mapContainerView: GoogleMapsView?
 
     var stopView = StopCell()
@@ -19,9 +20,9 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
     var selectedStop: Stop?
     var tripId: String?
     
-    var tripDetailsShowing = false{
+    var tripDetailsShowingState = 0{
         didSet{
-            if tripDetailsShowing == false{
+            if tripDetailsShowingState < 2{
                 tripDetailView.tableView?.isScrollEnabled = false
             }else{
                 tripDetailView.tableView?.isScrollEnabled = true
@@ -34,6 +35,9 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let h = self.view.frame.height - 94 - 135
+        myLocationView?.frame.origin.y = h
+        myLocationView?.frame.origin.x = self.view.frame.width - 25 - 54
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,10 +56,7 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         //Notify Stop Detail
         stopView.stop = selectedStop
         
-        //Show stop view if hidden
-        if tripDetailsShowing == false{
-            showStopDetails()
-        }
+        showStopDetails()
     }
     
     func didTapOutsideMarker() {
@@ -101,14 +102,16 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
     }
     
     func tripDetailViewDidSwipeUp() {
-        hideStopDetails()
+        if tripDetailsShowingState  == 1{
+            //hideStopDetails()
+        }
         showTripDetails()
     }
     
     func tripDetailViewDidSwipeDown() {
         hideTripDetails()
         if selectedStop != nil{
-            showStopDetails()
+            //showStopDetails()
         }
     }
     
@@ -162,7 +165,12 @@ extension TripViewController{
         tripTrackingView = helper.setupTripTrackingView(viewController: self)
         
         tripDetailView = helper.setupTripDetailsView(viewController: self)
-        myLocationBottom?.constant = 281
+        
+        let h = self.view.frame.height - 294 - 135
+        myLocationView?.frame.origin.y = h
+        myLocationView?.frame.origin.x = self.view.frame.width - 25 - 54
+        
+        showTripDetails()
         
         //Show view if not nil
         if selectedStop != nil{
@@ -176,29 +184,33 @@ extension TripViewController{
     func showTripTrackingView(){
         if trip.status != "ready"{
             //Show the data
-            if tripTrackingView.isHidden == true{
-                //Reset location
-                tripTrackingView.frame.origin.y = -1 * self.tripTrackingView.frame.height
-                tripTrackingView.isHidden = false
-                
-                //Show view with animation
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.tripTrackingView.frame.origin.y = 50
-                })
-            }
+            tripTrackingView.isHidden = false
+            
+            //Show view with animation
+            UIView.animate(withDuration: 0.5, animations: {
+                self.tripTrackingView.frame.origin.y = 60
+            })
         }
     }
     
-    func hideTripSummary(completion: (() -> Void)? = nil) {
-        if tripTrackingView.isHidden == false{
+    func hideTripTrackingView(completion: (() -> Void)? = nil) {
+        if trip.status != "ready"{
             UIView.animate(withDuration: 0.5, animations: {
-                self.tripTrackingView.frame.origin.y = -1 * self.tripTrackingView.frame.height
+                self.tripTrackingView.frame.origin.y = -1 * self.tripTrackingView.frame.height + 100
             }, completion: { (finished: Bool) in
-                self.tripTrackingView.isHidden = true
                 completion?() // Immediately notify if no animation needed
             })
-        } else {
-            completion?() // Immediately notify if no animation needed
+        }else{
+            if tripTrackingView.isHidden == false{
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.tripTrackingView.frame.origin.y = -1 * self.tripTrackingView.frame.height
+                }, completion: { (finished: Bool) in
+                    self.tripTrackingView.isHidden = true
+                    completion?() // Immediately notify if no animation needed
+                })
+            } else {
+                completion?() // Immediately notify if no animation needed
+            }
         }
     }
     
@@ -212,7 +224,7 @@ extension TripViewController{
                 
                 //Show view with animation
                 UIView.animate(withDuration: 0.5, animations: {
-                    self.stopView.frame.origin.y = 50
+                    self.stopView.frame.origin.y = 60
                 })
             }
         }
@@ -234,29 +246,56 @@ extension TripViewController{
     func showTripDetails(){
         tripDetailView.selectedStop = selectedStop
         tripDetailView.tableView?.reloadData()
-        if tripDetailsShowing == false{
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                self.tripDetailView.frame.origin.y = 50
-            }, completion: { (finished: Bool) in
-                self.tripDetailsShowing = true
-            })
+        
+        var y: CGFloat = 0
+        var h: CGFloat = 0
+        switch tripDetailsShowingState{
+        case 0:
+            y = self.view.frame.height - 294
+            h = y - 135
+            print(h)
+            print("DONE")
+        case 1:
+            y = 50
+            h = self.view.frame.height - 294 - 135
+        default:
+            return
         }
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tripDetailView.frame.origin.y = y
+            self.myLocationView?.frame.origin.y = h
+        }, completion: { (finished: Bool) in
+            self.tripDetailsShowingState += 1
+        })
+        
     }
     
     func hideTripDetails(){
-        if tripDetailsShowing == true{
-            
-            if tripDetailView.tableView?.cellForRow(at: IndexPath(row: 0, section: 0)) is UITableViewCell{
-                tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-            }
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                self.tripDetailView.frame.origin.y = self.view.frame.height - 294
-            }, completion: { (finished: Bool) in
-                self.tripDetailsShowing = false
-            })
+        
+        var y: CGFloat = 0
+        var h: CGFloat = 0
+        switch tripDetailsShowingState{
+        case 1:
+            y = self.view.frame.height - 94
+            h = self.view.frame.height - 94 - 130
+        case 2:
+            y = self.view.frame.height - 294
+            h = self.view.frame.height - 294 - 130
+        default:
+            return
         }
+        
+        if tripDetailView.tableView?.cellForRow(at: IndexPath(row: 0, section: 0)) is UITableViewCell{
+            tripDetailView.tableView?.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tripDetailView.frame.origin.y = y
+            self.myLocationView?.frame.origin.y = h
+        }, completion: { (finished: Bool) in
+            self.tripDetailsShowingState -= 1
+        })
     }
     
     func updateETAs(legTimes: [TimeInterval]){

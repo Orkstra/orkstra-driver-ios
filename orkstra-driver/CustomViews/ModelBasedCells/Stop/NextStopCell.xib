@@ -74,7 +74,7 @@
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="location.fill" catalog="system" cornerStyle="large">
+                                <buttonConfiguration key="configuration" style="plain" image="arrow" cornerStyle="large">
                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="medium"/>
                                 </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
@@ -147,7 +147,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baw-WG-EkP" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                                <rect key="frame" x="63" y="212" width="308.99999999999994" height="48"/>
+                                <rect key="frame" x="63" y="212" width="309" height="48"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="pE8-LE-NTo"/>
@@ -359,7 +359,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="location.fill" catalog="system" width="128" height="119"/>
+        <image name="arrow" width="20" height="20"/>
         <image name="package" width="16" height="16"/>
         <image name="return" width="16" height="16"/>
         <image name="storage-cool" width="18.857000350952148" height="18.857000350952148"/>

@@ -22,8 +22,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zqr-MM-Twl" customClass="CustomUiView" customModule="orkstra_driver" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="294"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Orlando East" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Id-3f-vub">
-                                <rect key="frame" x="111" y="39" width="121" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trip 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Id-3f-vub">
+                                <rect key="frame" x="111" y="39" width="54" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="qdY-5G-MAw"/>
                                 </constraints>
@@ -31,8 +31,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trip 2 | Van" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8N-jU-rEM">
-                                <rect key="frame" x="111" y="67" width="72" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Van Type A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8N-jU-rEM">
+                                <rect key="frame" x="111" y="67" width="73" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="Ds6-vj-HUg"/>
                                 </constraints>
@@ -270,7 +270,6 @@
                 <outlet property="storageFreeze" destination="xGu-YO-x4Z" id="9kK-ta-CgA"/>
                 <outlet property="storageView" destination="znX-oa-TgF" id="hDm-8h-myD"/>
                 <outlet property="storageViewWidth" destination="BfP-fX-XqS" id="KnP-yI-0Qr"/>
-                <outlet property="txtRoute" destination="6Id-3f-vub" id="66D-RY-076"/>
                 <outlet property="txtShift" destination="0SI-4t-aYN" id="bIV-TM-33P"/>
                 <outlet property="viewHeight" destination="yWJ-5A-u5C" id="ebs-Il-Zsv"/>
             </connections>

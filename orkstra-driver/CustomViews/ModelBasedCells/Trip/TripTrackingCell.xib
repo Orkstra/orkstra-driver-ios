@@ -23,9 +23,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="215"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KSo-nV-pON" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                                <rect key="frame" x="280.33333333333331" y="20" width="86.666666666666686" height="48"/>
+                                <rect key="frame" x="257" y="20" width="110" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="110" id="CvD-1z-D60"/>
                                     <constraint firstAttribute="height" constant="48" id="Gvp-lq-zqm"/>
                                 </constraints>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -178,8 +179,8 @@
                                 <color key="textColor" red="0.46274509803921571" green="0.46274509803921571" blue="0.46274509803921571" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Orlando East" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaL-7l-cyd">
-                                <rect key="frame" x="105" y="31" width="121" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trip 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaL-7l-cyd">
+                                <rect key="frame" x="105" y="31" width="54" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="tmu-mY-UlQ"/>
                                 </constraints>
@@ -187,8 +188,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trip 2 | Van" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0S1-Rt-vrJ">
-                                <rect key="frame" x="105" y="59" width="72" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Van type A" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0S1-Rt-vrJ">
+                                <rect key="frame" x="105" y="59" width="70" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="IWB-xy-bmG"/>
                                 </constraints>
@@ -265,7 +266,6 @@
                 <outlet property="txtDone" destination="t5Y-3Y-JSg" id="zRx-Yg-fin"/>
                 <outlet property="txtETA" destination="eUf-8d-lsI" id="MCZ-sp-0pM"/>
                 <outlet property="txtRemaining" destination="LWI-au-oKC" id="75f-TY-wir"/>
-                <outlet property="txtRoute" destination="qaL-7l-cyd" id="S7V-49-lj4"/>
                 <outlet property="txtstatus" destination="mlM-ha-cex" id="Va4-0n-ANv"/>
                 <outlet property="viewProgress" destination="J2D-0X-zdi" id="cVA-59-GiW"/>
                 <outlet property="viewProgressWidth" destination="NtI-j4-jRD" id="RYF-mW-B81"/>

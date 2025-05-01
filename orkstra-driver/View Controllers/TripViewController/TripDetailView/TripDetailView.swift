@@ -130,7 +130,7 @@ extension TripDetailView{
     }
     
     @objc func headerTapped(_ sender: UITapGestureRecognizer?) {
-        if tripViewController?.tripDetailsShowing == true {
+        if tripViewController?.tripDetailsShowingState == 2 {
             tripViewController?.hideTripDetails()
         }else{
             tripViewController?.showTripDetails()
