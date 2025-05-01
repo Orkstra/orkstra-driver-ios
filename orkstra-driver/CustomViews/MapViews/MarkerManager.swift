@@ -12,7 +12,7 @@ class MarkerManager: NSObject{
     
     func createStopMarker(stop: Stop?, selected: Bool = false) -> UIImage {
         let number = stop?.order ?? 0
-        let size: CGFloat = 35.0 // Marker size
+        let size: CGFloat = 40.0 // Marker size
         let padding: CGFloat = 10.0 // Add padding to prevent slicing
         let canvasSize = size + padding * 2
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: canvasSize, height: canvasSize))
@@ -21,7 +21,7 @@ class MarkerManager: NSObject{
             
             // Add shadow
             let shadowColor = UIColor.black.withAlphaComponent(0.3)
-            context.cgContext.setShadow(offset: CGSize(width: 1, height: 2), blur: 6.0, color: shadowColor.cgColor)
+            context.cgContext.setShadow(offset: CGSize(width: 1, height: 2), blur: 4.0, color: shadowColor.cgColor)
             shadowColor.setFill()
             context.cgContext.fillEllipse(in: rect) // Shadow is drawn as a blurred ellipse
             
@@ -31,8 +31,8 @@ class MarkerManager: NSObject{
             var borderColor = AppColors.trip
             
             if selected {
-                borderColor = AppColors.orange
-                txtColor = AppColors.orange
+                borderColor = AppColors.purple
+                txtColor = AppColors.purple
             }
             
             circleColor.setFill()
@@ -46,7 +46,7 @@ class MarkerManager: NSObject{
             // Draw the number in the center
             let numberText = "\(number)"
             let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 16),
+                .font: UIFont.systemFont(ofSize: 18),
                 .foregroundColor: txtColor
             ]
             let textSize = numberText.size(withAttributes: attributes)
@@ -62,7 +62,7 @@ class MarkerManager: NSObject{
     }
     
     func createDeliveredMarker(with icon: UIImage, selected: Bool = false) -> UIImage {
-        let size: CGFloat = 35.0 // Marker size
+        let size: CGFloat = 40.0 // Marker size
         let padding: CGFloat = 10.0 // Add padding to prevent slicing
         let canvasSize = size + padding * 2
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: canvasSize, height: canvasSize))
@@ -71,7 +71,7 @@ class MarkerManager: NSObject{
 
             // Add shadow
             let shadowColor = UIColor.black.withAlphaComponent(0.3)
-            context.cgContext.setShadow(offset: CGSize(width: 1, height: 2), blur: 6.0, color: shadowColor.cgColor)
+            context.cgContext.setShadow(offset: CGSize(width: 1, height: 2), blur: 4.0, color: shadowColor.cgColor)
             shadowColor.setFill()
             context.cgContext.fillEllipse(in: rect) // Shadow is drawn as a blurred ellipse
             
@@ -81,8 +81,8 @@ class MarkerManager: NSObject{
             var borderColor = AppColors.trip
             
             if selected {
-                borderColor = AppColors.orange
-                txtColor = AppColors.orange
+                borderColor = AppColors.purple
+                txtColor = AppColors.purple
             }
             
             circleColor.setFill()
@@ -110,7 +110,7 @@ class MarkerManager: NSObject{
     }
     
     func createHomeMarker(with icon: UIImage, selected: Bool = false) -> UIImage {
-        let size: CGFloat = 35.0 // Marker size
+        let size: CGFloat = 40.0 // Marker size
         let padding: CGFloat = 10.0 // Add padding to prevent slicing
         let canvasSize = size + padding * 2
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: canvasSize, height: canvasSize))
@@ -119,18 +119,18 @@ class MarkerManager: NSObject{
 
             // Add shadow
             let shadowColor = UIColor.black.withAlphaComponent(0.3)
-            context.cgContext.setShadow(offset: CGSize(width: 1, height: 2), blur: 6.0, color: shadowColor.cgColor)
+            context.cgContext.setShadow(offset: CGSize(width: 1, height: 2), blur: 4.0, color: shadowColor.cgColor)
             shadowColor.setFill()
             context.cgContext.fillEllipse(in: rect) // Shadow is drawn as a blurred ellipse
             
             // Draw the circle
-            var circleColor = AppColors.green
+            var circleColor = AppColors.neonGreen
             var borderColor = UIColor.white
             var iconColor = UIColor.black
             if selected {
                 circleColor = .white
-                borderColor = AppColors.orange
-                iconColor = AppColors.orange
+                borderColor = AppColors.purple
+                iconColor = AppColors.purple
             }
             
             circleColor.setFill()
@@ -168,7 +168,7 @@ class MarkerManager: NSObject{
 
             // Add shadow
             let shadowColor = UIColor.black.withAlphaComponent(0.2)
-            context.cgContext.setShadow(offset: CGSize(width: 0, height: 0), blur: 6.0, color: shadowColor.cgColor)
+            context.cgContext.setShadow(offset: CGSize(width: 0, height: 0), blur: 4.0, color: shadowColor.cgColor)
             shadowColor.setFill()
             context.cgContext.fillEllipse(in: rect) // Shadow is drawn as a blurred ellipse
             

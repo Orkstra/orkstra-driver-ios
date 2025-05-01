@@ -17,6 +17,7 @@ class DeliveryCell: StorageTableViewCell {
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
     @IBOutlet weak var txtWeight: UILabel?
+    @IBOutlet weak var mainViewLeading: NSLayoutConstraint?
     
     var delivery: Delivery? {
         didSet {

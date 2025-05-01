@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,22 +26,39 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9s-cy-7Z0" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                    <rect key="frame" x="20" y="65" width="40" height="40"/>
+                    <rect key="frame" x="16" y="65" width="44" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="kgW-rv-big"/>
-                        <constraint firstAttribute="width" constant="40" id="nno-Za-lic"/>
+                        <constraint firstAttribute="height" constant="44" id="kgW-rv-big"/>
+                        <constraint firstAttribute="width" constant="44" id="nno-Za-lic"/>
                     </constraints>
-                    <color key="tintColor" name="AccentColor"/>
+                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="filled" image="chevron.left" catalog="system" cornerStyle="capsule">
-                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="medium"/>
+                    <buttonConfiguration key="configuration" style="plain" image="chevron.left" catalog="system">
+                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large" weight="bold"/>
+                        <attributedString key="attributedTitle"/>
                     </buttonConfiguration>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
-                            <size key="value" width="1" height="2"/>
+                            <size key="value" width="0.0" height="0.0"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                            <real key="value" value="6"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                             <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                            <real key="value" value="0.29999999999999999"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                            <color key="value" systemColor="labelColor"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
@@ -50,11 +66,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0e-cr-LN6" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                    <rect key="frame" x="333" y="714" width="50" height="50"/>
+                    <rect key="frame" x="314" y="710" width="54" height="54"/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="50" id="6bW-Gj-3U7"/>
-                        <constraint firstAttribute="height" constant="50" id="Ed9-vQ-lLL"/>
+                        <constraint firstAttribute="width" constant="54" id="6bW-Gj-3U7"/>
+                        <constraint firstAttribute="height" constant="54" id="Ed9-vQ-lLL"/>
                     </constraints>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" title="Button"/>
@@ -66,7 +82,7 @@
                             <size key="value" width="1" height="2"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="10"/>
+                            <real key="value" value="12"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                             <real key="value" value="1"/>
@@ -80,11 +96,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cci-0H-m1s" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
-                    <rect key="frame" x="333" y="654" width="50" height="50"/>
+                    <rect key="frame" x="314" y="644" width="54" height="54"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="VPQ-3d-hHW"/>
-                        <constraint firstAttribute="width" constant="50" id="pRD-0Y-rcd"/>
+                        <constraint firstAttribute="height" constant="54" id="VPQ-3d-hHW"/>
+                        <constraint firstAttribute="width" constant="54" id="pRD-0Y-rcd"/>
                     </constraints>
                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" title="Button"/>
@@ -94,13 +110,13 @@
                             <size key="value" width="1" height="2"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="10"/>
+                            <real key="value" value="12"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                             <real key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                            <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="value" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
@@ -114,10 +130,10 @@
                 <constraint firstItem="FAB-tU-Gf8" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="6g3-s8-uBh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="FAB-tU-Gf8" secondAttribute="trailing" id="98C-qf-de9"/>
                 <constraint firstAttribute="bottom" secondItem="FAB-tU-Gf8" secondAttribute="bottom" id="IXi-LW-Ofy"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L0e-cr-LN6" secondAttribute="trailing" constant="10" id="LaE-OG-tow"/>
-                <constraint firstItem="L0e-cr-LN6" firstAttribute="top" secondItem="cci-0H-m1s" secondAttribute="bottom" constant="10" id="WNz-f3-qKB"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="L0e-cr-LN6" secondAttribute="trailing" constant="25" id="LaE-OG-tow"/>
+                <constraint firstItem="L0e-cr-LN6" firstAttribute="top" secondItem="cci-0H-m1s" secondAttribute="bottom" constant="12" id="WNz-f3-qKB"/>
                 <constraint firstItem="FAB-tU-Gf8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="aVk-lW-Xax"/>
-                <constraint firstItem="E9s-cy-7Z0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="cAN-sK-2tK"/>
+                <constraint firstItem="E9s-cy-7Z0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cAN-sK-2tK"/>
                 <constraint firstItem="cci-0H-m1s" firstAttribute="centerX" secondItem="L0e-cr-LN6" secondAttribute="centerX" id="cXl-Tr-z6q"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="L0e-cr-LN6" secondAttribute="bottom" constant="20" id="lwY-OV-BgJ"/>
                 <constraint firstItem="E9s-cy-7Z0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="w2P-5s-ahy"/>
@@ -129,9 +145,9 @@
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="dot.scope" catalog="system" width="128" height="124"/>
         <image name="square.arrowtriangle.4.outward" catalog="system" width="128" height="116"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

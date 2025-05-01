@@ -30,6 +30,8 @@ class StopCell: TripDetailsHeaderCell {
     
     @IBOutlet weak var viewTime: CustomUiView?
     @IBOutlet weak var txtTime: UILabel?
+    @IBOutlet weak var txtTimeLeading: NSLayoutConstraint?
+    @IBOutlet weak var txtTimeTrailing: NSLayoutConstraint?
     
     var delegate: StopCellDelegate?
     
@@ -41,14 +43,6 @@ class StopCell: TripDetailsHeaderCell {
                 .map { $0.storage_type?.uid ?? "NA" } ?? []
             
             setupStorageView(cell: self, storageUIDs: storages)
-            
-            if (stop?.deliveries.map { $0.label }.unique().count ?? 0) > 1{
-                txtLocation?.text = stop?.name ?? "NA"
-                viewTime?.isHidden = false
-            }else{
-                txtLocation?.text = stop?.deliveries.first?.label
-                viewTime?.isHidden = false
-            }
             
             let formatter = DateFormatter()
             formatter.dateStyle = .none
@@ -63,9 +57,13 @@ class StopCell: TripDetailsHeaderCell {
             if stop?.deliveries.first?.time_slot != nil {
                 viewTime?.borderWidth = 1
                 viewTime?.backgroundColor = AppColors.lightOrange
+                txtTimeLeading?.constant = 10
+                txtTimeTrailing?.constant = 10
             }else{
                 viewTime?.borderWidth = 0
-                viewTime?.backgroundColor = .white
+                viewTime?.backgroundColor = .clear
+                txtTimeLeading?.constant = 0
+                txtTimeTrailing?.constant = 0
             }
             
             let manager = StopManager()
@@ -89,9 +87,9 @@ class StopCell: TripDetailsHeaderCell {
     var setSelected: Bool? {
         didSet {
             if setSelected == true{
-                orderView?.backgroundColor = AppColors.orange
+                orderView?.backgroundColor = AppColors.purple
             }else{
-                orderView?.backgroundColor = AppColors.trip
+                orderView?.backgroundColor = AppColors.purple
             }
         }
     }

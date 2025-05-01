@@ -33,7 +33,8 @@ class TripCell: TripDetailsHeaderCell{
             
             let formatter = DateFormatter()
             formatter.dateStyle = .none
-            formatter.timeStyle = .short
+            formatter.dateFormat = "h:mma" // Custom format without a space
+            formatter.locale = Locale(identifier: "en_US_POSIX") // Ensures consistent formatting
             txtShift?.text = formatter.string(from: trip?.delivery_shift?.start_time ?? Date()) + " - " + formatter.string(from: trip?.delivery_shift?.end_time ?? Date())
             
             //Storages
@@ -50,9 +51,9 @@ class TripCell: TripDetailsHeaderCell{
         super.awakeFromNib()
         // Initialization code
         btnStartTrip?.tintColor = UIColor.white
-        btnStartTrip?.layer.cornerRadius = 7
+        btnStartTrip?.layer.cornerRadius = 8
         btnStartTrip?.setBoldTitle(string: "Start trip", color: .white)
-        btnEndTrip?.setBoldTitle(string: "End trip", color: .white)
+        btnEndTrip?.setBoldTitle(string: "End trip", color: .black)
         
         // Apply the gradient
         let helper = AppHelperClass()

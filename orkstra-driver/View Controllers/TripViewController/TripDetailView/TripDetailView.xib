@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="564"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="APn-ox-aaX">
-                                <rect key="frame" x="0.0" y="15" width="393" height="549"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="564"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="dataSource" destination="KGk-i7-Jjw" id="u1l-A1-KUJ"/>
@@ -31,11 +30,11 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Uh-Zo-AJN" customClass="CustomUiView" customModule="orkstra_driver" customModuleProvider="target">
-                                <rect key="frame" x="173" y="10" width="47" height="4"/>
+                                <rect key="frame" x="167" y="8" width="59" height="4"/>
                                 <color key="backgroundColor" red="0.87058823529999996" green="0.8700339198" blue="0.8700339198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="4" id="ElH-eS-dsA"/>
-                                    <constraint firstAttribute="width" constant="47" id="R5Y-8X-NU0"/>
+                                    <constraint firstAttribute="width" constant="59" id="R5Y-8X-NU0"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -50,9 +49,9 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIe-3U-w5n">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="40"/>
+                                <rect key="frame" x="0.0" y="0.0" width="323" height="180"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="kkx-24-zIq"/>
+                                    <constraint firstAttribute="height" constant="180" id="kkx-24-zIq"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
@@ -65,12 +64,12 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="APn-ox-aaX" secondAttribute="bottom" id="19V-Yv-HG4"/>
                             <constraint firstItem="QIe-3U-w5n" firstAttribute="top" secondItem="an9-L5-nXx" secondAttribute="top" id="2PA-ac-4Di"/>
-                            <constraint firstItem="3Uh-Zo-AJN" firstAttribute="top" secondItem="an9-L5-nXx" secondAttribute="top" constant="10" id="4tV-dM-JhK"/>
+                            <constraint firstItem="3Uh-Zo-AJN" firstAttribute="top" secondItem="an9-L5-nXx" secondAttribute="top" constant="8" id="4tV-dM-JhK"/>
                             <constraint firstItem="3Uh-Zo-AJN" firstAttribute="centerX" secondItem="an9-L5-nXx" secondAttribute="centerX" id="5fA-8V-KQp"/>
-                            <constraint firstItem="APn-ox-aaX" firstAttribute="top" secondItem="an9-L5-nXx" secondAttribute="top" constant="15" id="hWo-wi-dUX"/>
+                            <constraint firstItem="APn-ox-aaX" firstAttribute="top" secondItem="an9-L5-nXx" secondAttribute="top" id="hWo-wi-dUX"/>
                             <constraint firstItem="APn-ox-aaX" firstAttribute="leading" secondItem="an9-L5-nXx" secondAttribute="leading" id="iHP-ma-71c"/>
                             <constraint firstItem="QIe-3U-w5n" firstAttribute="leading" secondItem="an9-L5-nXx" secondAttribute="leading" id="koL-en-v6W"/>
-                            <constraint firstAttribute="trailing" secondItem="QIe-3U-w5n" secondAttribute="trailing" id="qFp-gJ-88J"/>
+                            <constraint firstAttribute="trailing" secondItem="QIe-3U-w5n" secondAttribute="trailing" constant="70" id="qFp-gJ-88J"/>
                             <constraint firstAttribute="trailing" secondItem="APn-ox-aaX" secondAttribute="trailing" id="qwH-4B-LgV"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
@@ -95,9 +94,4 @@
             <point key="canvasLocation" x="23.664122137404579" y="106.33802816901409"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>

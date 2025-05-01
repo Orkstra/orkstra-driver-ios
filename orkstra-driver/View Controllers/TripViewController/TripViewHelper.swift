@@ -23,7 +23,7 @@ class TripViewHelper: NSObject {
         let nib = UINib(nibName: "StopView", bundle: nil)
         if let cell = nib.instantiate(withOwner: nil, options: nil).first as? StopCell {
             stopView = cell
-            stopView.frame = CGRect(x: 10, y: -1 * stopView.frame.height, width: viewController.view.frame.width - 20, height: stopView.frame.height)
+            stopView.frame = CGRect(x: 5, y: -1 * stopView.frame.height, width: viewController.view.frame.width - 10, height: stopView.frame.height)
         }
         
         // Add shadow
@@ -46,7 +46,7 @@ class TripViewHelper: NSObject {
         let nib = UINib(nibName: "TripTrackingCell", bundle: nil)
         if let cell = nib.instantiate(withOwner: nil, options: nil).first as? TripCell {
             tripCell = cell
-            tripCell.frame = CGRect(x: 10, y: -1 * tripCell.frame.height, width: viewController.view.frame.width - 20, height: tripCell.frame.height)
+            tripCell.frame = CGRect(x: 5, y: -1 * tripCell.frame.height, width: viewController.view.frame.width - 10, height: tripCell.frame.height)
         }
         
         // Add shadow
@@ -70,7 +70,7 @@ class TripViewHelper: NSObject {
         let nib = UINib(nibName: "TripDetailView", bundle: nil)
         if let cell = nib.instantiate(withOwner: nil, options: nil).first as? TripDetailView {
             tripDetailView = cell
-            tripDetailView.frame = CGRect(x: 10, y: viewController.view.frame.height - 235, width: viewController.view.frame.width - 20, height: viewController.view.frame.height - 50)
+            tripDetailView.frame = CGRect(x: 5, y: viewController.view.frame.height - 294, width: viewController.view.frame.width - 10, height: viewController.view.frame.height - 50)
         }
         
         // Add shadow
@@ -78,6 +78,7 @@ class TripViewHelper: NSObject {
         tripDetailView.layer.shadowOpacity = 0.3                 // Opacity (0 to 1)
         tripDetailView.layer.shadowOffset = CGSize(width: 0, height: 0) // No offset
         tripDetailView.layer.shadowRadius = 6                    // Spread of the shadow
+        tripDetailView.tableView?.layer.cornerRadius = 12
         
         tripDetailView.delegate = viewController
         tripDetailView.selectedStop = viewController.selectedStop

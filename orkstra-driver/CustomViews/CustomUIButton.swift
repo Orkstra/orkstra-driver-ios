@@ -51,9 +51,9 @@ class CustomUiButton: UIButton {
     }
     
     func setBoldTitle(string: String, color: UIColor){
-        let boldFont = UIFont.boldSystemFont(ofSize: 17)
+        let semiBoldFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: boldFont,
+            .font: semiBoldFont,
             .foregroundColor: color
         ]
         let attributedTitle = NSAttributedString(string: string, attributes: attributes)

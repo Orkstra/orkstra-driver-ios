@@ -21,7 +21,7 @@ class StorageTableViewCell: UITableViewCell {
         if storageUIDs.contains("Freez"){
             cell.storageFreeze?.isHidden = false
             cell.storageFreeze?.frame.origin.x = 0
-            x += 25
+            x += 30
         }else{
             cell.storageFreeze?.isHidden = true
         }
@@ -29,7 +29,7 @@ class StorageTableViewCell: UITableViewCell {
         if storageUIDs.contains("Chilled"){
             cell.storageChilled?.isHidden = false
             cell.storageChilled?.frame.origin.x = CGFloat(x)
-            x += 25
+            x += 30
         }else{
             cell.storageChilled?.isHidden = true
             
@@ -38,10 +38,12 @@ class StorageTableViewCell: UITableViewCell {
         if storageUIDs.contains("Dry"){
             cell.storageDry?.isHidden = false
             cell.storageDry?.frame.origin.x = CGFloat(x)
-            x += 22
+            x += 30
         }else{
             cell.storageDry?.isHidden = true
         }
+        
+        x -= 6
         
         cell.storageViewWidth?.constant = x
     }

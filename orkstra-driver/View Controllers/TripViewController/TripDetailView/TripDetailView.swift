@@ -270,6 +270,13 @@ extension TripDetailView{
             // Check if this is the first occurrence of the label
             if (indexPath.row - 1) == stop.deliveries.firstIndex(where: { $0.label == delivery.label }) && (stop.deliveries.map { $0.label }.unique().count) > 1{
                 cell = tableView.dequeueReusableCell(withIdentifier: "deliveryWithTitle") as! DeliveryCell
+            }else{
+                // If delivery cell
+                if (stop.deliveries.map { $0.label }.unique().count) > 1{
+                    cell.mainViewLeading?.constant = 74.67
+                }else{
+                    cell.mainViewLeading?.constant = 55
+                }
             }
             
             cell.delivery = delivery

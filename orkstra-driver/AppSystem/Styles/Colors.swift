@@ -17,6 +17,10 @@ struct AppColors {
         return UIColor(named: "BlueColor") ?? .blue
     }
 
+    static func neonGreenColor() -> UIColor {
+        return UIColor(named: "NeonGreenColor") ?? .green
+    }
+    
     static func greenColor() -> UIColor {
         return UIColor(named: "GreenColor") ?? .green
     }
@@ -66,6 +70,7 @@ struct AppColors {
     static let accent = accentColor()
     static let blue = blueColor()
     static let green = greenColor()
+    static let neonGreen = neonGreenColor()
     static let orange = orangeColor()
     static let lightOrange = lightOrangeColor()
     static let lightBlue = lightBlueColor()

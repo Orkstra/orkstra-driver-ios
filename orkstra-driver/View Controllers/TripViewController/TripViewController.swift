@@ -162,7 +162,7 @@ extension TripViewController{
         tripTrackingView = helper.setupTripTrackingView(viewController: self)
         
         tripDetailView = helper.setupTripDetailsView(viewController: self)
-        myLocationBottom?.constant = 215
+        myLocationBottom?.constant = 281
         
         //Show view if not nil
         if selectedStop != nil{
@@ -252,7 +252,7 @@ extension TripViewController{
             }
             
             UIView.animate(withDuration: 0.5, animations: {
-                self.tripDetailView.frame.origin.y = self.view.frame.height - 235
+                self.tripDetailView.frame.origin.y = self.view.frame.height - 294
             }, completion: { (finished: Bool) in
                 self.tripDetailsShowing = false
             })
