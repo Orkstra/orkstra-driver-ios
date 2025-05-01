@@ -67,8 +67,13 @@ class StopCell: TripDetailsHeaderCell {
             }
             
             let manager = StopManager()
-            txtOutDeliveries?.text = "\(manager.getOutDeleveries(stop: stop ?? Stop()).count) Deliveries"
-            txtInDeliveries?.text = "\(manager.getInDeleveries(stop: stop ?? Stop()).count) Returns"
+            
+            let deliveries = manager.getOutDeleveries(stop: stop ?? Stop()).count
+            let returns = manager.getInDeleveries(stop: stop ?? Stop()).count
+            
+            
+            txtOutDeliveries?.text = "\(deliveries) deliver\(deliveries == 1 ? "y" : "ies")"
+            txtInDeliveries?.text = "\(returns) return\(returns == 1 ? "" : "s")"
         }
     }
     

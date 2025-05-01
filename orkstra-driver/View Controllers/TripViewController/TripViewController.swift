@@ -37,7 +37,7 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
         // Do any additional setup after loading the view.
         let h = self.view.frame.height - 94 - 135
         myLocationView?.frame.origin.y = h
-        myLocationView?.frame.origin.x = self.view.frame.width - 25 - 54
+        myLocationView?.frame.origin.x = self.view.frame.width - 15 - 54
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -168,8 +168,9 @@ extension TripViewController{
         
         let h = self.view.frame.height - 294 - 135
         myLocationView?.frame.origin.y = h
-        myLocationView?.frame.origin.x = self.view.frame.width - 25 - 54
+        myLocationView?.frame.origin.x = self.view.frame.width - 15 - 54
         
+        tripDetailsShowingState = 0
         showTripDetails()
         
         //Show view if not nil
@@ -256,7 +257,7 @@ extension TripViewController{
             print(h)
             print("DONE")
         case 1:
-            y = 50
+            y = 60
             h = self.view.frame.height - 294 - 135
         default:
             return

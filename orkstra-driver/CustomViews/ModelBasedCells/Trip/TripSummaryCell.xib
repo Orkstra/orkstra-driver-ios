@@ -270,7 +270,9 @@
                 <outlet property="storageFreeze" destination="xGu-YO-x4Z" id="9kK-ta-CgA"/>
                 <outlet property="storageView" destination="znX-oa-TgF" id="hDm-8h-myD"/>
                 <outlet property="storageViewWidth" destination="BfP-fX-XqS" id="KnP-yI-0Qr"/>
+                <outlet property="txtDeliveries" destination="9Vk-IJ-4La" id="77F-m9-xIb"/>
                 <outlet property="txtShift" destination="0SI-4t-aYN" id="bIV-TM-33P"/>
+                <outlet property="txtStops" destination="url-IT-YTg" id="J45-ay-BSE"/>
                 <outlet property="viewHeight" destination="yWJ-5A-u5C" id="ebs-Il-Zsv"/>
             </connections>
             <point key="canvasLocation" x="86.25954198473282" y="70.422535211267615"/>

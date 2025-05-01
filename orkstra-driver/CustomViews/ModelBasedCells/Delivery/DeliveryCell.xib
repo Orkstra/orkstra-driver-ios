@@ -15,11 +15,11 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="141" id="KGk-i7-Jjw" customClass="DeliveryCell" customModule="orkstra_driver" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="393" height="135"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="393" height="135"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LvR-zw-CQR" customClass="VerticalDottedLineView" customModule="orkstra_driver" customModuleProvider="target">
+                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LvR-zw-CQR" customClass="VerticalDottedLineView" customModule="orkstra_driver" customModuleProvider="target">
                         <rect key="frame" x="31.666666666666671" y="4" width="1" height="131"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="1" id="JjC-7W-ACo"/>
@@ -260,7 +260,7 @@
                     <constraint firstItem="FG7-aj-VCv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="3" id="5D2-JD-NsD"/>
                     <constraint firstAttribute="bottom" secondItem="LvR-zw-CQR" secondAttribute="bottom" id="9EO-Tf-5of"/>
                     <constraint firstAttribute="trailing" secondItem="FG7-aj-VCv" secondAttribute="trailing" constant="21" id="StC-XK-kjz"/>
-                    <constraint firstAttribute="bottom" secondItem="FG7-aj-VCv" secondAttribute="bottom" constant="6" id="T1g-fA-7Rd"/>
+                    <constraint firstAttribute="bottom" secondItem="FG7-aj-VCv" secondAttribute="bottom" constant="5" id="T1g-fA-7Rd"/>
                     <constraint firstItem="LvR-zw-CQR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="31.670000000000002" id="Vho-zs-doq"/>
                     <constraint firstItem="LvR-zw-CQR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="Wqc-BO-PSS"/>
                     <constraint firstItem="FG7-aj-VCv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="72" id="lue-bk-Pn8"/>

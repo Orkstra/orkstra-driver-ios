@@ -155,7 +155,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters // Adjust accuracy as needed
-        locationManager.distanceFilter = 10 // Only update if the device moves 10 meters
+        locationManager.distanceFilter = 5 // Only update if the device moves 5 meters
         
         locationManager.startUpdatingLocation()
         locationManager.startUpdatingHeading()
@@ -231,7 +231,7 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
         }
 
         // Apply UI insets to account for overlay views
-        let topPadding: CGFloat = 50
+        let topPadding: CGFloat = 150
         let bottomPadding: CGFloat = 294
         let leftPadding: CGFloat = 50
         let rightPadding: CGFloat = 50
@@ -325,6 +325,9 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
                     
                     // Adjust the camera to fit the entire route
                     self.zoomToFitAllMarkers()
+                    
+                    //Simulation Karim
+                    //self.simulateTruckMovementFromFirstStop()
                 }
             }
         }
@@ -461,21 +464,21 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let currentLocation = locations.last else { return }
 
-        guard hasSignificantMovement(from: previousLocation, to: currentLocation) else {
-            print("Stationary: Skipping bearing update")
+        if let previous = previousLocation, currentLocation.distance(from: previous) < 1.0 {
+            print("Stationary: Skipping update")
             return
         }
 
-        updateSnappedLocation(currentLocation: currentLocation) { [weak self] snappedCoordinate, bearing in
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
-                self.moveMarker(marker: self.truckMarker, to: snappedCoordinate, bearing: bearing)
-
-                self.previousLocation = CLLocation(latitude: snappedCoordinate.latitude, longitude: snappedCoordinate.longitude)
-            }
+        let bearing = previousLocation.map {
+            getBearing(from: $0.coordinate, to: currentLocation.coordinate)
         }
+
+        moveTruckAndFlashlight(to: currentLocation.coordinate, withBearing: bearing)
+
+        previousLocation = currentLocation
     }
+
+
 
     // Handle heading updates only when trip is in 'ready' state (compass mode)
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
@@ -490,145 +493,109 @@ class GoogleMapsView: UIView, GMSMapViewDelegate, CLLocationManagerDelegate{
     }
     
     // Smoothly move and rotate the truck and flashlight markers
-    func moveMarker(marker: GMSMarker?, to position: CLLocationCoordinate2D, bearing: CLLocationDirection?) {
-        guard marker != nil else { return }
-
+    func moveTruckAndFlashlight(to coordinate: CLLocationCoordinate2D, withBearing bearing: CLLocationDirection?) {
         CATransaction.begin()
         CATransaction.setAnimationDuration(1.5)
 
-        // Move markers to new position
-        truckMarker?.position = position
-        flashlightMarker?.position = position
+        truckMarker?.position = coordinate
+        flashlightMarker?.position = coordinate
 
-        // Update bearing only if provided and trip is active
         if trip?.status != "ready", let bearing = bearing {
-            updateFlashlightBearing(newBearing: bearing)
+            flashlightMarker?.rotation = bearing
         }
 
         CATransaction.commit()
     }
-
-    // Smooth bearing rotation logic with smoothing
-    func updateFlashlightBearing(newBearing: CLLocationDirection) {
-        // Calculate shortest angle difference
-        var angleDifference = newBearing - smoothedBearing
-        if angleDifference > 180 {
-            angleDifference -= 360
-        } else if angleDifference < -180 {
-            angleDifference += 360
-        }
-
-        // Threshold to prevent tiny jittery updates
-        let bearingChangeThreshold: CLLocationDirection = 3.0
-        if abs(angleDifference) < bearingChangeThreshold {
-            return
-        }
-
-        // Apply smoothing
-        smoothedBearing += 0.1 * angleDifference
-        smoothedBearing = fmod(smoothedBearing + 360, 360)
-
-        // Update flashlight rotation
-        flashlightMarker?.rotation = smoothedBearing
-    }
-    
-    /// Snap the given location to the nearest road using the Google Roads API
-    func updateSnappedLocation(currentLocation: CLLocation, completion: @escaping (CLLocationCoordinate2D, CLLocationDirection?) -> Void) {
-        guard let previous = previousLocation else {
-            previousLocation = currentLocation
-            completion(currentLocation.coordinate, nil)
-            return
-        }
-
-        let distanceMoved = currentLocation.distance(from: previous)
-        guard distanceMoved > movementThreshold else {
-            completion(previous.coordinate, nil) // Treat as stationary
-            return
-        }
-
-        // Smooth the position
-        let smoothedCoordinate = smoothLocation(current: currentLocation.coordinate, previous: previous.coordinate)
-
-        // Estimate bearing
-        let bearing = calculateBearing(from: previous.coordinate, to: smoothedCoordinate)
-
-        // Update state
-        previousLocation = CLLocation(latitude: smoothedCoordinate.latitude, longitude: smoothedCoordinate.longitude)
-
-        completion(smoothedCoordinate, bearing)
-    }
-        
     
     // MARK: - Helper Methods
-    /// Check if the movement is significant (distance or speed threshold)
-    func hasSignificantMovement(from previousLocation: CLLocation?, to currentLocation: CLLocation) -> Bool {
-        guard let previousLocation = previousLocation else { return true } // First update
-        
-        // Calculate the distance between the two locations (in meters)
-        let distance = currentLocation.distance(from: previousLocation)
-        
-        // Check the speed (in m/s) and distance (e.g., threshold > 5 meters)
-        return currentLocation.speed > 1.0 || distance > 5.0
-    }
-    
     /// Helper function to validate coordinates
     private func isValidCoordinate(_ coordinate: CLLocationCoordinate2D) -> Bool {
         return coordinate.latitude >= -90 && coordinate.latitude <= 90 &&
                coordinate.longitude >= -180 && coordinate.longitude <= 180
     }
-    
-    private func smoothLocation(current: CLLocationCoordinate2D, previous: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(
-            latitude: current.latitude * smoothingFactor + previous.latitude * (1 - smoothingFactor),
-            longitude: current.longitude * smoothingFactor + previous.longitude * (1 - smoothingFactor)
-        )
-    }
 
-    private func calculateBearing(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> CLLocationDirection {
-        let lat1 = from.latitude * .pi / 180
-        let lon1 = from.longitude * .pi / 180
-        let lat2 = to.latitude * .pi / 180
-        let lon2 = to.longitude * .pi / 180
+    func getBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
+        let lat1 = start.latitude.degreesToRadians
+        let lon1 = start.longitude.degreesToRadians
+        let lat2 = end.latitude.degreesToRadians
+        let lon2 = end.longitude.degreesToRadians
 
-        let deltaLon = lon2 - lon1
-        let y = sin(deltaLon) * cos(lat2)
-        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(deltaLon)
+        let dLon = lon2 - lon1
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
         let radiansBearing = atan2(y, x)
-        let degreesBearing = radiansBearing * 180 / .pi
-        return (degreesBearing + 360).truncatingRemainder(dividingBy: 360)
+        return radiansBearing.radiansToDegrees.truncatingRemainder(dividingBy: 360)
     }
 
-//    func calculateBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
-//        let deltaLongitude = (end.longitude - start.longitude).radians
-//        let startLatitude = start.latitude.radians
-//        let endLatitude = end.latitude.radians
-//        
-//        let y = sin(deltaLongitude) * cos(endLatitude)
-//        let x = cos(startLatitude) * sin(endLatitude) - sin(startLatitude) * cos(endLatitude) * cos(deltaLongitude)
-//        
-//        let bearing = atan2(y, x).degrees // Convert radians to degrees
-//        let normalizedBearing = (bearing + 360).truncatingRemainder(dividingBy: 360) // Normalize to 0-360 degrees
-//        
-//        // Debugging: Log the bearing calculation
-//        print("Start: (\(start.latitude), \(start.longitude)) | End: (\(end.latitude), \(end.longitude)) | Bearing: \(bearing)° | Normalized: \(normalizedBearing)°")
-//        
-//        return normalizedBearing
-//    }
+    // MARK: Simulations
     
-    // Helper to parse duration strings (e.g., "5725s")
-    private func parseDuration(_ durationString: String) -> Int {
-        return Int(durationString.replacingOccurrences(of: "s", with: "")) ?? 0
+    func simulateTruckMovementFromFirstStop() {
+        guard let stops = trip?.stops, stops.count >= 2 else {
+            print("Not enough stops to simulate.")
+            return
+        }
+
+        let sortedStops = Array(stops)
+
+        // Start at the first stop
+        let simulatedStart = CLLocation(
+            latitude: sortedStops[0].latitude ?? -180.0,
+            longitude: sortedStops[0].longitude ?? -180.0
+        )
+
+        // Call didUpdateLocations with the simulated start location
+        self.locationManager(self.locationManager, didUpdateLocations: [simulatedStart])
+
+        // Start moving toward the next stop
+        simulateMovementBetweenStops(stops: sortedStops, currentIndex: 0)
+    }
+
+
+    
+    func simulateMovementBetweenStops(stops: [Stop], currentIndex: Int) {
+        guard currentIndex < stops.count - 1 else {
+            print("Simulation complete")
+            return
+        }
+        
+        let from = CLLocationCoordinate2D(latitude: stops[currentIndex].latitude ?? 0.0,
+                                          longitude: stops[currentIndex].longitude ?? 0.0)
+        let to = CLLocationCoordinate2D(latitude: stops[currentIndex + 1].latitude ?? 0.0,
+                                        longitude: stops[currentIndex + 1].longitude ?? 0.0)
+        
+        let steps = 100
+        var currentStep = 0
+        
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            guard currentStep <= steps else {
+                timer.invalidate()
+                // Move to the next leg
+                self.simulateMovementBetweenStops(stops: stops, currentIndex: currentIndex + 1)
+                return
+            }
+            
+            let fraction = Double(currentStep) / Double(steps)
+            let lat = from.latitude + (to.latitude - from.latitude) * fraction
+            let lng = from.longitude + (to.longitude - from.longitude) * fraction
+            let simulatedLocation = CLLocation(latitude: lat, longitude: lng)
+            
+            self.locationManager(self.locationManager, didUpdateLocations: [simulatedLocation])
+            
+            currentStep += 1
+        }
+    }
+    
+}
+
+
+extension CLLocationDegrees {
+    var degreesToRadians: CGFloat {
+        return CGFloat(self) * .pi / 180.0
     }
 }
 
-extension Double {
-    /// Convert degrees to radians
-    var radians: Double {
-        return self * .pi / 180.0
-    }
-    
-    /// Convert radians to degrees
-    var degrees: Double {
-        return self * 180.0 / .pi
+extension CGFloat {
+    var radiansToDegrees: CLLocationDegrees {
+        return CLLocationDegrees(self * 180.0 / .pi)
     }
 }

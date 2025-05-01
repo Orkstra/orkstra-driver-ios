@@ -25,11 +25,23 @@ class TripCell: TripDetailsHeaderCell{
     @IBOutlet weak var txtRemaining: UILabel?
     @IBOutlet weak var viewProgressWidth: NSLayoutConstraint?
     
+    @IBOutlet weak var txtStops: UILabel?
+    @IBOutlet weak var txtDeliveries: UILabel?
+    
     var tripViewController: TripViewController?
     
     var trip: Trip? {
         didSet {
             txtRoute?.text = trip?.route_name
+            
+            let stops = trip?.stops.where { $0.warehouse == nil}.count
+            txtStops?.text = "\(stops ?? 0) stop\(stops == 1 ? "" : "s")"
+            
+            let deliveries = trip?.stops
+                .filter { $0.warehouse == nil } // Filter stops where warehouse is nil
+                .reduce(0) { $0 + ($1.deliveries.count) } // Sum up the count of deliveries for each stop
+            
+            txtDeliveries?.text = "\(deliveries ?? 0) deliver\(deliveries == 1 ? "y" : "ies")"
             
             let formatter = DateFormatter()
             formatter.dateStyle = .none

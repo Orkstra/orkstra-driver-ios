@@ -1,14 +1,16 @@
+////
+////  GoogleMapsView.swift
+////  orkstra-driver
+////
+////  Created by Karim Maurice on 02/04/2025.
+////
 //
-//  GoogleMapsView.swift
-//  orkstra-driver
-//
-//  Created by Karim Maurice on 02/04/2025.
-//
-
 //import UIKit
 //import GoogleMaps
 //import CoreLocation
 //import RealmSwift
+//import MapKit
+//import Foundation
 //
 //protocol CustomMapViewDelegate: AnyObject {
 //    func didTapMarker(stop: Stop?)
@@ -25,10 +27,15 @@
 //    private var locationManager = CLLocationManager()
 //    private var previousLocation: CLLocation?       // Track the previous location for bearing calculation
 //    private var markers: [GMSMarker] = []
-//    private var smoothedBearing: CLLocationDirection = 0
+//    private var smoothedBearing: CLLocationDirection = 0.2
+//    private let smoothingFactor: Double = 0.2
+//    private let movementThreshold: CLLocationDistance = 5.0 // meters
+//    
+//    var mapPolylines: [GMSPolyline] = []
 //    
 //    var trip: Trip?
 //    var truckMarker: GMSMarker?
+//    var flashlightMarker: GMSMarker?
 //    var selectedStop: Stop?
 //    
 //    override func awakeFromNib() {
@@ -92,7 +99,7 @@
 //
 //                // Create the marker
 //                let marker = GMSMarker(position: position)
-//                marker.title = stop.label // Use the label from the Stop model
+//                marker.title = stop.name // Use the label from the Stop model
 //                marker.userData = stop.id
 //                marker.snippet = "Order: \(stop.order ?? 0)" // Optional snippet showing the order
 //                
@@ -112,7 +119,7 @@
 //                    }
 //                }
 //                
-//                if index == 0 && stop.label == stops.last?.label{
+//                if index == 0 && stop.name == stops.last?.name{
 //                   //Do nothing
 //                } else {
 //                    marker.map = mapView
@@ -122,9 +129,7 @@
 //        }
 //        
 //    }
-//}
 //
-//extension GoogleMapsView{
 //    // Set up the GMSMapView and replace the placeholder UIView
 //    func setupGoogleMap() {
 //        // Set an initial camera position (latitude, longitude, zoom level)
@@ -150,16 +155,40 @@
 //        locationManager.delegate = self
 //        locationManager.requestWhenInUseAuthorization()
 //        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters // Adjust accuracy as needed
-//        locationManager.distanceFilter = 10 // Only update if the device moves 10 meters
+//        //locationManager.distanceFilter = 10 // Only update if the device moves 10 meters
 //        
 //        locationManager.startUpdatingLocation()
 //        locationManager.startUpdatingHeading()
 //        
 //        // Add a custom truck marker
 //        let markerManager = MarkerManager()
-//        let image: UIImage = UIImage(systemName: "circle.fill") ?? UIImage()
+//        let image: UIImage = UIImage(systemName: "truck.box.fill") ?? UIImage()
 //        truckMarker = markerManager.createTruckMarker(with: image)
 //        truckMarker?.map = mapView
+//        
+//        flashlightMarker = markerManager.setupFlashlightMarker(at: truckMarker!.position)
+//        flashlightMarker?.map = mapView
+//    }
+//    
+//    func reinitializeTruckMarker(){
+//        // Reinitialize the truck marker
+//        if truckMarker == nil {
+//            let markerManager = MarkerManager()
+//            let image: UIImage = UIImage(systemName: "truck.box.fill") ?? UIImage()
+//            truckMarker = markerManager.createTruckMarker(with: image)
+//            truckMarker?.map = mapView
+//            
+//            flashlightMarker = markerManager.setupFlashlightMarker(at: truckMarker!.position)
+//            flashlightMarker?.map = mapView
+//        }
+//        
+//        if let lastLocation = locationManager.location {
+//            // Call the method with the last known location
+//            locationManager(locationManager, didUpdateLocations: [lastLocation])
+//        } else {
+//            // If no location exists, call it with an empty array
+//            locationManager(locationManager, didUpdateLocations: [])
+//        }
 //    }
 //    
 //    //Apply Map Style
@@ -178,19 +207,69 @@
 //        }
 //    }
 //    
-//    // Adjust the camera to fit the route
-//    func updateCameraToFitRoute(path: GMSPath) {
-//        var bounds = GMSCoordinateBounds()
-//        
-//        // Include each coordinate in the bounds
-//        for index in 0..<path.count() {
-//            bounds = bounds.includingCoordinate(path.coordinate(at: index))
+//    func zoomToCurrentLocation() {
+//        guard let truckPosition = truckMarker?.position, isValidCoordinate(truckPosition) else {
+//            print("No valid truck position")
+//            return
 //        }
-//        
-//        // Animate the camera to fit the bounds
-//        let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0) // Add padding around the edges
+//
+//        // Create artificial bounds around the truck position
+//        var bounds = GMSCoordinateBounds()
+//        bounds = bounds.includingCoordinate(truckPosition)
+//
+//        // Add dummy coordinates slightly around the truck to simulate area
+//        let delta: CLLocationDegrees = 0.002  // ~200 meters, adjust as needed
+//        let paddingCoordinates = [
+//            CLLocationCoordinate2D(latitude: truckPosition.latitude + delta, longitude: truckPosition.longitude + delta),
+//            CLLocationCoordinate2D(latitude: truckPosition.latitude - delta, longitude: truckPosition.longitude - delta),
+//            CLLocationCoordinate2D(latitude: truckPosition.latitude + delta, longitude: truckPosition.longitude - delta),
+//            CLLocationCoordinate2D(latitude: truckPosition.latitude - delta, longitude: truckPosition.longitude + delta)
+//        ]
+//
+//        for coord in paddingCoordinates {
+//            bounds = bounds.includingCoordinate(coord)
+//        }
+//
+//        // Apply UI insets to account for overlay views
+//        let topPadding: CGFloat = 50
+//        let bottomPadding: CGFloat = 294
+//        let leftPadding: CGFloat = 50
+//        let rightPadding: CGFloat = 50
+//
+//        let insets = UIEdgeInsets(top: topPadding, left: leftPadding, bottom: bottomPadding, right: rightPadding)
+//
+//        let update = GMSCameraUpdate.fit(bounds, with: insets)
 //        mapView.animate(with: update)
 //    }
+//
+//    
+//    //Zoom to fit all markers on the map
+//    func zoomToFitAllMarkers() {
+//        guard !markers.isEmpty else {
+//            print("No markers available to fit.")
+//            return
+//        }
+//        
+//        var bounds = GMSCoordinateBounds()
+//        
+//        for marker in markers {
+//            bounds = bounds.includingCoordinate(marker.position)
+//        }
+//        
+//        // Calculate padding
+//        let topPadding: CGFloat = 50
+//        let bottomPadding: CGFloat = 294 // Height of your UIView + desired buffer
+//        let leftPadding: CGFloat = 50
+//        let rightPadding: CGFloat = 50
+//
+//        let insets = UIEdgeInsets(top: topPadding, left: leftPadding, bottom: bottomPadding, right: rightPadding)
+//        
+//        // Animate the camera with visible region accounted for
+//        let update = GMSCameraUpdate.fit(bounds, with: insets)
+//        mapView.animate(with: update)
+//    }
+//    
+//    // MARK: Routing functions
 //    
 //    // Draw a route on the map
 //    func drawRoute() {
@@ -220,6 +299,9 @@
 //                CLLocationCoordinate2D(latitude: $0.latitude ?? 0.0, longitude: $0.longitude ?? 0.0)
 //            }
 //            
+//            //Clear the polyline array
+//            mapPolylines = []
+//            
 //            // Fetch the route
 //            fetchRoute(from: origin, to: destination, waypoints: waypoints) { [weak self] path, legTimes in
 //                guard let self = self, let path = path else { return }
@@ -231,6 +313,8 @@
 //                    polyline.strokeColor = AppColors.trip
 //                    polyline.map = self.mapView
 //                    
+//                    self.mapPolylines.append(polyline) // Track the polyline
+//                    
 //                    // Print total duration if available
 //                    if let legTimes = legTimes {
 //                        self.delegate?.recalculatedTravelTime(legTimes: legTimes)
@@ -240,7 +324,16 @@
 //                    self.updateMarkers()
 //                    
 //                    // Adjust the camera to fit the entire route
-//                    self.updateCameraToFitRoute(path: path)
+//                    self.zoomToFitAllMarkers()
+//                    
+//                    //Simulation Karim
+//                    let simulatedLocation = CLLocation(
+//                        latitude: self.trip?.stops.first?.latitude ?? -180.0,
+//                        longitude: self.trip?.stops.first?.longitude ?? -180.0
+//                    )
+//                    
+//                    
+//                    self.simulateTruckMovementFromFirstStop()
 //                }
 //            }
 //        }
@@ -371,148 +464,111 @@
 //        }.resume()
 //    }
 //    
-//    // Helper to parse duration strings (e.g., "5725s")
-//    private func parseDuration(_ durationString: String) -> Int {
-//        return Int(durationString.replacingOccurrences(of: "s", with: "")) ?? 0
-//    }
-//    
-//    func zoomToCurrentLocation() {
-//        // Validate truck's position
-//        if let truckPosition = truckMarker?.position, isValidCoordinate(truckPosition) {
-//            // Move the camera to the truck's location
-//            let cameraUpdate = GMSCameraUpdate.setTarget(truckPosition, zoom: 15)
-//            mapView.animate(with: cameraUpdate)
-//        } else if let userLocation = locationManager.location?.coordinate, isValidCoordinate(userLocation) {
-//            // Default to the user's location if the truck's location is not valid
-//            let cameraUpdate = GMSCameraUpdate.setTarget(userLocation, zoom: 15)
-//            mapView.animate(with: cameraUpdate)
-//        } else {
-//            // If no valid location is available, show an alert or log an error
-//            print("No valid location available")
-//        }
-//    }
-//    
-//    //Zoom to fit all markers on the map
-//    func zoomToFitAllMarkers() {
-//        guard !markers.isEmpty else {
-//            print("No markers available to fit.")
-//            return
-//        }
-//        
-//        var bounds = GMSCoordinateBounds()
-//        
-//        for marker in markers {
-//            bounds = bounds.includingCoordinate(marker.position)
-//        }
-//        
-//        let cameraUpdate = GMSCameraUpdate.fit(bounds, withPadding: 50) // padding to ensure markers are not at the edges
-//        mapView.animate(with: cameraUpdate)
-//    }
-//    
 //    // MARK: - CLLocationManagerDelegate Methods
 //    
-//    // Update the location of the truck marker
+//    // Handle location updates with snapping and animation
 //    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        guard let currentLocation = locations.last else { return }
-//        
-//        // Ensure significant movement before updating
+//
 //        guard hasSignificantMovement(from: previousLocation, to: currentLocation) else {
 //            print("Stationary: Skipping bearing update")
 //            return
 //        }
-//        
-//        // Snap the current location to the nearest road
-//        snapToRoads(location: currentLocation) { [weak self] snappedLocation, snappedBearing in
-//            guard let self = self, let snappedLocation = snappedLocation else { return }
-//            
+//
+//        updateSnappedLocation(currentLocation: currentLocation) { [weak self] snappedCoordinate, bearing in
+//            guard let self = self else { return }
+//
 //            DispatchQueue.main.async {
-//                // Smoothly move the truck marker to the snapped location
-//                self.moveMarker(marker: self.truckMarker, to: snappedLocation)
-//                
-//                // Update marker orientation based on speed or smoothed bearing
-//                if currentLocation.speed > 1.0, let snappedBearing = snappedBearing {
-//                    // Moving: Update orientation
-//                    self.updateBearing(newBearing: snappedBearing)
-//                } else {
-//                    // Stationary: Keep previous bearing or default to 0°
-//                    self.truckMarker?.rotation = self.truckMarker?.rotation ?? 0
-//                }
-//                
-//                // Animate the camera to follow the truck
-//                //self.mapView.animate(toLocation: snappedLocation)
+//                self.moveMarker(marker: self.truckMarker, to: snappedCoordinate, bearing: bearing)
+//
+//                self.previousLocation = CLLocation(latitude: snappedCoordinate.latitude, longitude: snappedCoordinate.longitude)
 //            }
-//            
-//            // Update the previous location for the next calculation
-//            self.previousLocation = CLLocation(latitude: snappedLocation.latitude, longitude: snappedLocation.longitude)
 //        }
+//    }
+//
+//    // Handle heading updates only when trip is in 'ready' state (compass mode)
+//    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+//        guard trip?.status == "ready" else { return }
+//
+//        let heading = newHeading.trueHeading
+//
+//        CATransaction.begin()
+//        CATransaction.setAnimationDuration(0.2)
+//        flashlightMarker?.rotation = heading
+//        CATransaction.commit()
+//    }
+//    
+//    // Smoothly move and rotate the truck and flashlight markers
+//    func moveMarker(marker: GMSMarker?, to position: CLLocationCoordinate2D, bearing: CLLocationDirection?) {
+//        guard marker != nil else { return }
+//
+//        CATransaction.begin()
+//        CATransaction.setAnimationDuration(1.5)
+//
+//        // Move markers to new position
+//        truckMarker?.position = position
+//        flashlightMarker?.position = position
+//
+//        // Update bearing only if provided and trip is active
+//        if trip?.status != "ready", let bearing = bearing {
+//            updateFlashlightBearing(newBearing: bearing)
+//        }
+//
+//        CATransaction.commit()
+//    }
+//
+//    // Smooth bearing rotation logic with smoothing
+//    func updateFlashlightBearing(newBearing: CLLocationDirection) {
+//        // Calculate shortest angle difference
+//        var angleDifference = newBearing - smoothedBearing
+//        if angleDifference > 180 {
+//            angleDifference -= 360
+//        } else if angleDifference < -180 {
+//            angleDifference += 360
+//        }
+//
+//        // Threshold to prevent tiny jittery updates
+//        let bearingChangeThreshold: CLLocationDirection = 3.0
+//        if abs(angleDifference) < bearingChangeThreshold {
+//            return
+//        }
+//
+//        // Apply smoothing
+//        smoothedBearing += 0.1 * angleDifference
+//        smoothedBearing = fmod(smoothedBearing + 360, 360)
+//
+//        // Update flashlight rotation
+//        flashlightMarker?.rotation = smoothedBearing
 //    }
 //    
 //    /// Snap the given location to the nearest road using the Google Roads API
-//    func snapToRoads(location: CLLocation, completion: @escaping (CLLocationCoordinate2D?, CLLocationDirection?) -> Void) {
-//        let urlString = "https://roads.googleapis.com/v1/snapToRoads?path=\(location.coordinate.latitude),\(location.coordinate.longitude)&key=\(GMSServicesApiKey)&interpolate=true"
-//        
-//        guard let url = URL(string: urlString) else {
-//            print("Invalid Roads API URL")
-//            completion(nil, nil)
+//    func updateSnappedLocation(currentLocation: CLLocation, completion: @escaping (CLLocationCoordinate2D, CLLocationDirection?) -> Void) {
+//        guard let previous = previousLocation else {
+//            previousLocation = currentLocation
+//            completion(currentLocation.coordinate, nil)
 //            return
 //        }
+//
+//        let distanceMoved = currentLocation.distance(from: previous)
+//        guard distanceMoved > movementThreshold else {
+//            completion(previous.coordinate, nil) // Treat as stationary
+//            return
+//        }
+//
+//        // Smooth the position
+//        let smoothedCoordinate = smoothLocation(current: currentLocation.coordinate, previous: previous.coordinate)
+//
+//        // Estimate bearing
+//        let bearing = calculateBearing(from: previous.coordinate, to: smoothedCoordinate)
+//
+//        // Update state
+//        previousLocation = CLLocation(latitude: smoothedCoordinate.latitude, longitude: smoothedCoordinate.longitude)
+//
+//        completion(smoothedCoordinate, bearing)
+//    }
 //        
-//        URLSession.shared.dataTask(with: url) { data, response, error in
-//            guard let data = data, error == nil else {
-//                print("Snap to Roads API Error: \(error?.localizedDescription ?? "Unknown error")")
-//                completion(nil, nil)
-//                return
-//            }
-//            
-//            do {
-//                // Parse the JSON response
-//                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-//                   let snappedPoints = json["snappedPoints"] as? [[String: Any]] {
-//                    
-//                    // Extract the first snapped location
-//                    guard let firstLocation = snappedPoints.first?["location"] as? [String: Any],
-//                          let latitude = firstLocation["latitude"] as? CLLocationDegrees,
-//                          let longitude = firstLocation["longitude"] as? CLLocationDegrees else {
-//                        print("Failed to extract snapped location")
-//                        completion(nil, nil)
-//                        return
-//                    }
-//                    
-//                    // Calculate the bearing using consecutive snapped points
-//                    var bearing: CLLocationDirection? = nil
-//                    if snappedPoints.count > 1 {
-//                        let firstPoint = snappedPoints[0]["location"] as? [String: CLLocationDegrees]
-//                        let secondPoint = snappedPoints[1]["location"] as? [String: CLLocationDegrees]
-//                        if let firstLat = firstPoint?["latitude"], let firstLng = firstPoint?["longitude"],
-//                           let secondLat = secondPoint?["latitude"], let secondLng = secondPoint?["longitude"] {
-//                            bearing = self.calculateBearing(
-//                                from: CLLocationCoordinate2D(latitude: firstLat, longitude: firstLng),
-//                                to: CLLocationCoordinate2D(latitude: secondLat, longitude: secondLng)
-//                            )
-//                        }
-//                    }
-//                    
-//                    // Return the snapped location and bearing
-//                    completion(CLLocationCoordinate2D(latitude: latitude, longitude: longitude), bearing)
-//                } else {
-//                    print("Failed to parse Snap to Roads response")
-//                    completion(nil, nil)
-//                }
-//            } catch {
-//                print("Error parsing Snap to Roads response: \(error)")
-//                completion(nil, nil)
-//            }
-//        }.resume()
-//    }
-//    
-//    // Handle heading updates (only used if no movement is occurring)
-//    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-//        guard previousLocation == nil else { return } // Only use heading if no previous location is available
-//        truckMarker?.rotation = newHeading.trueHeading
-//    }
 //    
 //    // MARK: - Helper Methods
-//    
 //    /// Check if the movement is significant (distance or speed threshold)
 //    func hasSignificantMovement(from previousLocation: CLLocation?, to currentLocation: CLLocation) -> Bool {
 //        guard let previousLocation = previousLocation else { return true } // First update
@@ -524,53 +580,124 @@
 //        return currentLocation.speed > 1.0 || distance > 5.0
 //    }
 //    
-//    /// Move the marker smoothly to the specified position
-//    func moveMarker(marker: GMSMarker?, to position: CLLocationCoordinate2D) {
-//        guard let marker = marker else { return }
-//        
-//        CATransaction.begin()
-//        CATransaction.setAnimationDuration(1.0) // Smooth animation duration
-//        marker.position = position
-//        CATransaction.commit()
-//    }
-//    
-//    /// Calculate the bearing between two coordinates
-//    func calculateBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
-//        let deltaLongitude = end.longitude - start.longitude
-//        let y = sin(deltaLongitude) * cos(end.latitude)
-//        let x = cos(start.latitude) * sin(end.latitude) - sin(start.latitude) * cos(end.latitude) * cos(deltaLongitude)
-//        let bearing = atan2(y, x)
-//        return (bearing * 180 / .pi + 360).truncatingRemainder(dividingBy: 360) // Convert radians to degrees
-//    }
-//    
-//    func updateBearing(newBearing: CLLocationDirection) {
-//        // Apply a low-pass filter to smooth the bearing
-//        smoothedBearing = (0.8 * smoothedBearing) + (0.2 * newBearing)
-//        self.truckMarker?.rotation = smoothedBearing
-//    }
-//    
 //    /// Helper function to validate coordinates
 //    private func isValidCoordinate(_ coordinate: CLLocationCoordinate2D) -> Bool {
 //        return coordinate.latitude >= -90 && coordinate.latitude <= 90 &&
 //               coordinate.longitude >= -180 && coordinate.longitude <= 180
 //    }
 //    
-//    func reinitializeTruckMarker(){
-//        // Reinitialize the truck marker
-//        if truckMarker == nil {
-//            let markerManager = MarkerManager()
-//            let image: UIImage = UIImage(systemName: "circle.fill") ?? UIImage()
-//            truckMarker = markerManager.createTruckMarker(with: image)
-//            truckMarker?.map = mapView
-//        }
-//        
-//        if let lastLocation = locationManager.location {
-//            // Call the method with the last known location
-//            locationManager(locationManager, didUpdateLocations: [lastLocation])
-//        } else {
-//            // If no location exists, call it with an empty array
-//            locationManager(locationManager, didUpdateLocations: [])
+//    private func smoothLocation(current: CLLocationCoordinate2D, previous: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+//        return CLLocationCoordinate2D(
+//            latitude: current.latitude * smoothingFactor + previous.latitude * (1 - smoothingFactor),
+//            longitude: current.longitude * smoothingFactor + previous.longitude * (1 - smoothingFactor)
+//        )
+//    }
+//
+//    private func calculateBearing(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> CLLocationDirection {
+//        let lat1 = from.latitude * .pi / 180
+//        let lon1 = from.longitude * .pi / 180
+//        let lat2 = to.latitude * .pi / 180
+//        let lon2 = to.longitude * .pi / 180
+//
+//        let deltaLon = lon2 - lon1
+//        let y = sin(deltaLon) * cos(lat2)
+//        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(deltaLon)
+//        let radiansBearing = atan2(y, x)
+//        let degreesBearing = radiansBearing * 180 / .pi
+//        return (degreesBearing + 360).truncatingRemainder(dividingBy: 360)
+//    }
+//
+////    func calculateBearing(from start: CLLocationCoordinate2D, to end: CLLocationCoordinate2D) -> CLLocationDirection {
+////        let deltaLongitude = (end.longitude - start.longitude).radians
+////        let startLatitude = start.latitude.radians
+////        let endLatitude = end.latitude.radians
+////
+////        let y = sin(deltaLongitude) * cos(endLatitude)
+////        let x = cos(startLatitude) * sin(endLatitude) - sin(startLatitude) * cos(endLatitude) * cos(deltaLongitude)
+////
+////        let bearing = atan2(y, x).degrees // Convert radians to degrees
+////        let normalizedBearing = (bearing + 360).truncatingRemainder(dividingBy: 360) // Normalize to 0-360 degrees
+////
+////        // Debugging: Log the bearing calculation
+////        print("Start: (\(start.latitude), \(start.longitude)) | End: (\(end.latitude), \(end.longitude)) | Bearing: \(bearing)° | Normalized: \(normalizedBearing)°")
+////
+////        return normalizedBearing
+////    }
+//    
+//    // Helper to parse duration strings (e.g., "5725s")
+//    private func parseDuration(_ durationString: String) -> Int {
+//        return Int(durationString.replacingOccurrences(of: "s", with: "")) ?? 0
+//    }
+//    
+//    
+//    // MARK: Simulations
+//    
+//    func simulateTruckMovementFromFirstStop() {
+//        guard let stops = trip?.stops, stops.count >= 2 else {
+//            print("Not enough stops to simulate.")
+//            return
 //        }
 //
+//        let sortedStops = Array(stops)
+//
+//        // Start at the first stop
+//        let simulatedStart = CLLocation(
+//            latitude: sortedStops[0].latitude ?? -180.0,
+//            longitude: sortedStops[0].longitude ?? -180.0
+//        )
+//
+//        // Call didUpdateLocations with the simulated start location
+//        self.locationManager(self.locationManager, didUpdateLocations: [simulatedStart])
+//
+//        // Start moving toward the next stop
+//        simulateMovementBetweenStops(stops: sortedStops, currentIndex: 0)
+//    }
+//
+//
+//    
+//    func simulateMovementBetweenStops(stops: [Stop], currentIndex: Int) {
+//        guard currentIndex < stops.count - 1 else {
+//            print("Simulation complete")
+//            return
+//        }
+//        
+//        let from = CLLocationCoordinate2D(latitude: stops[currentIndex].latitude ?? 0.0,
+//                                          longitude: stops[currentIndex].longitude ?? 0.0)
+//        let to = CLLocationCoordinate2D(latitude: stops[currentIndex + 1].latitude ?? 0.0,
+//                                        longitude: stops[currentIndex + 1].longitude ?? 0.0)
+//        
+//        let steps = 100
+//        var currentStep = 0
+//        
+//        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+//            guard currentStep <= steps else {
+//                timer.invalidate()
+//                // Move to the next leg
+//                self.simulateMovementBetweenStops(stops: stops, currentIndex: currentIndex + 1)
+//                return
+//            }
+//            
+//            let fraction = Double(currentStep) / Double(steps)
+//            let lat = from.latitude + (to.latitude - from.latitude) * fraction
+//            let lng = from.longitude + (to.longitude - from.longitude) * fraction
+//            let simulatedLocation = CLLocation(latitude: lat, longitude: lng)
+//            
+//            self.locationManager(self.locationManager, didUpdateLocations: [simulatedLocation])
+//            
+//            currentStep += 1
+//        }
+//    }
+//    
+//}
+//
+//extension Double {
+//    /// Convert degrees to radians
+//    var radians: Double {
+//        return self * .pi / 180.0
+//    }
+//    
+//    /// Convert radians to degrees
+//    var degrees: Double {
+//        return self * 180.0 / .pi
 //    }
 //}
