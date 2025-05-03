@@ -193,11 +193,18 @@ class TripManager {
             )
         ]
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a" // Format for 12-hour time with AM/PM
+        formatter.locale = Locale(identifier: "en_US") // Set locale for consistent formatting
+        formatter.timeZone = TimeZone.current // Use the current timezone
+        
+        
         let deliveries = [
             Delivery(
                 id: "1",
                 label: "Universal Studios Florida",
-                time_slot: "08:00am - 10:00am",
+                start_time: formatter.date(from: "10:00 AM"),
+                end_time: formatter.date(from: "12:00 PM"),
                 serviceTime: 1800,
                 contact_person: "John Doe",
                 contact_phone_number: "+1 407-555-1234",
@@ -208,7 +215,8 @@ class TripManager {
             Delivery(
                 id: "2",
                 label: "Walt Disney",
-                time_slot: nil,
+                start_time: nil,
+                end_time: nil,
                 serviceTime: 1800,
                 contact_person: "Alice Johnson",
                 contact_phone_number: "+1 407-555-7890",
@@ -219,7 +227,8 @@ class TripManager {
             Delivery(
                 id: "3",
                 label: "ICON Park",
-                time_slot: nil,
+                start_time: nil,
+                end_time: nil,
                 serviceTime: 1800,
                 contact_person: "Bob Brown",
                 contact_phone_number: "+1 407-555-3456",
@@ -230,7 +239,8 @@ class TripManager {
             Delivery(
                 id: "4",
                 label: "SeaWorld Orlando",
-                time_slot: "12:00pm - 01:00pm",
+                start_time: nil,
+                end_time: nil,
                 serviceTime: 1800,
                 contact_person: "Charlie Green",
                 contact_phone_number: "+1 407-555-0001",
@@ -241,7 +251,8 @@ class TripManager {
             Delivery(
                 id: "5",
                 label: "Baxters",
-                time_slot: "12:00pm - 01:00pm",
+                start_time: nil,
+                end_time: nil,
                 serviceTime: 1800,
                 contact_person: "Dana Blue",
                 contact_phone_number: "+1 407-555-0002",
@@ -252,7 +263,8 @@ class TripManager {
             Delivery(
                 id: "6",
                 label: "Baxters",
-                time_slot: "12:00pm - 01:00pm",
+                start_time: nil,
+                end_time: nil,
                 serviceTime: 1800,
                 contact_person: "Dana Blue",
                 contact_phone_number: "+1 407-555-0002",
@@ -263,7 +275,8 @@ class TripManager {
             Delivery(
                 id: "7",
                 label: "Walt Disney",
-                time_slot: nil,
+                start_time: nil,
+                end_time: nil,
                 serviceTime: 1800,
                 contact_person: "Alice Johnson",
                 contact_phone_number: "+1 407-555-7890",
@@ -347,13 +360,7 @@ class TripManager {
         
         let shift = DeliveryShift()
         shift.id = "1"
-        
-        // Create a DateFormatter
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a" // Format for 12-hour time with AM/PM
-        formatter.locale = Locale(identifier: "en_US") // Set locale for consistent formatting
-        formatter.timeZone = TimeZone.current // Use the current timezone
-        
+            
         shift.start_time = formatter.date(from: "10:00 AM")
         shift.end_time = formatter.date(from: "02:30 PM")
         

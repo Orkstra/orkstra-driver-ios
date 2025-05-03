@@ -352,7 +352,6 @@
                 <outlet property="txtTime" destination="nNY-DW-a1E" id="l8w-gz-QAV"/>
                 <outlet property="txtTimeLeading" destination="uTW-wz-Vky" id="ush-Y3-Mjo"/>
                 <outlet property="txtTimeTrailing" destination="7Ta-2e-d1Q" id="5DQ-xs-I6f"/>
-                <outlet property="viewHeight" destination="TRt-YN-ChX" id="DW4-XF-het"/>
                 <outlet property="viewTime" destination="8t0-LJ-2Qi" id="5Uu-T6-jkW"/>
             </connections>
             <point key="canvasLocation" x="-87.786259541984734" y="18.30985915492958"/>
@@ -375,10 +374,10 @@
             <color red="0.9137254901960784" green="0.89803921568627454" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="PurpleColor">
-            <color red="0.59607845540000004" green="0.270588249" blue="0.90196079019999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.59607843137254901" green="0.27058823529411763" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="SalmonColor">
-            <color red="0.97254902119999997" green="0.8392156959" blue="0.78823530669999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.97254901960784312" green="0.83921568627450982" blue="0.78823529411764703" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class TripCell: TripDetailsHeaderCell{
+class TripCell: StorageTableViewCell{
     
     @IBOutlet weak var btnStartTrip: CustomUiButton?
     @IBOutlet weak var btnEndTrip: CustomUiButton?
@@ -119,7 +119,7 @@ class TripCell: TripDetailsHeaderCell{
         tripViewController?.selectedStop = nil
         tripViewController?.hideTripTrackingView()
         tripViewController?.didTapOutsideMarker()
-        tripViewController?.tripDetailViewDidSSelectRow(stop: nil)
+        tripViewController?.tripDetailViewDidSelect(stop: nil)
     }
     
     @objc func didSwipeDown(_ sender: UITapGestureRecognizer){

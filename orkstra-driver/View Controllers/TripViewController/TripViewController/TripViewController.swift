@@ -87,7 +87,7 @@ class TripViewController: UIViewController, CustomMapViewDelegate, StopCellDeleg
     }
     
     //TripDetail View methods
-    func tripDetailViewDidSSelectRow(stop: Stop?) {
+    func tripDetailViewDidSelect(stop: Stop?) {
         if stop != nil{
             selectedStop = stop
             //Notify Map container view
@@ -166,8 +166,6 @@ extension TripViewController{
         
         tripDetailView = helper.setupTripDetailsView(viewController: self)
         
-        let h = self.view.frame.height - 294 - 135
-        myLocationView?.frame.origin.y = h
         myLocationView?.frame.origin.x = self.view.frame.width - 15 - 54
         
         tripDetailsShowingState = 0
@@ -254,8 +252,6 @@ extension TripViewController{
         case 0:
             y = self.view.frame.height - 294
             h = y - 135
-            print(h)
-            print("DONE")
         case 1:
             y = 60
             h = self.view.frame.height - 294 - 135

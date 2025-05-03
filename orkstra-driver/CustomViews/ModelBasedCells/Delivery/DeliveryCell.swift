@@ -25,7 +25,7 @@ class DeliveryCell: StorageTableViewCell {
             txtContactPhoneNumber?.text = delivery?.contact_phone_number ?? "NA"
             txtLocation?.text = delivery?.label
             
-            if delivery?.time_slot != nil {
+            if delivery?.start_time != nil {
                 viewTime?.borderWidth = 1
                 viewTime?.backgroundColor = AppColors.lightOrange
             }else{

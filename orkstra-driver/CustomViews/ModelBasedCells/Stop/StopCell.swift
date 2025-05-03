@@ -12,7 +12,7 @@ protocol StopCellDelegate: AnyObject {
     func StopCellDidSwipeUp()
 }
 
-class StopCell: TripDetailsHeaderCell {
+class StopCell: StorageTableViewCell {
     
     @IBOutlet weak var txtLocation: UILabel?
     @IBOutlet weak var txtAddressLine1: UILabel?
@@ -54,7 +54,7 @@ class StopCell: TripDetailsHeaderCell {
             txtOrder?.text = String(stop?.order ?? 0)
             txtAddressLine1?.text = stop?.address_line_1 ?? "NA"
             
-            if stop?.deliveries.first?.time_slot != nil {
+            if stop?.deliveries.contains(where: { $0.start_time != nil }) == true {
                 viewTime?.borderWidth = 1
                 viewTime?.backgroundColor = AppColors.lightOrange
                 txtTimeLeading?.constant = 10

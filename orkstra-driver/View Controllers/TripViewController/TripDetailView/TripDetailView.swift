@@ -11,7 +11,7 @@ import RealmSwift
 protocol TripDetailViewViewDelegate: AnyObject {
     func tripDetailViewDidSwipeUp()
     func tripDetailViewDidSwipeDown()
-    func tripDetailViewDidSSelectRow(stop: Stop?)
+    func tripDetailViewDidSelect(stop: Stop?)
 }
 
 
@@ -53,7 +53,7 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
             stops = manager.getUndeliveredStops(trip: trip ?? Trip())
         }
         
-        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        delegate?.tripDetailViewDidSelect(stop: selectedStop)
         tableView?.reloadData()
     }
     
@@ -76,17 +76,16 @@ class TripDetailView: UITableViewCell, UITableViewDelegate, UITableViewDataSourc
         
         tableView?.reloadData()
         //Notify delegate
-        delegate?.tripDetailViewDidSSelectRow(stop: selectedStop)
+        delegate?.tripDetailViewDidSelect(stop: selectedStop)
         //Re draw routes to get updated arrival times
         tripViewController?.mapContainerView?.drawRoute()
         
         //scroll to next stop
-        if let index = stops.firstIndex(of: stop ?? Stop()) {
-            let indexPath = IndexPath(row: index, section: 0)
-            // Scroll to position
-            tableView?.scrollToRow(at: indexPath, at: .middle, animated: true)
-        } else {
-            print("Stop was not found in trip.stops")
+        if tableView?.numberOfSections ?? 0 > 0,
+           tableView?.numberOfRows(inSection: 0) ?? 0 > 0 {
+            let topIndexPath = IndexPath(row: 0, section: 0)
+            tableView?.scrollToRow(at: topIndexPath, at: .top, animated: false)
+            separator?.isHidden = true
         }
     }
 }
@@ -168,13 +167,6 @@ extension TripDetailView{
             cell.tripViewController = tripViewController
             separator = cell.separator
             cell.addGesture(target: self, action: #selector( headerTapped(_:)))
-//            if tripViewController?.tripDetailsShowing == true{
-//                cell.viewHeight?.constant = 214
-//                cell.viewBottom?.constant = 33
-//            }else{
-//                cell.viewHeight?.constant = 224
-//                cell.viewBottom?.constant = 43
-//            }
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "nextStop") as! StopCell

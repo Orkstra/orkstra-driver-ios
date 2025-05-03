@@ -30,13 +30,10 @@
                     <rect key="frame" x="314" y="664" width="54" height="120"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0e-cr-LN6" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0e-cr-LN6" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="66" width="54" height="54"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="54" id="6bW-Gj-3U7"/>
-                                <constraint firstAttribute="height" constant="54" id="Ed9-vQ-lLL"/>
-                            </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="dot" cornerStyle="large">
@@ -60,13 +57,10 @@
                                 <action selector="didClickMyLocationWithSender:" destination="-1" eventType="touchUpInside" id="S8N-1f-ati"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cci-0H-m1s" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cci-0H-m1s" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="54" height="54"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="54" id="VPQ-3d-hHW"/>
-                                <constraint firstAttribute="width" constant="54" id="pRD-0Y-rcd"/>
-                            </constraints>
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" image="zoom" cornerStyle="large">
@@ -92,10 +86,6 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="cci-0H-m1s" firstAttribute="centerX" secondItem="L0e-cr-LN6" secondAttribute="centerX" id="Hne-UC-Mcp"/>
-                        <constraint firstItem="L0e-cr-LN6" firstAttribute="top" secondItem="cci-0H-m1s" secondAttribute="bottom" constant="12" id="gtE-xW-tOR"/>
-                    </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9s-cy-7Z0" customClass="CustomUiButton" customModule="orkstra_driver" customModuleProvider="target">
                     <rect key="frame" x="16" y="65" width="44" height="44"/>

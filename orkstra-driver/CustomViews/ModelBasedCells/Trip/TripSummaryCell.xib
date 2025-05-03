@@ -51,14 +51,14 @@
                                             <constraint firstAttribute="width" constant="16" id="RhF-vI-seX"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="10 deliveries" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Vk-IJ-4La">
-                                        <rect key="frame" x="126.33333333333334" y="1" width="80.333333333333343" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 deliveries" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Vk-IJ-4La">
+                                        <rect key="frame" x="126.33333333333334" y="1.6666666666666572" width="80.333333333333343" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="package" translatesAutoresizingMaskIntoConstraints="NO" id="Gtu-V3-pAP">
-                                        <rect key="frame" x="102.33333333333334" y="0.33333333333333393" width="16" height="20"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="package" translatesAutoresizingMaskIntoConstraints="NO" id="Gtu-V3-pAP">
+                                        <rect key="frame" x="102.33333333333334" y="2" width="16" height="16"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="rxr-A0-g4G"/>
@@ -74,6 +74,7 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="Gtu-V3-pAP" firstAttribute="centerY" secondItem="url-IT-YTg" secondAttribute="centerY" id="1q2-Ca-MFy"/>
                                     <constraint firstAttribute="height" constant="20" id="9B2-Qp-TSd"/>
                                     <constraint firstAttribute="trailing" secondItem="9Vk-IJ-4La" secondAttribute="trailing" id="Bah-YH-7s1"/>
                                     <constraint firstItem="9Vk-IJ-4La" firstAttribute="centerY" secondItem="Gtu-V3-pAP" secondAttribute="centerY" id="FQZ-Jd-Cwt"/>
@@ -273,7 +274,6 @@
                 <outlet property="txtDeliveries" destination="9Vk-IJ-4La" id="77F-m9-xIb"/>
                 <outlet property="txtShift" destination="0SI-4t-aYN" id="bIV-TM-33P"/>
                 <outlet property="txtStops" destination="url-IT-YTg" id="J45-ay-BSE"/>
-                <outlet property="viewHeight" destination="yWJ-5A-u5C" id="ebs-Il-Zsv"/>
             </connections>
             <point key="canvasLocation" x="86.25954198473282" y="70.422535211267615"/>
         </tableViewCell>

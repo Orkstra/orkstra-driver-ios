@@ -186,7 +186,7 @@ class MarkerManager: NSObject{
             context.cgContext.strokeEllipse(in: rect)
 
             // Draw the white icon in the center
-            let iconSize = CGSize(width: size * 0.6, height: size * 0.4) // Icon size is 50% of the marker size
+            let iconSize = CGSize(width: size * 0.6, height: size * 0.5) // Icon size is 50% of the marker size
             let iconRect = CGRect(
                 x: (canvasSize - iconSize.width) / 2,
                 y: (canvasSize - iconSize.height) / 2,
